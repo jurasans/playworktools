@@ -1,0 +1,483 @@
+{
+  "groups": {
+    "Getting started": "Rozpoczęcie pracy",
+    "Games": "Gry",
+    "Strength tests": "Testy wytrzymałości",
+    "The ball": "Piłka",
+    "Trainer": "Trener",
+    "Settings": "Ustawienia"
+  },
+  "articles": {
+    "using-the-manual": {
+      "sections": {
+        "0": {
+          "text": "# Instrukcja obsługi\n\nNiniejsza instrukcja opisuje wszystkie ekrany programu Playwork. Można ją otworzyć z dowolnego miejsca.\n\n![Okno pomocy z przyciskiem menu zawartości, polem wyszukiwania i przyciskiem zamykania.](img:help-overlay.jpg)\n*Okno pomocy otwiera się nad ekranem, na którym się znajdowaliście.*",
+          "src": "3d1b34f607"
+        },
+        "1": {
+          "text": "## Pomoc\n\n- Dotknij przycisku `?` znajdującego się w nagłówku ekranu. Otworzy to artykuł pomocniczy dla aktualnie wyświetlanego ekranu.\n- Lub otwórz panel czujników (dotknij małego przycisku \"Czujnik\" w prawym górnym rogu) i dotknij **Pomoc**.\n\nJeśli otworzysz pomoc podczas gry, gra zostanie wstrzymana. Po zamknięciu pomocy pozostaniesz na ekranie pauzy i możesz wznowić grę, naciskając przycisk **Wznów**.",
+          "src": "eb16cf54e4"
+        },
+        "2": {
+          "text": "## Wyszukiwanie treści\n\n- Spis treści grupuje artykuły w rozdziały. Na telefonie, dotknij przycisku menu w lewym górnym rogu, aby wyświetlić lub ukryć spis.\n- Wpisz słowa w polu wyszukiwania, aby znaleźć artykuły. Każde słowo, które wpiszesz, musi występować w artykule.\n- Linki wewnątrz artykułów przenoszą do innych artykułów lub do ekranów aplikacji.\n\nArtykuły oznaczone jako *Trener* są przeznaczone dla osoby prowadzącej zajęcia.",
+          "src": "1614fb2824"
+        }
+      },
+      "title": "Instrukcja obsługi"
+    },
+    "connecting-your-ball": {
+      "sections": {
+        "0": {
+          "text": "# Połączenie piłki\n\nAplikacja Playwork współpracuje z piłką wyposażoną w czujnik. Należy ją połączyć raz, podczas uruchamiania aplikacji, zanim będzie można się zalogować.\n\n![Ekran połączenia z przyciskiem \"Połącz czujnik\".](img:connect.jpg)\n*W przeglądarce internetowej, dotknij przycisku \"Połącz czujnik\" i wybierz swoją piłkę.*",
+          "src": "951ed9fc5e"
+        },
+        "1": {
+          "text": "## Na telefonie lub tablecie\n\n1. Włącz piłkę i umieść ją w pobliżu urządzenia.\n2. Zezwól na dostęp do Bluetooth, gdy aplikacja o to poprosi. W starszych wersjach Androida aplikacja również wymaga uprawnień do lokalizacji oraz włączenia lokalizacji urządzenia (GPS).\n3. Jeśli korzystałeś z piłki wcześniej, aplikacja automatycznie łączy się z nią. W przeciwnym razie aplikacja skanuje dostępne piłki i wyświetla je na liście, wraz z ich nazwą i rozmiarem.\n4. Dotknij piłki w liście. Aplikacja sprawdza jej licencję i przenosi Cię do ekranu logowania.",
+          "src": "41a1809e6b"
+        },
+        "2": {
+          "text": "## W przeglądarce internetowej\n\nDotknij **Połącz czujnik** i wybierz swoją piłkę w oknie wyboru urządzeń Bluetooth w przeglądarce.",
+          "src": "e76532987a"
+        },
+        "3": {
+          "text": "## Jeśli coś nie działa\n\n- *Bluetooth jest wyłączony* - włącz Bluetooth. Skanowanie rozpocznie się ponownie automatycznie.\n- Dotknij **Otwórz ustawienia**, jeśli aplikacja wyświetli komunikat o konieczności przyznania uprawnień Bluetooth.\n- Dotknij **Włącz lokalizację**, jeśli usługi lokalizacyjne są wyłączone.\n- Wiersz oznaczony jako **Problemy z połączeniem** nie mógł zostać odczytany. Przybliż się i poczekaj na kolejne skanowanie.\n- **Połączenie nieudane — spróbuj ponownie.** oznacza, że połączenie zostało przerwane. Dotknij ponownie piłki.\n\nAby później sparować inną piłkę, użyj **Zmień piłkę** w [panelu czujników](help:sensor-panel).",
+          "src": "5ea4d740d1"
+        }
+      },
+      "title": "Podłączanie piłki"
+    },
+    "signing-in": {
+      "sections": {
+        "0": {
+          "text": "# Logowanie i użytkownicy\n\nPo połączeniu urządzenia, wybierz, kto będzie grał.\n\n![Ekran logowania z klawiaturą numeryczną, przyciskiem \"Zaloguj\", opcją \"Nowy użytkownik\" i \"Kontynuuj jako gość\".](img:login.jpg)\n*Wprowadź swój identyfikator za pomocą klawiatury numerycznej.*",
+          "src": "5bb62d2734"
+        },
+        "1": {
+          "text": "## Logowanie\n\n1. Wprowadź swój identyfikator numeryczny za pomocą klawiatury numerycznej. Użyj **Pokaż ID**, aby zobaczyć wprowadzone cyfry.\n2. Dotknij **Zaloguj się**.\n\nJeśli identyfikator jest nieznany, zobaczysz komunikat **Nie znaleziono ID**. Ostatnio używane kontakty pojawiają się pod **Ostatni użytkownicy** tylko po nazwisku – ich identyfikator nigdy nie jest tam wyświetlany, więc możesz dotknąć nazwiska, aby się zalogować, bez obawy, że ktoś w pobliżu odczyta identyfikator z ekranu.",
+          "src": "272e5deda5"
+        },
+        "2": {
+          "text": "## Gość\n\n**Kontynuuj jako gość** loguje się bez podania danych identyfikacyjnych. Dane dotyczące gości są zapisywane w taki sam sposób, jak dane innych użytkowników.",
+          "src": "7a8b2c5791"
+        },
+        "3": {
+          "text": "## Dodawanie użytkownika\n\n1. Dotknij **Nowy użytkownik**.\n2. Wprowadź identyfikator numeryczny i imię.\n3. Dotknij **Utwórz i zaloguj**.\n\nPojawi się komunikat **Ten identyfikator jest już zajęty**, jeśli taki identyfikator już istnieje. Liczba użytkowników zależy od licencji urządzenia: 1 użytkownik, 50 użytkowników lub liczba nieograniczona. Jeśli osiągnięto limit, aplikacja o tym poinformuje.\n\nMożna zamknąć okno za pomocą przycisku \"zamknij\" lub dotykając w dowolnym innym miejscu ekranu. Zobacz również [język i jednostki](help:language-and-units).",
+          "src": "2321392aab"
+        }
+      },
+      "title": "Logowanie i użytkownicy"
+    },
+    "language-and-units": {
+      "sections": {
+        "0": {
+          "text": "# Język i jednostki\n\nNa ekranie logowania, w górnej części, znajdują się dwa elementy sterujące.",
+          "src": "6448dcbaef"
+        },
+        "1": {
+          "text": "## Język\n\nOtwórz menu wyboru języka i wybierz preferowany język. Aplikacja automatycznie przełączy się na wybrany język i zapamięta Twoje ustawienie. Język hebrajski jest wyświetlany od prawej do lewej.",
+          "src": "3df2209d70"
+        },
+        "2": {
+          "text": "## Jednostki\n\nPrzełącznik jednostek zmienia sposób wyświetlania siły i odległości. Siła jest obliczana na podstawie odczytu ciśnienia i rozmiaru piłki, dlatego upewnij się, że rozmiar piłki jest poprawny w [panelu czujnika](help:sensor-panel).",
+          "src": "2fea811b3f"
+        }
+      },
+      "title": "Język i jednostki"
+    },
+    "home-screen": {
+      "sections": {
+        "0": {
+          "text": "# Ekran główny\n\nPo zalogowaniu widzisz dwie duże karty.\n\n- **Gry terapeutyczne** - graj w gry, które kontrolujesz, ściskając i przechylając piłkę. Zobacz [wybieranie gry](help:choosing-a-game).\n- **Testy** - zmierz swoją siłę. Zobacz [testy siły kliniczne](help:clinical-strength-tests).\n\n**Wyloguj** pozwala powrócić do ekranu logowania, aby ktoś inny mógł się zalogować.\n\n![Ekran główny z kartami \"Gry terapeutyczne\" i \"Testy\".](img:home.jpg)\n*Wybierz gry lub testy siły.*",
+          "src": "cf1536c9ed"
+        }
+      },
+      "title": "Ekran główny"
+    },
+    "choosing-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Wybór gry\n\nLista gier wyświetla jedną kartę dla każdej gry, zawierającą krótki opis sterowania oraz etykietę:\n\n- *Tylko ściskanie* - sterujesz tylko poprzez ściskanie.\n- *Ściskanie + Obrót* - sterujesz poprzez ściskanie i obracanie.\n- *Dwie piłki* - gra, która wymaga użycia dwóch połączonych piłek. Zobacz [Używanie dwóch piłek](help:using-two-balls).\n\nDotknij karty, aby rozpocząć grę. Użyj przycisku \"wstecz\", aby wrócić do ekranu głównego.\n\nGry to: [Asteroid](help:asteroid), [Roll the Ball](help:roll-the-ball), [Shoot the Bottle](help:shoot-the-bottle), [Car Ride](help:car-ride), [Memory Cards](help:memory-cards), [Dart Hit](help:dart-hit) oraz [Matching Game](help:matching-game).\n\n[Czujniki dwu-piłkowe](help:two-ball-panels), [Szarada](help:tug-of-war) i [Trening dwustronny](help:bilateral-training) wymagają użycia dwóch połączonych piłek.\n\n![Lista gier, jedna karta dla każdej gry.](img:game-select.jpg)\n*Każda karta pokazuje grę i sposób jej sterowania.*",
+          "src": "f6a583f547"
+        }
+      },
+      "title": "Wybór gry"
+    },
+    "choosing-the-body-part": {
+      "sections": {
+        "0": {
+          "text": "# Wybór części ciała i strony\n\nPrzed rozpoczęciem treningu lub testu, należy określić, na czym się pracuje, w trzech krokach.\n\n1. **Nad którym obszarem ciała pracujemy?** Wybierz **Górna część ciała** lub **Dolna część ciała**.\n2. Wybierz część ciała. Górna część ciała: **Dłoń**, **Łokieć**, **Bark** lub **Inne**. Dolna część ciała: **Stopa**, **Kostka**, **Kolano**, **Biodro** lub **Inne**.\n3. **Która strona?** Wybierz **Lewa**, **Prawa** lub **Obie**.\n\nKażda część ciała i strona są mierzone oddzielnie. Test siły wykonany dla prawej ręki nie jest ważny dla lewej ręki.\n\nJeśli ćwiczona część ciała nie znajduje się na liście, wybierz **Inne**. Nie wymaga to wpisywania nazwy – każde \"Inne\" po tej samej stronie korzysta z jednego testu siły, więc należy unikać łączenia bardzo różnych części ciała (np. trening szyi i żuchwy) pod tą samą opcją, jeśli to możliwe.\n\nKropki na górze pokazują postęp. Użyj przycisku \"Wstecz\", aby zmienić wcześniejszą odpowiedź.\n\n![Pierwszy krok, w którym pytano, na którą część ciała się pracuje, z opcjami \"Górna część ciała\" i \"Dolna część ciała\".](img:funnel-region.jpg)\n*Krok 1: wybierz obszar.*\n\n![Drugi krok, pokazujący części górnej części ciała: Ręka, Łokieć, Ramię i Inne.](img:funnel-body-part.jpg)\n*Krok 2: wybierz część ciała.*\n\n![Trzeci krok, w którym pytano, którą stronę się używa, z opcjami \"Lewa\", \"Prawa\" i \"Obie\".](img:funnel-side.jpg)\n*Krok 3: wybierz stronę.*",
+          "src": "4dbb26c18e"
+        }
+      },
+      "title": "Wybór części ciała i strony"
+    },
+    "strength-test-before-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Test siły przed grą\n\nPo raz pierwszy, gdy grasz za dany obszar ciała i stronę, Playwork musi wiedzieć, jak mocno potrafisz ścisnąć. Zobacz **Wymagany test siły**.\n\n1. Dotknij **Wykonaj test**.\n2. Ściskaj piłkę tak mocno, jak to jest dla Ciebie komfortowe, przez 10 sekund.\n3. Zapisz wynik.\n\nGry następnie dostosowują się do Ciebie: siła potrzebna do wykonania danego ruchu w grze to ułamek Twojej maksymalnej siły. Zobacz [wykonywanie testu siły](help:running-a-strength-test).\n\nPotrzebujesz nowego testu, jeśli podłączysz piłkę o innym rozmiarze, ponieważ odczyty ciśnienia nie są porównywalne między różnymi rozmiarami. Wynik jest zapisywany dla każdego użytkownika, obszaru ciała i strony, dzięki czemu kolejne wizyty prowadzą bezpośrednio do gry.\n\n![Komunikat informujący o konieczności wykonania testu siły, z przyciskiem \"Wykonaj test\".](img:test-needed.jpg)\n*Po raz pierwszy dla danego obszaru ciała i strony, najpierw wykonaj test.*",
+          "src": "cd805efa19"
+        }
+      },
+      "title": "Test siły przed meczem"
+    },
+    "starting-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Rozpoczęcie gry\n\nJeśli dla danej części ciała i strony już istnieje test siły, wyświetlane są dwa przyciski.\n\n- **Rozpocznij grę** rozpoczyna grę.\n- **Wykonaj test** powtarza test siły. Nowy wynik zastępuje stary i służy do ustawienia progu nacisku.\n\nGry wykorzystujące funkcję przechylania wyświetlą następnie ekrany pokazujące [pozycję piłki](help:holding-the-ball). Następnie rozpoczyna się krótki odliczanie, które uruchamia [grę](help:playing-a-game).\n\n![Ekran gotowości do gry z przyciskami \"Rozpocznij grę\" i \"Wykonaj test\".](img:start-game.jpg)\n*Rozpocznij grę lub wykonaj nowy test.*",
+          "src": "8eec1b8ab0"
+        }
+      },
+      "title": "Rozpoczęcie gry"
+    },
+    "holding-the-ball": {
+      "sections": {
+        "0": {
+          "text": "# Kontrolowanie piłki i ustawianie zera\n\nGry, w których sterujesz, przechylając piłkę, muszą wiedzieć, co dla Ciebie oznacza \"prosto\".",
+          "src": "f1184d2582"
+        },
+        "1": {
+          "text": "## Jak będziesz trzymać piłkę?\n\nWybierz **Stół**, jeśli piłka spoczywa na stole i chcesz ją potoczyć. Wybierz **Ściana**, jeśli przyciśniesz ją do ściany i obrócisz przedramieniem.\n\n1. Umieść piłkę na stole lub przy ścianie.\n2. Upewnij się, że wtyczka znajduje się po lewej stronie piłki.\n3. Obróć piłkę tak, aby strzałka była skierowana w stronę sufitu.\n\nDotknij **Ustaw zero i start**, aby kontynuować.\n\n![Ekran ustawień z piłką na stole, na którym widoczna jest ręka przyciskająca piłkę do stołu oraz trzy kroki.](img:hold-table.jpg)\n*Stół: piłka spoczywa na stole.*\n\n![Ekran ustawień z piłką przy ścianie, na którym widoczna jest ręka przyciskająca piłkę do ściany oraz trzy kroki.](img:hold-wall.jpg)\n*Ściana: piłka jest przyciśnięta do ściany.*",
+          "src": "1e255c4139"
+        },
+        "2": {
+          "text": "## Ustaw punkt odniesienia\n\nTrzymaj piłkę w naturalnej, wygodnej pozycji i ponownie dotknij **Ustaw zero i start**. Wszystkie dalsze działania będą mierzone względem tej pozycji. Na ekranie wyświetlany jest obraz piłki z punktem, który przesuwa się w zależności od kąta nachylenia.\n\nMożna ponownie ustawić punkt odniesienia podczas gry, korzystając z [panelu sensorycznego](help:sensor-panel).\n\n![Ekran ustawiania punktu odniesienia, na którym widoczny jest wskaźnik orientacji piłki oraz przyciski \"Ustaw punkt odniesienia\" i \"Start\".](img:set-zero.jpg)\n*Trzymaj piłkę w naturalnej pozycji i ustaw punkt odniesienia.*",
+          "src": "f025d0d484"
+        }
+      },
+      "title": "Kontrolowanie piłki i utrzymywanie wyniku na zero"
+    },
+    "matching-game": {
+      "sections": {
+        "0": {
+          "text": "# Gra w dopasowywanie\n\nWszystkie karty są odkryte. Obracaj piłką, aby przesunąć kursor, i naciśnij, aby wybrać kartę. Dwie karty, które pasują do siebie, znikają, a gracz otrzymuje punkty. Niepasująca para miga na czerwono, a obie karty są odblokowywane.",
+          "src": "e166873f19"
+        },
+        "1": {
+          "text": "## Wybór trybu gry\n\nPrzed rozpoczęciem gry wybierasz, z czym chcesz dopasowywać elementy: obrazek z odpowiednim słowem, antonimy, lub obrazki, które do siebie pasują. Możesz ponownie wybrać tryb za każdym razem, gdy grasz.",
+          "src": "76574dbbae"
+        },
+        "2": {
+          "text": "## Plansze\n\nPierwszy ekran zawiera 2 pary, następnie 4, 6, 8 i 10. Następnie każdy kolejny ekran zawiera 10 par z nową zawartością. Każdy ekran ma określony czas, który instruktor może modyfikować.\n\nGra wykorzystuje mechanikę przechylania, dlatego najpierw należy ustawić [pozycję piłki](help:holding-the-ball) .",
+          "src": "1e2a9a2629"
+        }
+      },
+      "title": "Gra w dopasowywanie"
+    },
+    "playing-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Rozgrywka\n\n## Basic controls\n> Use the arrow keys to move the character.\n> Press the spacebar to jump.\n> Press the \"A\" key to attack.\n> Press the \"D\" key to defend.\n\n## Game rules\n1. The goal of the game is to reach the end of the level.\n2. You must avoid obstacles and enemies.\n3. You can collect items to gain points.\n4. If you are hit by an enemy, you lose a life.\n5. The game ends when you run out of lives.\n\n## Tips and tricks\n* Try to use the environment to your advantage.\n* Pay attention to the timing of your jumps.\n* Don't be afraid to experiment with different strategies.\n* Have fun!",
+          "src": "8e7aef9764"
+        },
+        "1": {
+          "text": "## Odliczanie\n\n**Przygotuj się!** i odliczanie: 3, 2, 1, START. Utrzymuj piłkę nieruchomo podczas odliczania: aplikacja mierzy ciśnienie, przy którym piłka spoczywa, aby zapewnić dokładność progu nacisku.",
+          "src": "c191701fc8"
+        },
+        "2": {
+          "text": "## Podczas rozgrywki\n\n- Twój wynik i pozostały czas są wyświetlane na górze.\n- Pasek po prawej stronie pokazuje, jak mocno ściskasz. Linia oznaczona **Siła docelowa** wskazuje siłę ściskania potrzebną do wykonania akcji w grze.\n- Ekran pozostaje włączony podczas gry. Potrzebujesz tylko piłki.\n\n![Zdjęcie rozgrywki: wynik i czas na górze, pasek siły po prawej stronie.](img:game-playing.jpg)\n*Podczas rozgrywki: wynik i czas na górze, pasek siły po prawej stronie.*",
+          "src": "d4ce271b21"
+        },
+        "3": {
+          "text": "## Pauza i ustawienia\n\n- Przycisk pauzy (po lewej stronie, na dole) otwiera **Gra wstrzymana** z opcjami: **Wznów**, **Wybór gry** i **Ekran główny**.\n- Ikona koła zębatego (po lewej stronie, na górze) otwiera **Ustawienia gry**. Zapisanie zmian kończy aktualną rundę bez zapisywania wyniku, a następna runda używa nowych ustawień.\n- Jeśli piłka się rozłączy, gra automatycznie wstrzymuje się. Funkcja **Wznów** zaczyna działać ponownie po ponownym połączeniu piłki.\n- W grze z dwiema piłkami, komunikat o pauzie podaje nazwę piłki, która się rozłączyła, a **Spróbuj połączyć ponownie** pojawia się, jeśli nie udało się ponownie połączyć. Zobacz [Używanie dwóch piłek](help:using-two-balls).\n\n![Menu pauzy z opcjami: Wznów, Wybierz grę i Wyjdź do menu głównego.](img:game-paused.jpg)\n*Menu pauzy.*",
+          "src": "35bd3f93f8"
+        },
+        "4": {
+          "text": "## Koniec gry\n\nWidzisz swój wynik, swój najlepszy wynik oraz komunikat, jeśli pobiłeś swój dotychczasowy rekord. Dotknij **Zagraj ponownie** lub **Wybór gry**.",
+          "src": "2265361c1d"
+        }
+      },
+      "title": "Gra w grę"
+    },
+    "asteroid": {
+      "sections": {
+        "0": {
+          "text": "# Asteroida\n\nTwój statek leci samodzielnie przez tunel. Masz kontrolę nad jedną rzeczą: jego rozmiarem.\n\n- *Ściskaj*, aby zmniejszyć statek w wąskich miejscach.\n- *Puść*, aby zwiększyć statek do pełnego rozmiaru i zdobyć nagrody (+100 punktów za każdą).\n- Wrogie statki znajdują się blisko jednej ściany tunelu. Zmniejsz statek i przeleć po drugiej stronie. Uderzenie kosztuje połowę Twojego wyniku; pomyślne przejście dodaje połowę.\n\nAwansujesz, gdy osiągniesz wymagany wynik i zagrasz co najmniej 30 sekund w danym poziomie. Każdy poziom ma swoje własne kolory i nagrody.\n\nSterowanie: tylko ściskanie.",
+          "src": "ab0650bd1f"
+        }
+      },
+      "title": "Asteroida"
+    },
+    "roll-the-ball": {
+      "sections": {
+        "0": {
+          "text": "# Turlaj piłkę\n\nPotwory pojawiają się na pierścieniu znajdującym się na środku ekranu. Pochyl urządzenie, aby poruszać kursorem, umieść go na pierścieniu w miejscu, gdzie znajduje się potwór, i dotknij ekranu, aby go złapać.\n\n- Potwór, który nie zostanie złapany, znika po określonym czasie, który ustawia gracz.\n- Kolor kursora zmienia się, gdy znajduje się on na pierścieniu i gdy gracz naciska.\n- Gracz przechodzi na wyższy poziom, gdy osiągnie określony wynik i grał w danym poziomie przez co najmniej 30 sekund.\n\nSterowanie: dotyk i pochylanie. Najpierw ustaw [pozycję piłki](help:holding-the-ball).",
+          "src": "bed335395a"
+        }
+      },
+      "title": "Turlaj piłkę"
+    },
+    "shoot-the-bottle": {
+      "sections": {
+        "0": {
+          "text": "# Strzel do butelek\n\nButelki, puszki i pojemniki spadają z góry. Działo znajdujące się w lewym dolnym rogu strzela do nich.\n\n1. Naciśnij przycisk znajdujący się nad progiem, aby przygotować działo do strzału. Wskaźnik mocy na dole napełnia się w miarę zwiększania nacisku.\n2. Zwolnij przycisk lub naciśnij go do 100%, aby oddać strzał. Siła strzału zależy od poziomu mocy, który osiągnąłeś.\n3. Celowanie w odległe obiekty, silniejsze naciskanie i strzelanie do mniejszych butelek przynosi więcej punktów.\n\nSterowanie: tylko naciskanie.",
+          "src": "a319cfe59c"
+        }
+      },
+      "title": "Strzel do butelki"
+    },
+    "car-ride": {
+      "sections": {
+        "0": {
+          "text": "# Jazda samochodem\n\nSteruj samochodem po krętej drodze, przechylając piłkę. Naciśnij, aby zwolnić; puść, aby przyspieszyć.\n\n- Zbieraj monety, które dają po 50 punktów.\n- Jeśli uderzysz w przeszkodę, tracisz życie, a samochód się blokuje. Obejść przeszkodę, aby kontynuować.\n- Awansujesz do kolejnego poziomu, gdy osiągniesz wymagany wynik i spędzisz co najmniej 30 sekund na danym poziomie.\n\nSterowanie: naciśnij i przechyl. Najpierw ustaw [pozycję piłki](help:holding-the-ball).",
+          "src": "d282dc55ce"
+        }
+      },
+      "title": "Jazda samochodem"
+    },
+    "memory-cards": {
+      "sections": {
+        "0": {
+          "text": "# Karty pamięci\n\nKarty są ułożone obrazkiem do dołu. Przesuwaj wskaźnik za pomocą piłki, a następnie naciśnij, aby odkryć kartę znajdującą się pod wskaźnikiem. Znajdź dwie karty, które pasują do siebie, aby je usunąć.\n\n- Poziom 1 zawiera 2 pary. Każdy kolejny poziom dodaje 2 pary.\n- Przycisk w prawym dolnym rogu przełącza między obrazkami a obrazkami z napisami. W trybie z napisami każda para składa się z jednej karty z obrazkiem i jednej karty z napisem.\n- Każdy poziom ma określony czas, który trener może zmienić.\n\nSterowanie: naciskaj i przechylaj. Najpierw ustaw [pozycję piłki](help:holding-the-ball).",
+          "src": "854ea2dc15"
+        }
+      },
+      "title": "Karty pamięci"
+    },
+    "dart-hit": {
+      "sections": {
+        "0": {
+          "text": "# Dart Hit\n\nKawałek drewna obraca się na środku ekranu. Każde naciśnięcie przycisku wystrzeliuje jedną strzałkę w górę. Kawałek drewna cały czas się obraca między wystrzeleniami, więc precyzja jest kluczowa.\n\n- Strzałka, która trafi w inną strzałkę już znajdującą się na kawałku drewna, kosztuje jedno życie. Masz 3 życia.\n- Trafienie jabłka na kawałku drewna daje 100 punktów.\n- Aby przejść do kolejnego poziomu, musisz trafić wszystkie wymagane strzałki. Jest 50 poziomów.\n\nTrener pozwala na zmianę rozmiaru strzałek, rozmiaru jabłek, wymaganej precyzji, prędkości obrotu kawałka drewna oraz częstotliwości zmiany kierunku obrotu. Zobacz [ustawienia trenera](help:trainer-settings).\n\nSterowanie: tylko naciśnięcie przycisku.",
+          "src": "e22095fc90"
+        }
+      },
+      "title": "Celny strzał"
+    },
+    "clinical-strength-tests": {
+      "sections": {
+        "0": {
+          "text": "# Testy siły (wersja kliniczna)\n\nUżyj karty **Testy** na ekranie głównym, aby zmierzyć siłę, ale nie do rozpoczęcia gry.\n\n1. Wybierz **Górna część ciała** lub **Dolna część ciała**.\n2. Wybierz test. Lista zawiera testy siły mięśni dwugłowych uda, mięśni odwodzących, mięśni przywodzących, łydki i czworogłowych dla dolnej części ciała, oraz testy siły chwytu, bicepsa, tricepsa, mięśni piersiowych i mięśni barkowych dla górnej części ciała.\n3. Wybierz stronę.\n\nTest kliniczny nigdy nie zmienia ustawień gry. Wyniki pojawiają się na karcie **Wyniki testów** w panelu trenera, oznaczonej jako **Kliniczny**.\n\n![Lista dostępnych testów siły dla górnej części ciała.](img:test-names.jpg)\n*Wybierz test, który chcesz wykonać.*",
+          "src": "ea5dd6a86c"
+        }
+      },
+      "title": "Testy wytrzymałościowe, przeprowadzane w warunkach klinicznych"
+    },
+    "running-a-strength-test": {
+      "sections": {
+        "0": {
+          "text": "# Wykonywanie testu siły\n\n## Preparing for the test\n## Przygotowanie do testu\n\n1.  Ensure the equipment is properly calibrated.\n    1.  Upewnij się, że sprzęt jest prawidłowo skalibrowany.\n\n2.  Warm up before the test.\n    2.  Rozgrzej się przed testem.\n\n3.  Follow the instructions carefully.\n    3.  Dokładnie przestrzegaj instrukcji.\n\n## Performing the test\n## Wykonywanie testu\n\n1.  Start with a weight that is challenging but manageable.\n    1.  Rozpocznij od ciężaru, który jest wymagający, ale do opanowania.\n\n2.  Perform the exercise with proper form.\n    2.  Wykonuj ćwiczenie z prawidłową techniką.\n\n3.  Record the number of repetitions.\n    3.  Zapisz liczbę powtórzeń.\n\n## Analyzing the results\n## Analiza wyników\n\n1.  Compare your results to your previous performance.\n    1.  Porównaj swoje wyniki z poprzednimi wynikami.\n\n2.  Identify areas for improvement.\n    2.  Zidentyfikuj obszary, w których można się poprawić.\n\n3.  Adjust your training accordingly.\n    3.  Dostosuj swój trening w oparciu o wyniki.\n\n**Important considerations:**\n**Ważne uwagi:**\n\n*   Consult with a healthcare professional before starting any new exercise program.\n    *   Skonsultuj się z lekarzem przed rozpoczęciem jakiegokolwiek nowego programu ćwiczeń.\n\n*   Listen to your body and stop if you feel pain.\n    *   Słuchaj swojego ciała i przerwij ćwiczenia, jeśli odczuwasz ból.\n\n*   Proper form is essential to prevent injuries.\n    *   Prawidłowa technika jest niezbędna, aby zapobiec urazom.",
+          "src": "007f41fb90"
+        },
+        "1": {
+          "text": "## Przygotowanie\n\nTest kliniczny wyświetla **Jak wykonać test?** wraz z opisem. Dotknij **Obejrzyj film instruktażowy**, aby zobaczyć ćwiczenie, a **Rozpocznij test**, gdy będziesz gotowy. Utrzymuj piłkę nieruchomo na tym ekranie: aplikacja mierzy jej ciśnienie spoczynkowe, dzięki czemu siła rozpoczyna się od zera.\n\nTest przed meczem rozpoczyna się automatycznie po krótkim czasie oczekiwania.\n\n![Ekran przygotowania do testu, zawierający opis testu, przycisk \"Obejrzyj film demonstracyjny\" oraz przycisk \"Rozpocznij test\".](img:test-preparation.jpg)\n*Przeczytaj, jak wykonać test, a następnie rozpocznij.*",
+          "src": "a4bc7592ca"
+        },
+        "2": {
+          "text": "## Etapy testu\n\n1. Odliczanie 3 sekund rozpoczyna test.\n2. **NACISKAJ!** - ściskaj tak mocno, jak tylko potrafisz, podczas gdy działa timer. Pasek pokazuje siłę nacisku, a znacznik wskazuje dotychczasowy maksymalny nacisk.\n3. **ODPOCZNIJ!** - rozluźnij. Nic nie jest rejestrowane podczas przerwy.\n\nTest kliniczny wykorzystuje czas ściskania, czas przerwy oraz liczbę etapów (od 1 do 3), które zostały ustawione przez trenera. Test przed meczem zawsze składa się z jednego etapu trwającego 10 sekund.\n\n![Zdjęcie testu w trakcie, pokazujące numer etapu, napis \"ŚCISKAJ\" oraz pasek siły.](img:test-pressing.jpg)\n*Ściskaj, gdy wyświetlany jest napis \"ŚCISKAJ\".*",
+          "src": "710b953749"
+        },
+        "3": {
+          "text": "## Test zakończony\n\nPoniżej wyświetlony jest najwyższy wynik uzyskany we wszystkich rundach. Dotknij **Zapisz wyniki**, aby go zatrzymać, lub **Powtórz test**, aby go odrzucić i spróbować ponownie.\n\n![Okno \"Test zakończony\" z przyciskami \"Zapisz wynik\" i \"Powtórz test\".](img:test-completed.jpg)\n*Zapisz wynik lub powtórz test.*",
+          "src": "c68e93334c"
+        }
+      },
+      "title": "Przeprowadzanie testu wytrzymałości"
+    },
+    "strength-test-results": {
+      "sections": {
+        "0": {
+          "text": "# Wyniki testu siły\n\nPo zapisaniu, ekran z wynikami wyświetla maksymalną i średnią siłę, a także porównuje je z wynikami wcześniejszych testów dla tej samej strony ciała.\n\nSiła jest wyświetlana w kilogramach lub funtach i jest obliczana na podstawie ciśnienia oraz rozmiaru użytej piłki. Twoje wyniki są przechowywane na urządzeniu i można je ponownie wyświetlić w zakładce „Wyniki testów” ([Test Results](help:trainer-test-results)) w interfejsie trenera.\n\n![Ekran z wynikami testu siły, pokazujący maksymalną i średnią siłę.](img:test-result.jpg)\n*Wynik zapisanego testu.*",
+          "src": "1d104706ec"
+        }
+      },
+      "title": "Wyniki testów wytrzymałości"
+    },
+    "sensor-panel": {
+      "sections": {
+        "0": {
+          "text": "# Panel czujników\n\nPo sparowaniu, mały przycisk \"Czujnik\" znajduje się w prawym górnym rogu każdego ekranu. Kolor kropki wskazuje stan: zielony – połączenie aktywne, pomarańczowy – niski poziom baterii lub ponowne łączenie, czerwony – brak połączenia. Dotknij go, aby otworzyć panel.\n\n![Rozwinięty panel czujników, pokazujący nazwę piłki, jej rozmiar, poziom naładowania baterii, ciśnienie, obroty, przełączniki dźwięku oraz przyciski: Zmień piłkę, Informacje, Pomoc i Tryb treningowy.](img:sensor-panel.jpg)\n*Panel czujników, otwarty z przycisku w prawym górnym rogu.*",
+          "src": "8a203d2923"
+        },
+        "1": {
+          "text": "## Co wyświetla panel\n\n- Nazwa piłki, jej identyfikator, jej **Rozmiar piłki** oraz poziom **Bateria**.\n- Wskaźnik ciśnienia w czasie rzeczywistym oraz **Obrót piłki**, umożliwiający ponowne ustawienie zera.\n- **Efekty dźwiękowe** i **Muzyka**, każdy z nich może być **WŁ.** lub **WYŁ.**.",
+          "src": "d57b1aee72"
+        },
+        "2": {
+          "text": "## Przyciski\n\n- **Zmień piłkę** przerywa połączenie i rozpoczyna skanowanie w poszukiwaniu kolejnej piłki.\n- Gdy połączone są dwie piłki, **Zmień piłkę** najpierw pyta, którą piłkę należy wymienić. Zobacz [Używanie dwóch piłek](help:using-two-balls).\n- **Połącz drugą piłkę** pojawia się tylko wtedy, gdy podłączona jest tylko jedna piłka. Zobacz [Używanie dwóch piłek](help:using-two-balls).\n- **O aplikacji** wyświetla wersję aplikacji, licencję piłki, jej identyfikator oraz rozmiar piłki, który aplikacja wykorzystuje do obliczeń. Jeśli rozmiar piłki jest nieznany, aplikacja zakłada wartość 19 cm i oznaczona jest jako *założona*; ustaw rzeczywisty rozmiar podczas łączenia piłki. **Usuń dane użytkownika** umożliwia odłączenie adresu e-mail powiązanego z Twoim kontem od piłki.\n- **Pomoc** otwiera ten podręcznik.\n- **Tryb trenera** otwiera [panel trenera](help:trainer-panel).\n\nDotknij dowolnego miejsca poza panelem, aby go zamknąć.\n\nGdy połączone są dwie piłki, widok przypomina jedną piłkę podzieloną na dwie połowy, po jednej dla każdej piłki, a na górze panelu znajduje się przełącznik **1** / **2**, który pozwala wyświetlić informacje o dowolnej z piłek. Zobacz [Używanie dwóch piłek](help:using-two-balls).",
+          "src": "2d988270d7"
+        },
+        "3": {
+          "text": "## Bateria i połączenie\n\n- Przy stanie baterii poniżej 25%, dioda zmienia kolor na pomarańczowy.\n- Przy stanie baterii 10% lub mniej, wyświetla się **Krytyczny poziom baterii**. Wybierz **Przejdź do logowania** lub **Naładuję**.\n- W przypadku utraty połączenia, aplikacja próbuje ponownie nawiązać połączenie trzy razy. Jeśli to się nie uda, aplikacja pyta, czy przejść do ekranu połączenia, czy spróbować ponownie.\n- Kiedy aplikacja przechodzi w tryb tła, połączenie jest przerywane po kilku sekundach i automatycznie nawiązywane ponownie, gdy wrócisz do aplikacji.",
+          "src": "d3744d110c"
+        }
+      },
+      "title": "Panel czujników"
+    },
+    "trainer-panel": {
+      "sections": {
+        "0": {
+          "text": "# Panel dla prowadzącego zajęcia\n\nPanel dla prowadzącego zajęcia jest przeznaczony dla osoby prowadzącej sesję. Otwórz go za pomocą przycisku **Tryb trenera** w [panelu sensorycznym](help:sensor-panel). Nie wymaga hasła. Panel otwiera się w trybie poziomym i wyświetla aktualnie zalogowanego użytkownika.\n\nZawiera pięć zakładek:\n\n- **Ustawienia** - [ustawienia gry i testów](help:trainer-settings), eksport danych i ustawienia prywatności.\n- **Wyniki gry** - [historia rozgrywek](help:trainer-game-results).\n- **Wyniki testów** - [historia testów](help:trainer-test-results).\n- **Raport postępów** - [podsumowanie terapii dla jednego użytkownika](help:progress-report).\n- **Użytkownicy** - [dodawanie, edycja i usuwanie użytkowników](help:managing-users).\n\nDotknij przycisku **Wyjdź z trybu trenera** lub przycisku zamknięcia, aby wyjść.",
+          "src": "51ce97dba2"
+        }
+      },
+      "title": "Panel trenera"
+    },
+    "trainer-settings": {
+      "sections": {
+        "0": {
+          "text": "# Ustawienia trenera\n\nUstawienia są zapisywane dla każdego użytkownika i dla każdej gry. Nowy użytkownik rozpoczyna grę z ustawieniami domyślnymi dla poziomu \"Łatwy\" w każdej grze.\n\n![Panel trenera na zakładce \"Ustawienia\", pokazujący wybór gry oraz ustawienia trudności.](img:trainer-settings.jpg)\n*Wybierz grę, a następnie skonfiguruj ją.*",
+          "src": "dff5c6ca63"
+        },
+        "1": {
+          "text": "## Ustawienia trudności\n\nGra oferuje ustawienia trudności: **Poziom trudności**, **Łatwy**, **Średni**, **Trudny** i **Sprint**. Ustawienie trudności to jedynie punkt wyjścia: można później modyfikować dowolne parametry.",
+          "src": "c56f4f4794"
+        },
+        "2": {
+          "text": "## Suwaki\n\nWyświetlane suwaki zależą od gry. Najczęściej spotykane:\n\n- **Czas sesji** - od 1 do 5 minut.\n- **Próg ściskania** - udział maksymalnej siły nacisku potrzebnej do wykonania akcji.\n- **Zakres przechyłu** - liczba stopni nachylenia, które zapewniają pełny zakres ruchu. Im niższa wartość, tym większa czułość.\n\nPozostałe suwaki dotyczą rozmiarów, prędkości i ograniczeń czasowych dla poszczególnych gier, takich jak **Rozmiar potwora**, **Rozmiar butelki**, **Rozmiar monety** i **Rozmiar rzutki**.\n\nGry z dwoma piłkami również posiadają **Tryb siły**: **Surowa** porównuje graczy na podstawie rzeczywistej siły nacisku, z jaką grają, a **Znormalizowana** skaluje każdego gracza do jego własnego testu siły. Tryb \"Raw\" jest domyślny. Zobacz [Używanie dwóch piłek](help:using-two-balls).\n\nW grze [Tug of War](help:tug-of-war) znajdują się własne suwaki: **Czas ciągnięcia** (od 20 do 120 sekund), **Czas przerwy** (od 5 do 30 sekund) i **Rundy do wygranej** (od 1 do 10). Nie posiada ona ustawień \"Czas trwania sesji\" ani \"Próg nacisku\". W trybie \"Raw\" znajduje się również **Mapowanie siły surowej** (1×, 3×, 5×, 7× lub 10×, domyślnie 5×): wyższa wartość powoduje, że zarówno wskaźniki siły, jak i lina reagują bardziej na ten sam nacisk. Nie ma to żadnego wpływu w trybie \"Normalized\".\n\nPrzeciągnij punkt, aby zmienić wartość suwaka. Dotknięcie paska nie powoduje jego przesuwania, więc przypadkowe dotknięcie nie zmieni wartości podczas przewijania.",
+          "src": "3173357d1e"
+        },
+        "3": {
+          "text": "## Zapisywanie\n\nDotknij **Zapisz ustawienia gry**. Przycisk wyświetla **✓ Zapisano** do momentu, aż ponownie coś zmienisz. Sekcja **Test siły** ma własny czas trwania, czas przerwy i liczbę rund, które są zapisywane wraz z **Zapisz ustawienia testu**.",
+          "src": "b54114b611"
+        },
+        "4": {
+          "text": "## Prywatność i eksport danych\n\nW tej samej zakładce znajdują się przełączniki dotyczące [danych o użytkowaniu i zgłaszania błędów](help:privacy-and-usage-data) oraz opcje [eksportu danych](help:exporting-data).",
+          "src": "a699c4dbec"
+        }
+      },
+      "title": "Ustawienia trenera"
+    },
+    "trainer-game-results": {
+      "sections": {
+        "0": {
+          "text": "# Wyniki gier\n\nLista wszystkich gier, w które grał wybrany użytkownik, posortowana od najnowszej do najstarszej, wraz z wynikiem, czasem trwania, częścią ciała, stroną i używaną piłką.\n\nW grze z dwiema piłkami każdy gracz ma swój własny wiersz, oznaczony jako *Gracz 1* lub *Gracz 2*. Zobacz [Używanie dwóch piłek](help:using-two-balls).\n\nFiltry zawężają listę krok po kroku: gra, region, część ciała, strona i piłka. Filtr pojawia się tylko wtedy, gdy istnieje więcej niż jedna opcja do wyboru. **Najlepszy wynik** to najlepszy wynik użytkownika, a **Najlepszy w klinice** to najlepszy wynik spośród wszystkich użytkowników w tej grze.\n\n![Zakładka \"Wyniki gier\" wyświetla listę rozegranych gier wraz z wynikiem i czasem trwania.](img:trainer-game-results.jpg)\n*Lista rozegranych gier.*",
+          "src": "df83977eb6"
+        }
+      },
+      "title": "Wyniki meczów"
+    },
+    "trainer-test-results": {
+      "sections": {
+        "0": {
+          "text": "# Wyniki testów\n\nLista wszystkich testów wytrzymałości, posortowana od najnowszych, z podaniem maksymalnej i średniej siły, rozmiaru piłki oraz początkowego ciśnienia. Kliknięcie w wiersz wyświetli informację o tym, która piłka została użyta.\n\nFiltry zawężają listę: **Kategoria** (**Przed grą** lub **Kliniczny**), region, nazwa testu, strona i piłka. Wyniki testów wykonanych z różnych piłek zachowują własne wartości siły, dzięki czemu wynik pozostaje poprawny, nawet jeśli później zostanie podłączona inna piłka.\n\n![Zakładka \"Wyniki testów\" wyświetla listę testów wytrzymałości z podaniem maksymalnej i średniej siły.](img:trainer-test-results.jpg)\n*Lista testów wytrzymałości.*",
+          "src": "f7385a5fb6"
+        }
+      },
+      "title": "Wyniki testów"
+    },
+    "progress-report": {
+      "sections": {
+        "0": {
+          "text": "# Raport postępu\n\nPodsumowanie całej historii leczenia jednego użytkownika, od pierwszej sesji do dnia dzisiejszego. Brak filtrów.\n\nWyświetla informacje o pacjencie (imię, identyfikator, data rozpoczęcia i całkowity czas trwania leczenia), pierwsze, najnowsze i najlepsze wyniki dla każdego badania klinicznego i każdej części ciała, wykresy, gdy dostępne są co najmniej dwa wyniki, wykresy wydajności w grach oraz statystyki sesji.\n\nUżytkownik, który korzystał z programu [Bilateral Training](help:bilateral-training), otrzymuje również sekcję **Trening obustronny** zawierającą najnowszy wskaźnik symetrii (100% oznacza, że obie strony wykonały zadanie w równym stopniu) oraz, w trybie Tracking, błąd śledzenia, a wszystko to z wykresami, gdy dostępne są dwa wyniki. Użytkownik bez historii leczenia widzi komunikat informujący o braku danych.\n\n![Zakładka \"Raport postępu\" z informacjami o pacjencie i wynikami.](img:trainer-progress.jpg)\n*Podsumowanie leczenia jednego użytkownika.*",
+          "src": "51be54c919"
+        }
+      },
+      "title": "Raport postępu prac"
+    },
+    "managing-users": {
+      "sections": {
+        "0": {
+          "text": "# Zarządzanie użytkownikami\n\nZakładka **Użytkownicy** wyświetla listę wszystkich użytkowników urządzenia. Można edytować identyfikator i nazwę użytkownika, lub usunąć użytkownika. Usunięcie użytkownika powoduje usunięcie wszystkich jego sesji i danych testowych, dlatego aplikacja prosi o potwierdzenie tej operacji.\n\nNowi użytkownicy są dodawani na ekranie logowania. Szczegółowe informacje znajdują się w sekcji [logowanie i użytkownicy](help:signing-in).\n\n![Zakładka \"Użytkownicy\" wyświetlająca listę użytkowników na urządzeniu.](img:trainer-users.jpg)\n*Użytkownicy tego urządzenia.*",
+          "src": "cc48f671b9"
+        }
+      },
+      "title": "Zarządzanie użytkownikami"
+    },
+    "exporting-data": {
+      "sections": {
+        "0": {
+          "text": "# Eksportowanie danych\n\nNa dole zakładki **Ustawienia**, przycisk **Eksport danych** zapisuje każdą zarejestrowaną sesję dla każdego użytkownika do jednego pliku CSV o nazwie *PLAYWORK Data* wraz z datą. Dotknij **Eksportuj do Excela**.\n\nPlik otwiera się w programie Excel lub podobnych narzędziach. Zawiera jeden wiersz dla każdej sesji, zawierający informacje o użytkowniku, dacie, typie sesji, części ciała, stronie, rozmiarze piłki, sile, wyniku i czasie trwania. Puste pozostawiane są kolumny, które nie mają zastosowania.\n\nW przypadku gier z dwiema piłkami, dwie ostatnie kolumny, *ID meczu* i *Gracz*, łączą dwóch graczy w jednym meczu: oba wiersze mają ten sam identyfikator meczu. Zobacz [Używanie dwóch piłek](help:using-two-balls)).\n\nNa telefonie lub tablecie plik jest zapisywany w folderze Dokumenty. W przeglądarce jest pobierany.",
+          "src": "ae7aefd36a"
+        }
+      },
+      "title": "Eksportowanie danych"
+    },
+    "privacy-and-usage-data": {
+      "sections": {
+        "0": {
+          "text": "# Prywatność i dane użytkowania\n\nAplikacja Playwork działa w trybie offline i przechowuje Twoje dane na urządzeniu. Dwie opcjonalne funkcje mogą przesyłać informacje.\n\n- **Telemetria użytkowania** przesyła anonimowe informacje o tym, które ekrany i przyciski są używane. Nigdy nie zawiera imion, identyfikatorów ani pomiarów.\n- **Raportowanie awarii** przesyła automatyczne raporty błędów.\n\nPo pierwszym uruchomieniu aplikacji, aplikacja pyta raz, czy chcesz **Włącz** te funkcje, czy wybrać **Nie teraz**. Dane nie są zbierane, chyba że włączysz te opcje. Trener może później zmienić te ustawienia w zakładce **Ustawienia**.",
+          "src": "9897eb87dd"
+        }
+      },
+      "title": "Dane dotyczące prywatności i sposobu użytkowania"
+    },
+    "sound-and-music": {
+      "sections": {
+        "0": {
+          "text": "# Dźwięk i muzyka\n\nGry odtwarzają efekty dźwiękowe i muzykę w tle. Włącz lub wyłącz opcje **Efekty dźwiękowe** i **Muzyka** na [panelu sensorycznym](help:sensor-panel). Wybrana przez Ciebie opcja zostanie zapamiętana.",
+          "src": "61db902d42"
+        }
+      },
+      "title": "Dźwięk i muzyka"
+    },
+    "two-ball-panels": {
+      "sections": {
+        "0": {
+          "text": "# Sensory z dwoma piłkami\n\nGra dla dwóch graczy, wymagająca dwóch połączonych piłek. Ekran wyświetla dwa panele obok siebie: *Piłka 1* po lewej stronie i *Piłka 2* po prawej. Każdy panel pokazuje informacje na temat danej piłki w czasie rzeczywistym: jej siłę nacisku i jej obrót wokół osi X, Y i Z.\n\n- Na ekranie gotowości, dotknij **Wybierz gracza 2** i wybierz innego użytkownika lub gościa przed rozpoczęciem gry.\n- Ściskaj i przechyl każdą piłkę, aby zobaczyć, jak porusza się jej panel.\n- Wynik każdego gracza to maksymalna siła nacisku, jaką wywierał. Oba wyniki są zapisywane razem jako jeden mecz.\n- Jeśli któraś z piłek zostanie odłączona, gra wstrzymuje się i wyświetla informację o tym, która piłka została utracona. Gra wznawia się dopiero, gdy obie piłki zostaną ponownie połączone.\n\nAby połączyć drugą piłkę, otwórz panel sensora i dotknij **Połącz drugą piłkę**. Zobacz [Panel sensora](help:sensor-panel).",
+          "src": "6860767a20"
+        }
+      },
+      "title": "Czujniki dwupunktowe",
+      "titleSrc": "20d82ad54b"
+    },
+    "using-two-balls": {
+      "sections": {
+        "0": {
+          "text": "# Używanie dwóch piłek\n\nGry dla dwóch graczy wymagają dwóch połączonych piłek. Można również połączyć drugą piłkę niezależnie, aby zobaczyć je obie jednocześnie.",
+          "src": "bb21470394"
+        },
+        "1": {
+          "text": "## Połączenie drugiej piłki\n\n1. Połącz pierwszą piłkę w sposób standardowy.\n2. Otwórz panel czujników i dotknij **Połącz drugą piłkę**. Gra z dwiema piłkami automatycznie otwiera to samo okno, jeśli druga piłka nie jest podłączona.\n3. Wybierz drugą piłkę z listy. Piłka, którą już połączyłeś, nie jest wyświetlana. W przeglądarce, dotknij **🔵 Połącz czujnik** i wybierz ją w oknie przeglądarki.\n4. Druga piłka jest sprawdzana pod kątem jej licencji, podobnie jak pierwsza. Jeśli połączenie zostanie odrzucone, zobaczysz powód i możesz spróbować połączyć inną piłkę.\n\nTelefon, który nie może obsłużyć dwóch połączeń jednocześnie, wyświetli komunikat i będzie działał tylko z jedną piłką.\n\nW przeglądarce, okno poprosi Cię o wybranie drugiej piłki za pomocą selektora przeglądarek. Jeśli wybierzesz piłkę, która jest już połączona jako piłka nr 1, zostaniesz poproszony o wybranie innej.",
+          "src": "5e5234cdfd"
+        },
+        "2": {
+          "text": "## Tabletka z dwiema kulkami\n\nNa tabletce widoczna jest jedna kulka, podzielona na dwie połówki, po jednej dla każdej kulki. Połowa kulki, którą pokazuje panel, jest otoczona pierścieniem. W górnej części panelu, dotknij **1** lub **2**, aby przełączać cały panel między kulkami.",
+          "src": "740933889b"
+        },
+        "3": {
+          "text": "## Wymiana jednej piłki\n\nGdy dwie piłki są połączone, **Zmień piłkę** pyta, którą piłkę wymienić. Tylko piłka, którą wybierzesz, zostanie odłączona; druga pozostaje połączona. Gra w toku zostaje wstrzymana.",
+          "src": "5957cac862"
+        },
+        "4": {
+          "text": "## Odłącz drugą piłkę\n\nOtwórz panel i dotknij **Rozłącz drugą piłkę**. Druga piłka zostanie odłączona, a Ty wrócisz do gry z jedną piłką. Wyjście z gry z dwiema piłkami nie powoduje jej odłączenia; połączenie pozostaje aktywne, dopóki nie odłączysz go ręcznie lub nie zamkniesz aplikacji.",
+          "src": "eb0ce0cb48"
+        },
+        "5": {
+          "text": "## Jeśli piłka zostanie odłączona podczas gry\n\nGra zostaje wstrzymana, a wyświetlony zostaje komunikat informujący, która piłka została utracona. System próbuje automatycznie ponownie połączyć piłkę kilka razy. Jeśli to się nie uda, dotknij przycisku **Spróbuj połączyć ponownie** lub zakończ grę. Gra nigdy nie jest kontynuowana z użyciem tylko jednej piłki.\n\nZobacz również: [Czujniki dwupiłkowe](help:two-ball-panels), [Walka na liny](help:tug-of-war) i [Panel czujników](help:sensor-panel).",
+          "src": "b0da39e8dc"
+        }
+      },
+      "title": "Używanie dwóch piłek",
+      "titleSrc": "fbe8913111"
+    },
+    "tug-of-war": {
+      "sections": {
+        "0": {
+          "text": "# Ciągnik\n\nGra dla dwóch graczy, wymagająca dwóch połączonych piłek. Wskaźnik na linie znajduje się na środku ekranu. Gracz, który ściska mocniej, przesuwa wskaźnik w kierunku swojej linii.\n\n- Na ekranie gotowości, dotknij **Wybierz gracza 2** i wybierz innego użytkownika lub gościa przed rozpoczęciem gry.\n- Każda runda rozpoczyna się od odliczania 3-2-1. Wskaźnik porusza się płynnie: im większa różnica między siłą ściskania, tym szybciej się porusza. Równe siły ściskania powodują, że wskaźnik pozostaje nieruchomy.\n- Runda kończy się, gdy wskaźnik dotrze do linii jednego z graczy, lub gdy upłynie czas na ciągnięcie. Jeśli upłynie czas, gracz, do którego wskaźnik jest bliżej, wygrywa rundę.\n- Po każdej rundzie następuje przerwa, a następnie rozpoczyna się kolejna runda. Gracz, który wygra określoną liczbę rund, wygrywa całą grę.\n- Każda strona liny wyświetla imię gracza, a wynik rundy i całego meczu jest wyświetlany poniżej górnego paska. Duży napis **\"ŚCISKAJ!!!\"** z odliczaniem pojawia się podczas ciągnięcia, a napis **\"PRZERWA\"** z odliczaniem pojawia się między rundami.\n- Trener może zmienić czas ciągnięcia, czas przerwy, liczbę wymaganych rund oraz, w trybie \"Surowa siła\", to, jak mocno ściskanie wpływa na ruch liny (**Mapowanie siły surowej**) w **Ustawienia**. Zobacz [Ustawienia trenera](help:trainer-settings).\n- Jeśli któraś z piłek zostanie odłączona, gra wstrzymuje się i wyświetla informację o tym, która piłka została utracona. Gra wznawia się dopiero, gdy obie piłki zostaną ponownie połączone.\n\nAby połączyć drugą piłkę, otwórz panel czujników i dotknij **Połącz drugą piłkę**. Zobacz [Panel czujników](help:sensor-panel).",
+          "src": "d78b0c8fcd"
+        }
+      },
+      "title": "Siatywanie",
+      "titleSrc": "5228a636fd"
+    },
+    "bilateral-training": {
+      "sections": {
+        "0": {
+          "text": "# Trening dwustronny\n\nGra dla jednego gracza, wymagająca dwóch połączonych piłek, po jednej dla każdej strony ciała. Obie strony współpracują w jednym z czterech trybów.\n\n- Na ekranie początkowym przypisz każdą piłkę do określonej części ciała. Gra rozpoczyna się dopiero wtedy, gdy obie piłki są połączone i przypisane.\n- Wybierz tryb: **Nagraj i powtórz** (jedna strona wykonuje sekwencję, a druga ją naśladuje), **Lustro** (obie strony synchronizują ruchy), **Naprzemiennie** (strony wykonują ruchy na zmianę) lub **Śledzenie** (jedna strona naśladuje ruchy drugiej).\n- Ekran jest podzielony na dwie części, po jednej dla każdej piłki. Każda część wyświetla przypisaną część ciała i reaguje tylko na swoją piłkę.\n- Każdy tryb zawiera dwa ćwiczenia; drugie jest trudniejsze niż pierwsze.\n- Jeśli próg nacisku jest ustawiony na 0 w **Ustawienia**, wszystkie tryby wykorzystują tylko ruchy pochylania, a nacisk nie jest wymagany. Zobacz [Ustawienia trenera](help:trainer-settings).\n- Jeśli któraś z piłek zostanie odłączona, gra wstrzymuje się i wyświetla informację o tym, która piłka została odłączona.\n\nAby połączyć drugą piłkę, otwórz panel czujników i dotknij **Połącz drugą piłkę**. Zobacz [Panel czujników](help:sensor-panel).",
+          "src": "77ed284cb2"
+        }
+      },
+      "title": "Szkolenia bilateralne",
+      "titleSrc": "5cf353787d"
+    },
+    "team-rocket": {
+      "sections": {
+        "0": {
+          "text": "# Zespół Rocket\n\nGra kooperacyjna dla dwóch graczy, wymagająca dwóch połączonych urządzeń. Razem sterujecie rakietą, która przelatuje przez tunel pełen szczelin.\n\n- Na ekranie gotowości, dotknij **Wybierz gracza 2** i wybierz innego użytkownika lub gościa przed rozpoczęciem gry.\n- Rakieta sama przelatuje przez tunel. Ściskajcie **razem**, aby zmniejszyć jej rozmiar, aby mogła przejść przez ciasne szczeliny, i puszczajcie **razem**, aby zbierać monety w szerszych częściach.\n- Rakieta zmniejsza się, gdy średnia wartość obu ścisków przekroczy próg ustawiony przez system. Jeśli dwa ściski są bardzo różne, rakieta przechyla się w stronę gracza, który ściska słabiej.\n- Pasek **Synchronizacja** na dole pokazuje, jak bardzo zsynchronizowane są dwa ściski. Jeśli jesteście zsynchronizowani (w granicach 20% różnicy i oboje ściskacie przynajmniej trochę), wasz wynik jest podwojony. Jeśli nie jesteście zsynchronizowani, otrzymujecie normalny wynik: nic się nie zawiesza.\n- Jeśli rakieta jest zbyt duża dla ciasnej szczeliny, zwalnia do bardzo niskiej prędkości, dopóki jej nie zmniejszycie.\n- Istnieje jeden wspólny wynik i jeden wspólny poziom. Nowy poziom rozpoczyna się po zdobyciu wystarczającej liczby punktów i po upływie co najmniej 30 sekund, a tunel staje się szybszy.\n- Wynik jest zapisywany w statystykach obu graczy jako jedno powiązane ze sobą spotkanie.\n- Trener może zmienić próg ściskania, czas odpoczynku i ściskania oraz tryb działania w **Ustawienia**. Zobacz [Ustawienia trenera](help:trainer-settings).\n- Jeśli jedno z urządzeń zostanie odłączone, gra wstrzymuje się i wyświetla nazwę urządzenia, które zostało utracone. Gra wznawia się dopiero, gdy oba urządzenia zostaną ponownie połączone.\n\nAby połączyć drugie urządzenie, otwórz panel czujników i dotknij **Połącz drugą piłkę**. Zobacz [Panel czujników](help:sensor-panel).",
+          "src": "83c3a1a1c1"
+        }
+      },
+      "title": "Zespoł Rocket",
+      "titleSrc": "92a3e20f8c"
+    },
+    "space-chase": {
+      "sections": {
+        "0": {
+          "text": "# Kosmiczny Pościg\n\nGra, która jednocześnie trenuje dwie rzeczy, jednocześnie je oddzielając: siłę nacisku i stabilność trzymania piłki. Wasz statek kosmiczny przelatuje z lewej do prawej przez pole asteroid, a za nim podąża wrogi statek.\n\n- Wybierz część ciała i stronę, jak w każdej innej grze. Gra wymaga najpierw testu siły, podobnie jak inne gry wymagające nacisku, ale pomija wybór \"Stół/Ściana\" i ustawienie zera, ponieważ nie wykorzystuje przechylania.\n- Nacisk kontroluje prędkość. Przerwana linia oznaczająca \"Docelową Siłę\" na pasku nacisku to Wasz cel. Jeśli nacisk jest na tym poziomie lub powyżej, silnik pracuje z pełną mocą, a statek przyspiesza. Jeśli nacisk jest poniżej, silnik słabnie, a wróg zbliża się szybciej. Naciskanie mocniej niż wskazana wartość nie daje dodatkowych punktów.\n- Stabilność kontroluje wysokość. Jedna linia prowadząca pokazuje trasę, którą powinniście lecieć. Im mniej stabilna jest piłka, tym bardziej statek odchyla się powyżej lub poniżej linii, a właśnie to odchylanie powoduje uderzenia w asteroidy. Trzymaj piłkę nieruchomo, aby utrzymać się na linii. Oba statki są rysowane w dużym rozmiarze, co ułatwia ich obserwację.\n- Złote Gwiazdy znajdują się wzdłuż linii prowadzącej, po dwie przed Wami. Przelotcie statkiem bezpośrednio nad jedną z nich, aby ją zdobyć i otrzymać +100 punktów oraz dźwięk. Gwiazda, której nie zdobędziecie, po prostu przesuwa się obok; nigdy nie zbliża się do Was.\n- Wróg nigdy nie strzela. Uderzenie w asteroidę lub wroga powoduje wyświetlenie komunikatu \"BŁĄD\", krótkie wstrząsanie i utratę punktów, a gra kontynuowana jest. Krótka przerwa po każdym uderzeniu zapobiega ponownemu odliczaniu punktów.\n- Etapy i przerwy. Gra jest podzielona na etapy. Każdy etap to okres utrzymywania określonej pozycji, a następnie przerwa. Podczas przerwy wróg zatrzymuje się, nie są zdobywane ani tracone punkty, a Wy możecie puścić piłkę. Ekran przyciemnia się, wyświetlany jest migający znak **PRZERWA** i odliczanie, a następnie gra automatycznie się wznawia. Po ostatnim etapie nie ma przerwy, a wyniki są wyświetlane po jego zakończeniu.\n- **Tryb zmiennej siły**. Kiedy Wasz trener włącza urządzenie, znacznik \"Docelowej Siły\" przesuwa się w górę i w dół wokół normalnego poziomu podczas każdego etapu, więc musicie go śledzić. Wróg i Wasze punkty zawsze podążają za aktualną pozycją znacznika.\n- **Wynik** składa się z czterech elementów: punktów za czas spędzony na poziomie lub powyżej znacznika, punktów odebranych za każde uderzenie, bonusu za każdy ukończony etap oraz +100 punktów za każdą zebraną Złotą Gwiazdę.\n- **Wyniki** pokazują Wasz łączny wynik oraz trzy procenty: Wytrzymałość (procent czasu trwania etapu spędzonego na poziomie lub powyżej znacznika), Stabilność (procent czasu trwania etapu, w którym piłka była stabilna) oraz Stabilizowana Wydajność (średnia z dwóch powyższych). Raport postępów przedstawia Stabilizowaną Wydajność dla każdej sesji w **Wyniki gier fizycznych**.\n- Trener może zmienić docelową siłę, czułość stabilności, tryb zmiennej siły i jego zakres, liczbę etapów, czas trwania i czas przerwy w **Ustawienia**, lub użyć predefiniowanych ustawień: Łatwy, Średni, Trudny i Szybki. Zobacz [Ustawienia trenera](help:trainer-settings).",
+          "src": "6472d9ca02"
+        }
+      },
+      "title": "Pościg w kosmosie",
+      "titleSrc": "c7994f0625"
+    }
+  }
+}

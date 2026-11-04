@@ -1,0 +1,5 @@
+# Cloudflare tunnel credentials (account-scoped secret — never commit).
+.secrets/
+
+# Optional local overrides for docker-compose.yml (SPEC_WEB_TOKEN, etc).
+.env

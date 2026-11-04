@@ -1,0 +1,483 @@
+{
+  "groups": {
+    "Getting started": "Sākot darbu",
+    "Games": "Spēles",
+    "Strength tests": "Izmēģinājumi uz izturību",
+    "The ball": "Bumba",
+    "Trainer": "Trenētājs",
+    "Settings": "Iestatījumi"
+  },
+  "articles": {
+    "using-the-manual": {
+      "sections": {
+        "0": {
+          "text": "# Lietošanas rokasgrāmata\n\nŠī rokasgrāmata detalizēti apraksta katru Playwork ekrānu. To var atvērt no jebkuras vietas.\n\n![Palīdzības logs ar satura izvēlni, meklēšanas laukumu un aizvērt pogu.](img:help-overlay.jpg)\n*Palīdzības logs tiek atvērts pār ekrānu, kurā jūs atradāties.*",
+          "src": "3d1b34f607"
+        },
+        "1": {
+          "text": "## Palīdzības sadaļa\n\n- Pieskarieties `?` ikonas pogai ekrāna virsrakstā. Tas atvērs rakstu, kas attiecas uz pašreizējo ekrānu.\n- Vai arī atveriet sensoru paneli (pieskarieties mazajai \"Sensors\" ikonai augšējā labajā stūrī) un pieskarieties **Palīdzība**.\n\nJa atverat Palīdzības sadaļu spēles laikā, spēle apturas. Kad aizverat Palīdzības sadaļu, jūs paliekat apturēšanas ekrānā un varat turpināt spēli, nospiežot **Turpināt** pogu.",
+          "src": "eb16cf54e4"
+        },
+        "2": {
+          "text": "## Informācijas meklēšana\n\n- Satura saraksts grupē rakstus pa nodaļām. Viedtālrunī pieskarieties izvēlnes pogai augšējā kreisajā stūrī, lai to parādītu vai paslēptu.\n- Ievadiet meklēšanas lodziņā, lai atrastu rakstus. Katrs ievadītais vārds jābūt iekļautam rakstā.\n- Saites, kas atrodas rakstos, noved pie citiem rakstiem vai uz lietotnes ekrāniem.\n\nRaksti, kas atzīmēti ar *Treneris*, ir paredzēti personai, kas vada nodarbību.",
+          "src": "1614fb2824"
+        }
+      },
+      "title": "Lietošanas instrukcija"
+    },
+    "connecting-your-ball": {
+      "sections": {
+        "0": {
+          "text": "# Savienojiet savu bumbu\n\nPlaywork izmanto sensoru bumbu. Jūs to savienojat vienreiz, kad lietotne tiek palaista, pirms varat pieteikties.\n\n![Ekrānuzņēmums, kurā redzama savienošanas ekrāna sadaļa ar pogu \"Savienot sensoru\".](img:connect.jpg)\n*Izmantojot tīmekļa pārlūkprogrammu, pieskarieties pogai \"Savienot sensoru\" un izvēlieties savu bumbu.*",
+          "src": "951ed9fc5e"
+        },
+        "1": {
+          "text": "## Viedtālrunī vai planšetdatorā\n\n1. Ieslēdziet bumbu un turiet to tuvāk ierīcei.\n2. Atļaujiet Bluetooth, kad lietotne to pieprasa. Vecākās Android versijās lietotnei arī ir nepieciešama piekļuve atrašanās vietas datiem, un ierīces atrašanās vietas (GPS) funkcija jābūt ieslēgtai.\n3. Ja esat izmantojis bumbu iepriekš, lietotne automātiski pieslēdzas tai. Citādi tā skenē un sarakstā parāda visas atrastās bumbas, norādot to nosaukumu un izmēru.\n4. Nospiediet uz savas bumbas sarakstā. Lietotne pārbauda tās licenci un pārvirza jūs uz reģistrācijas ekrānu.",
+          "src": "41a1809e6b"
+        },
+        "2": {
+          "text": "## Web pārlūkprogrammā\n\nNospiediet **Savienot sensoru** un izvēlieties savu bumbu pārlūkprogrammas Bluetooth izvēlnē.",
+          "src": "e76532987a"
+        },
+        "3": {
+          "text": "## Ja tas nedarbojas\n\n- *Bluetooth ir izslēgts* - ieslēdziet Bluetooth. Skenēšana sāksies automātiski.\n- Pieskarieties **Atvērt iestatījumus**, ja lietotne norāda, ka nepieciešama Bluetooth atļauja.\n- Pieskarieties **Ieslēgt atrašanās vietu**, ja atrašanās vietas pakalpojumi ir izslēgti.\n- Rinda, kas atzīmēta ar **Savienojuma problēmas**, nav izlasāma. Tuvojieties tuvāk un gaidiet nākamo skenēšanu.\n- **Savienojums neizdevās — mēģiniet vēlreiz.** nozīmē, ka savienojums ir pārtraukts. Vēlreiz pieskarieties bumbai.\n\nLai vēlāk savienotu citu bumbu, izmantojiet **Mainīt bumbu** [sensora panelī](help:sensor-panel).",
+          "src": "5ea4d740d1"
+        }
+      },
+      "title": "Savienojiet savu bumbu"
+    },
+    "signing-in": {
+      "sections": {
+        "0": {
+          "text": "# Iestatīšana un lietotāji\n\nPēc tam, kad bumba ir savienota, jūs izvēlaties, kas spēlēs.\n\n![Ekrānuzņēmums no iestatīšanas ekrāna, kurā redzama ciparu klaviatūra, pogas \"Ieiet\" (Log In), \"Jauns lietotājs\" (New User) un \"Turpināt kā viesis\" (Continue as Guest).](img:login.jpg)\n*Ievadiet savu ID ciparu klaviatūrā.*",
+          "src": "5bb62d2734"
+        },
+        "1": {
+          "text": "## Iestatīšanās\n\n1. Ievadiet savu numurisko identifikatoru uz ciparu taustiņu bloka. Izmantojiet **Rādīt ID**, lai redzētu ievadītos ciparus.\n2. Nospiediet **Pieteikties**.\n\nJa identifikators nav pazīstams, jūs redzēsiet **ID nav atrasts**. Neseno lietotāju saraksts tiek parādīts zem **Nesenie lietotāji** tikai pēc vārda — to identifikatori netiek parādīti, tāpēc jūs varat pieskarties vārdam, lai iestatītos, neļaujot nevienam tuvumā nolasīt identifikatoru no ekrāna.",
+          "src": "272e5deda5"
+        },
+        "2": {
+          "text": "## Viesis\n\n**Turpināt kā viesis** reģistrējas bez personas apliecinoša dokumenta. Viesu dati tiek saglabāti tāpat kā jebkura cita lietotāja dati.",
+          "src": "7a8b2c5791"
+        },
+        "3": {
+          "text": "## Lietotāja pievienošana\n\n1. Nospiediet **Jauns lietotājs**.\n2. Ievadiet numurisko ID un vārdu.\n3. Nospiediet **Izveidot un pieteikties**.\n\nJa šāds ID jau pastāv, jūs redzēsiet **ID jau ir aizņemts**. Lietotāju skaits ir atkarīgs no bumbiņas licences: 1 lietotājs, 50 lietotāju vai neierobežots skaits. Ja tiek sasniegts limits, lietotne par to informēs.\n\nJūs varat aizvērt logu, nospiežot \"Aizvērt\" pogu vai pieskaroties ārpus loga. Skatiet arī [valodu un mērvienības](help:language-and-units).",
+          "src": "2321392aab"
+        }
+      },
+      "title": "Piekļuves reģistrēšanās un lietotāji"
+    },
+    "language-and-units": {
+      "sections": {
+        "0": {
+          "text": "# Valoda un mērvienības\n\nPiekļuves ekrānā, augšpusē, atrodas divas vadības pogas.",
+          "src": "6448dcbaef"
+        },
+        "1": {
+          "text": "## Valoda\n\nAtveriet valodu izvēlni un izvēlieties savu valodu. Lietotne uzreiz mainīsies un atcerēsies jūsu izvēli. Ebreju valoda tiek attēlota no labā uz kreiso.",
+          "src": "3df2209d70"
+        },
+        "2": {
+          "text": "## Mērvienības\n\nMērvienību pārslēgs maina to, kā tiek attēlots spēks un attālums. Spēks tiek aprēķināts, ņemot vērā spiediena mērījumu un jūsu bumbiņas izmēru, tāpēc pārliecinieties, ka bumbiņas izmērs ir pareizs [sensoru panelī](help:sensor-panel).",
+          "src": "2fea811b3f"
+        }
+      },
+      "title": "Valoda un mērvienības"
+    },
+    "home-screen": {
+      "sections": {
+        "0": {
+          "text": "# Sākuma ekrāns\n\nPēc iekļūšanas sistēmā jūs redzat divas lielas kartes.\n\n- **Terapeitiskās spēles** - spēlējiet spēles, kuras jūs kontrolējat, saspiežot un pagriežot bumbu. Skatiet [spēles izvēli](help:choosing-a-game).\n- **Testi** - novērtējiet savu spēku. Skatiet [klīniskos spēka testus](help:clinical-strength-tests).\n\n**Izrakstīties** ļauj atgriezties pie iekļūšanas ekrāna, lai kāds cits varētu iekļūt.\n\n![Sākuma ekrāns ar kartēm \"Terapijas spēles\" un \"Testi\".](img:home.jpg)\n*Izvēlieties spēles vai spēka testus.*",
+          "src": "cf1536c9ed"
+        }
+      },
+      "title": "Sākuma ekrāns"
+    },
+    "choosing-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Spēles izvēle\n\nSpēļu sarakstā katrai spēlei ir attēlots viens kartiņas, kurā ir īss apraksts par vadības elementiem un etiķete:\n\n- *Tikai spiešana* - jūs tikai spiežat bumbu.\n- *Spiešana + grozīšana* - jūs spiežat un arī pagriežat bumbu.\n- *Divas bumbas* - spēle, kas prasa divas savienotas bumbas. Skatiet [Divu bumbu izmantošana](help:using-two-balls).\n\nNospiediet kartiņu, lai sāktu spēli. Izmantojiet atpakaļejošanas pogu, lai atgrieztos uz sākuma ekrānu.\n\nSpēles ir: [Asteroid](help:asteroid), [Roll the Ball](help:roll-the-ball), [Shoot the Bottle](help:shoot-the-bottle), [Car Ride](help:car-ride), [Memory Cards](help:memory-cards), [Dart Hit](help:dart-hit) un [Matching Game](help:matching-game).\n\n[Divu bumbu sensori](help:two-ball-panels), [Tug of War](help:tug-of-war) un [Bilateral Training](help:bilateral-training) prasa divas savienotas bumbas.\n\n![Spēļu saraksts, katrai spēlei viena kartiņa.](img:game-select.jpg)\n*Katrā kartiņā ir attēlots spēle un tās vadības elementi.*",
+          "src": "f6a583f547"
+        }
+      },
+      "title": "Spēles izvēle"
+    },
+    "choosing-the-body-part": {
+      "sections": {
+        "0": {
+          "text": "# Ķermeņa daļas un puses izvēle.\n\nPirms spēles vai testa jūs aprakstāt, pie kā strādājat, izmantojot trīs soļus.\n\n1. **Ar kuru ķermeņa daļu strādājat?** Izvēlieties **Ķermeņa augšdaļa** vai **Ķermeņa apakšdaļa**.\n2. Izvēlieties ķermeņa daļu. Augšējā ķermeņa daļa: **Plauksta**, **Elkonis**, **Plecs** vai **Cits**. Apakšējā ķermeņa daļa: **Pēda**, **Potīte**, **Celis**, **Gūža** vai **Cits**.\n3. **Kuru pusi izmantojat?** Izvēlieties **Kreisā**, **Labā** vai **Abas**.\n\nKatrs ķermeņa daļas punkts un katra puse tiek mērīta atsevišķi. Spēka tests, kas tiek veikts labajai rokai, netiek ņemts vērā kreisajai rokai.\n\nJa tas, pie kā jūs strādājat, nav iekļauts sarakstā, izvēlieties **Cits**. Tas neprasa no jums norādīt, kas tieši ir, — katra \"Cits\" opcija šajā sadaļā ietver vienu veida testu, tāpēc, ja iespējams, izvairieties no ļoti atšķirīgu ķermeņa daļu apvienošanas vienā testā (piemēram, kakla un žokļa treniņa).\n\nPunkti augšpusē parāda jūsu progresu. Izmantojiet atpakaļejošās pogas, lai mainītu iepriekšēju atbildi.\n\n![Pirmais solis, kurā tiek jautāts, par kuru ķermeņa daļu jūs interesējaties: augšdaļa vai apakšdaļa.](img:funnel-region.jpg)\n*1. solis: izvēlieties apgabalu.*\n\n![Otrais solis, kas parāda augšdaļas ķermeņa daļas: roka, elkonis, plecs un citas daļas.](img:funnel-body-part.jpg)\n*2. solis: izvēlieties ķermeņa daļu.*\n\n![Trešais solis, kurā tiek jautāts, kuru pusi Jūs izmantojat: kreiso, labo vai abas.](img:funnel-side.jpg)\n*3. solis: izvēlieties pusi.*",
+          "src": "4dbb26c18e"
+        }
+      },
+      "title": "Izvēlieties ķermeņa daļu un pusi"
+    },
+    "strength-test-before-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Spējas tests pirms spēles\n\nPirmajā reizē, kad spēlējat par konkrētu ķermeņa daļu un pusi, Playwork sistēmai ir jāzina, cik stipri jūs varat saspiest. Jūs redzat **Nepieciešams spēka tests**.\n\n1. Nospiediet **Veikt testu**.\n2. Saspiediet bumbu tik stipri, cik jums ir ērti, uz 10 sekundēm.\n3. Saglabājiet rezultātu.\n\nPēc tam spēles pielāgojas jūsu spējām: spēles laikā nepieciešamais spiediens ir jūsu maksimālā spiediena daļa. Skatiet [informāciju par spējas testa veikšanu](help:running-a-strength-test).\n\nJums ir nepieciešams jauns tests, ja pievienojat bumbu cita izmēra, jo spiediena mērījumi nav salīdzināmi starp dažādiem izmēriem. Rezultāts tiek saglabāts atsevišķi katram lietotājam, ķermeņa daļai un pusei, lai vēlāk, apmeklējot spēli, jūs varētu uzreiz sākt spēlēt.\n\n![Ziņojums, kas norāda, ka ir nepieciešams veikt spējas testu, ar pogu \"Veikt testu\".](img:test-needed.jpg)\n*Pirmajā reizē, kad spēlējat par konkrētu ķermeņa daļu un pusi, vispirms veiciet testu.*",
+          "src": "cd805efa19"
+        }
+      },
+      "title": "Spēles priekšsacietumā veiktā spēktesta"
+    },
+    "starting-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Spēles sākšana\n\nJa jau pastāv tests jūsu ķermeņa daļai un pusei, jūs redzat divas pogas.\n\n- **Sākt spēli** sāka spēli.\n- **Veikt testu** atkārto testa. Jauns rezultāts nomaina veco, lai iestatītu spiediena slieksni.\n\nSpēles, kas izmanto slīpuma sensoru, parāda nākamo ekrānu, kas attēlo [bumbas pozīciju](help:holding-the-ball). Pēc tam sākas īss atskaite, kas uzsāk [spēli](help:playing-a-game).\n\n![Ekrāns, kas parāda gatavību spēlei ar pogām \"Sākt spēli\" un \"Veikt testu\".](img:start-game.jpg)\n*Sāciet spēli vai veiciet jaunu testu.*",
+          "src": "8eec1b8ab0"
+        }
+      },
+      "title": "Spēles sākšana"
+    },
+    "holding-the-ball": {
+      "sections": {
+        "0": {
+          "text": "# Bumbas kontrolēšana un rezultāta fiksēšana\n\nSpēlēm, kurās jūs virzāt bumbu, noslīdot to, ir svarīgi zināt, kas jums ir \"taisni\".",
+          "src": "f1184d2582"
+        },
+        "1": {
+          "text": "## Kā jūs turēsiet bumbu?\n\nIzvēlieties **Galds**, ja bumba atrodas uz galda un jūs to rullējat. Izvēlieties **Siena**, ja jūs spiežat to pret sienu un pagriežat savu priekšpuseni.\n\n1. Novietojiet bumbu uz galda vai pret sienu.\n2. Pārliecinieties, ka kontaktdeta atrodas bumbas kreisajā pusē.\n3. Pagrieziet bumbu tā, lai bultskrūve rādītu uz griestiem.\n\nNospiediet **Iestatīt nulli un sākt**, lai turpinātu.\n\n![Ekrānšauts ar galdu, kur redzama roka, kas spiež bumbu uz galda, un trīs soļi.](img:hold-table.jpg)\n*Galds: bumba atrodas uz galda.*\n\n![Ekrānšauts ar sienu, kur redzama roka, kas spiež bumbu pret sienu, un trīs soļi.](img:hold-wall.jpg)\n*Siena: bumba ir iespiesta pret sienu.*",
+          "src": "1e255c4139"
+        },
+        "2": {
+          "text": "## Iestatiet nulles pozīciju\n\nTuriet bumbu dabiskajā atpūtas pozīcijā un vēlreiz piespiediet **Iestatīt nulli un sākt**. Viss, ko jūs darāt pēc tam, tiek mērīts, sākot no šīs pozīcijas. Ekrānā redzama bumbiņas attēls ar punktu, kas pārvietojas, kad jūs to noliecat.\n\nJūs varat atkārtoti iestatīt nulles pozīciju spēles laikā, izmantojot [sensora paneli](help:sensor-panel).\n\n![Ekrāna attēls \"Iestatiet nulles pozīciju\", kurā redzama bumbiņas orientācijas skala un pogas \"Iestatīt nulli\" un \"Sākt\".](img:set-zero.jpg)\n*Turiet bumbu dabiskajā pozīcijā un iestatiet nulles pozīciju.*",
+          "src": "f025d0d484"
+        }
+      },
+      "title": "Kontrolēt bumbu un nodrošināt nulles rezultātu"
+    },
+    "matching-game": {
+      "sections": {
+        "0": {
+          "text": "# Atbilstošo elementu spēle\n\nVisas kartes paliek ar attēlu uz augšu. Ritiniet bumbu, lai pārvietotu kursoru, un nospiediet, lai atlasītu karti. Divas kartes, kas sader, pazūd, un tiek piešķirti punkti. Nepareiza kombinācija uzliesmo sarkanā krāsā, un abas kartes tiek atbrīvotas.",
+          "src": "e166873f19"
+        },
+        "1": {
+          "text": "## Režīma izvēle\n\nPirms spēles sākšanas jūs izvēlaties, ar ko jūs vēlaties saskaņot: attēlu ar tā vārdu, pretējos vārdus vai attēlus, kas sader. Jūs katru reizi, kad spēlējat, varat izvēlēties citu režīmu.",
+          "src": "76574dbbae"
+        },
+        "2": {
+          "text": "## Ekrāni\n\nPirmajā ekrānā ir 2 pāri, pēc tam 4, 6, 8 un 10. Pēc tam katrā ekrānā ir 10 pāri ar jaunu saturu. Katram ekranam ir noteikts laika limits, ko treneris var mainīt.\n\nSpēle izmanto gravitācijas efektu, tāpēc vispirms jāiestata [bumbas pozīcija](help:holding-the-ball) .",
+          "src": "1e2a9a2629"
+        }
+      },
+      "title": "Spēle \"Atrašanas spēle\""
+    },
+    "playing-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Spēlešana\n\n## Introduction\n## Ievads\n\n1.  Getting started\n1.  Sākums\n\n> *   Basic controls\n> *   Pamata vadības elementi\n\n2.  Gameplay\n2.  Spēles gaita\n\n-   Objectives\n-   Mērķi\n\n3.  Tips and tricks\n3.  Padomi un triki\n\n[[n]]",
+          "src": "8e7aef9764"
+        },
+        "1": {
+          "text": "## Atpakaļskaitīšana\n\n**Gatavojieties!** un atpakaļskaitīšana: 3, 2, 1, SĀKUMS! Turiet bumbu neuzticīgu atpakaļskaitīšanas laikā: lietotne mēra bumbas spiedienu, lai nodrošinātu precīzu spiediena sliekšņa noteikšanu.",
+          "src": "c191701fc8"
+        },
+        "2": {
+          "text": "## Spēles laikā\n\n- Jūsu rezultāts un atlikušais laiks ir redzami augšpusē.\n- Līnijas grafiks labajā pusē parāda, cik stipri jūs spiežat. Līnija, kas atzīmēta ar **Mērķa spēks**, norāda uz spiediena līmeni, kas nepieciešams, lai veiksmīgi rīkotos spēlē.\n- Ekrāns paliek ieslēgts, kamēr jūs spēlējat. Jums ir nepieciešama tikai bumba.\n\n![Spēle norit: rezultāts un taimers augšpusē, spiediena indikators labajā pusē.](img:game-playing.jpg)\n*Spēles laikā: rezultāts un laiks augšpusē, spiediena indikators labajā pusē.*",
+          "src": "d4ce271b21"
+        },
+        "3": {
+          "text": "## Pauze un iestatījumi\n\n- Pauzes poga (apakšējā kreisajā stūrī) atver **Spēle apturēta** ar opcijām **Turpināt**, **Spēles izvēle** un **Uz sākumu**.\n- Pārslēgs (augšējā kreisajā stūrī) atver **Spēles iestatījumi**. Izmaiņu saglabāšana izbeidz pašreizējo spēles kārtu, neierakstot rezultātu, un nākamā kārtā tiek izmantoti jaunie iestatījumi.\n- Ja bumba atvienojas, spēle automātiski pauzējas. Funkcija **Turpināt** atkal darbojas pēc tam, kad bumba ir atkārtoti savienota.\n- Divu bumbu spēlē pauzes ziņojumā tiek norādīta bumba, kas tika zaudēta, un **Mēģināt savienot vēlreiz** parādās, ja nav izdevies to atkārtoti savienot. Skatiet [Divu bumbu izmantošana](help:using-two-balls)].\n\n![Spēles pauzes izvēlne ar opcijām \"Turpināt\", \"Spēles izvēle\" un \"Aiziet uz sākumu\".](img:game-paused.jpg)\n*Pauzes izvēlne.*",
+          "src": "35bd3f93f8"
+        },
+        "4": {
+          "text": "## Spēle beigusies\n\nJūs redzat savu rezultātu, savu labāko rezultātu un ziņojumu, ja esat uzstādījis jaunu personīgo rekordu. Nospiediet **Spēlēt vēlreiz** vai **Spēles izvēle**.",
+          "src": "2265361c1d"
+        }
+      },
+      "title": "Spēlēšana"
+    },
+    "asteroid": {
+      "sections": {
+        "0": {
+          "text": "# Asteroids\n\nJūsu kuģis pašam lidinās caur tuneli. Jūs kontrolējat tikai vienu lietu: tā izmēru.\n\n- *Saspiežiet* bumbu, lai samazinātu kuģa izmēru šaurās vietās.\n- *Atlaidiet*, lai kuģis atkal augtu līdz pilnam izmēram un iegūtu balvas (+100 punkti katrai).\n- Ienaidnieku kuģi atrodas netālu no viena tuneļa sienas. Samaziniet izmēru un izlidojiet uz otru pusi. Trāpīšana atņem pusē jūsu rezultātu; veiksmīga izlidošana pievieno pusē.\n\nJūs pārejiet uz nākamo līmeni, kad sasniedzat nepieciešamo punktu skaitu un esat spēlējis vismaz 30 sekundes šajā līmenī. Katram līmenim ir savi krāsu toņi un balvas.\n\nVadība: tikai saspiešana.",
+          "src": "ab0650bd1f"
+        }
+      },
+      "title": "Asteroids [n]"
+    },
+    "roll-the-ball": {
+      "sections": {
+        "0": {
+          "text": "# Ritini bumbu\n\nMonstri parādās gredzenā ekrāna vidū. Novirziet bumbu, lai pārvietotu kursoru, novietojiet to uz gredzena monstra vietā un nospiediet, lai to notvertu.\n\n- Monstrs, kuru nav notverts, pazūd pēc laika, ko treneris ir iestatījis.\n- Kursors maina krāsu, kad tas atrodas uz gredzena un kad jūs nospiežat.\n- Jūs paaugstināt līmeni, kad sasniedzat noteikto rezultātu un esat spēlējis vismaz 30 sekundes šajā līmenī.\n\nVadība: nospiežiet un novirziet. Vispirms iestatiet [bumbas pozīciju](help:holding-the-ball).",
+          "src": "bed335395a"
+        }
+      },
+      "title": "Ritini bumbu"
+    },
+    "shoot-the-bottle": {
+      "sections": {
+        "0": {
+          "text": "# Šauj pudeli\n\nPudeles, konservu burkas un metāla trauki krīt no augšas. No kreisās apakšējās puses esošs lielgabals uz tiem šauj.\n\n1. Nospiediet virs sliekšņa, lai aktivizētu lielgabalu. Spēka josla apakšā piepildās, jo spēcīgāk jūs nospiežat.\n2. Atlaidiet vai nospiediet līdz 100%, lai izšautu. Šāviena spēks atkarīgs no tā, cik daudz jūs nospiedāt.\n3. Attālāki mērķi, spēcīgāki spiešanas momenti un mazākas pudeles nodrošina vairāk punktus.\n\nVadība: tikai spiešana.",
+          "src": "a319cfe59c"
+        }
+      },
+      "title": "Šauj pudeli"
+    },
+    "car-ride": {
+      "sections": {
+        "0": {
+          "text": "# Braukšana ar automašīnu\n\nVadīt automašīnu pa līkumotu ceļu, noliecot bumbu. Nospiediet, lai palēninātu; atlaidiet, lai paātrinātu.\n\n- Savāciet monētas, kas dod 50 punktus katra.\n- Ja saskaraties ar kādu šķēršļi, jūs zaudējat vienu dzīvību, un automašīna apstājas. Lai turpinātu, apbrauciet šķēršļi.\n- Jūs pāriet uz nākamo līmeni, kad sasniedzat nepieciešamo punktu skaitu un esat spēlējis vismaz 30 sekundes šajā līmenī.\n\nVadības: nospiediet un nolieciet. Vispirms iestatiet [bumbas pozīciju](help:holding-the-ball).",
+          "src": "d282dc55ce"
+        }
+      },
+      "title": "Brauciens ar automašīnu"
+    },
+    "memory-cards": {
+      "sections": {
+        "0": {
+          "text": "# Atmiņas kartes\n\nKartes tiek izkārtotas ar attēlu uz leju. Ritiniet bumbu, lai pārvietotu kursoru, un nospiediet, lai apvērstu karti zem kursora. Atrodiet divas kartes, kas sader, lai tās noņemtu.\n\n- 1. līmenī ir 2 pāri. Katrs līmenis pievieno vēl 2 pārus.\n- Poga apakšējā labajā stūrī pārslēdz starp attēliem un attēliem ar vārdiem. Vārdu režīmā katram pārim ir viena attēla karte un viena vārdu karte.\n- Katram līmenim ir laika limits, ko treneris var mainīt.\n\nVadības: nospiešana un pagrieziena kustība. Vispirms iestatiet [bumbas pozīciju](help:holding-the-ball)].",
+          "src": "854ea2dc15"
+        }
+      },
+      "title": "Atmiņas kartes"
+    },
+    "dart-hit": {
+      "sections": {
+        "0": {
+          "text": "# Dart Hit\n\nKoka koka gabals griežas ekrāna vidū. Katrs pieskāriens palaidīs vienu šautriņu vertikāli uz augšu. Koka gabals turpina griezties starp raidījumiem, tāpēc precīzs laiks ir vissvarīgākais.\n\n- Šautriņa, kas trāpa jau esošā šautriņā kokā, izmaksā vienu dzīvību. Jums ir 3 dzīvības.\n- Trāpīšana ābolam uz koka nodrošina 100 punktus.\n- Lai pabeigtu līmeni, ir jāizmet visi nepieciešamie šautriņas. Ir 50 līmeņi.\n\nTreneris var mainīt šautriņas izmēru, ābola izmēru, nepieciešamo precizitāti, koka ātrumu un to, cik bieži tas maina virzienu. Skatiet [trenera iestatījumus](help:trainer-settings).\n\nVadība: tikai pieskāriens.",
+          "src": "e22095fc90"
+        }
+      },
+      "title": "Dartu trāpījums"
+    },
+    "clinical-strength-tests": {
+      "sections": {
+        "0": {
+          "text": "# Klīniskie spēka testi\n\nIzmantojiet **Testi** karti sākuma ekrānā, lai novērtētu spēku, nevis lai sāktu spēli.\n\n1. Izvēlieties **Ķermeņa augšdaļa** vai **Ķermeņa apakšdaļa**.\n2. Izvēlieties testu. Sarakstā ir iekļauti testi, kas novērtē apakšējo ķermeņa daļu spēku (ceļmeņu muskuļi, iegriešanas muskuļi, iekšējie muskuļi, silti muskuļi un četrgalvainie muskuļi) un augšējo ķermeņa daļu spēku (rokas stiprums, bicepsu muskuļi, tricepsu muskuļi, krūšu muskuļi un plecu muskuļi).\n3. Izvēlieties pusi.\n\nKlīniskais tests nekad nemaina spēles iestatījumus. Rezultāti parādās trenera cilnē **Testu rezultāti**, kas atzīmēta ar **Klīniskais**.\n\n![Augšējo ķermeņa daļu spēka testu saraksts, no kā izvēlēties.](img:test-names.jpg)\n*Izvēlieties testu, kuru vēlaties veikt.*",
+          "src": "ea5dd6a86c"
+        }
+      },
+      "title": "Kliniskie stipruma testi"
+    },
+    "running-a-strength-test": {
+      "sections": {
+        "0": {
+          "text": "# Spēka testa veikšana\n\n## Preparing for the test\n## Sagatavošanās testam\n\n1.  Ensure the equipment is properly calibrated.\n    1.  Pārliecinieties, ka aprīkojums ir pareizi kalibrēts.\n\n2.  Warm up before the test.\n    2.  Veiciet iesildīšanos pirms testa.\n\n3.  Follow the instructions carefully.\n    3.  Rīkojieties saskaņā ar instrukcijām.\n\n## Performing the test\n## Testa veikšana\n\n1.  Start the test slowly and gradually increase the intensity.\n    1.  Sāciet testu lēnām un pakāpeniski palieliniet intensitāti.\n\n2.  Maintain proper form throughout the test.\n    2.  Uzturiet pareizu pozīciju visa testa laikā.\n\n3.  Stop the test if you experience any pain or discomfort.\n    3.  Pārtrauciet testu, ja sajūtat jebkādu sāpi vai diskomfortu.\n\n## Recording the results\n## Rezultātu reģistrēšana\n\n1.  Record the results immediately after the test.\n    1.  Reģistrējiet rezultātus uzreiz pēc testa.\n\n2.  Note any observations or comments.\n    2.  Atzīmējiet jebkādas novērojumus vai komentārus.\n\n3.  Compare the results with previous tests.\n    3.  Salīdziniet rezultātus ar iepriekšējiem testiem.",
+          "src": "007f41fb90"
+        },
+        "1": {
+          "text": "## Sagatavošana\n\nKlīniskais tests parāda **Kā veikt testu?** ar aprakstu. Pieskarieties **Skatīt demo video**, lai apskatītu vingrinājumu, un **Sākt testu**, kad esat gatavs. Turiet bumbu nekustīgu uz šī ekrāna: lietotne mēra tās atpūtas spiedienu, lai spēks sāktos no nulles.\n\nTests pirms spēles sākas automātiski pēc īsa pārtrauma.\n\n![Sagatavošanās ekrāns testam, kurā redzams testa apraksts, poga \"Skatīt demonstrācijas video\" un poga \"Sākt testu\".](img:test-preparation.jpg)\n*Izlasiet, kā veikt testu, un pēc tam sāciet.*",
+          "src": "a4bc7592ca"
+        },
+        "2": {
+          "text": "## Kārtas\n\n1. 3 sekunžu skaits sākas testu.\n2. **SPIEDIET!** - spiežiet tik stipri, cik vien iespējams, kamēr skaitītājs darbojas. Līnija parāda jūsu spēku, un atzīme norāda jūsu līdzšinējo maksimālo spēku.\n3. **ATPŪTA!** - atpūtieties. Atpūtas laikā netiek reģistrēti dati.\n\nKlīniskais tests izmanto nospiešanas laiku, atpūtas laiku un kārtu skaitu (no 1 līdz 3), ko treneris ir iestatījis. Tests pirms spēles vienmēr ir viena kārta, kas ilgst 10 sekundes.\n\n![Attēls, kas parāda testu, kur redzama kārtas numura, \"SPIEŠ\" uzraksta un spēka līmeņa indikatora.](img:test-pressing.jpg)\n*Spiediet, kamēr redzat \"SPIEŠ\".*",
+          "src": "710b953749"
+        },
+        "3": {
+          "text": "## Tests ir pabeigts\n\nJūsu visaugstākais rādītājs visos testu raundos ir norādīts. Nospiediet **Saglabāt rezultātus**, lai saglabātu rezultātu, vai **Atkārtot testu**, lai dzēstu rezultātu un atkārtotu testu.\n\n![Ekrānuzņēmums no \"Tests ir pabeigts\" loga, kurā redzamas pogas \"Saglabāt rezultātus\" un \"Atkārtot testu\".](img:test-completed.jpg)\n*Saglabājiet rezultātu vai atkārtojiet testu.*",
+          "src": "c68e93334c"
+        }
+      },
+      "title": "Veiciet spēka testu"
+    },
+    "strength-test-results": {
+      "sections": {
+        "0": {
+          "text": "# Spēka testa rezultāti\n\nPēc saglabāšanas rezultātu ekrāns parāda jūsu maksimālo un vidējo spēku, kā arī to, kā tas salīdzinās ar jūsu iepriekšējiem testiem tam pašam testam un pusei.\n\nSpēks tiek parādīts kilogramos vai pundos, un tas tiek aprēķināts, ņemot vērā spiedienu un bumbiņas izmēru, kas tika izmantota. Jūsu rezultāti paliek ierīcē un tos varat atkārtoti apskatīt trenera cilnē \"[Testa rezultāti](help:trainer-test-results)\".\n\n![Spēka testa rezultātu ekrāns, kurā redzams maksimālais un vidējais spēks.](img:test-result.jpg)\n*Saglabāta testa rezultāts.*",
+          "src": "1d104706ec"
+        }
+      },
+      "title": "Izmēģinājumu rezultāti attiecībā uz stiprumu"
+    },
+    "sensor-panel": {
+      "sections": {
+        "0": {
+          "text": "# Sensora panelis\n\nPēc savienošanas, neliels \"Sensors\" ikona atrodas katra ekrāna augšējā labajā stūrī. Punkts norāda statusu: zaļš – savienots, oranžs – zema baterijas uzlāde vai atkārtota savienošana, sarkans – atvienots. Pieskarieties tam, lai atvērtu paneli.\n\n![Atvērtais sensora panelis, kurā redzama bumbiņas nosaukums, izmērs, baterijas līmenis, spiediens, rotācija, skaņas iestatījumi, kā arī pogas \"Pārslēgt bumbu\", \"Par\", \"Palīdzība\" un \"Trenēšanas režīms\".](img:sensor-panel.jpg)\n*Sensora panelis, kas tiek atvērts no ikonas augšējā labajā stūrī.*",
+          "src": "8a203d2923"
+        },
+        "1": {
+          "text": "## Ko panelis parāda\n\n- Bumbas nosaukumu, tās identifikācijas numuru, tās **Bumbas izmērs** un **Akumulators** līmeni.\n- Reāllaika spiediena indikatoru un **Bumbas rotācija** pogu, ar kuras palīdzību var atiestatīt uz nulli.\n- **Skaņas efekti** un **Mūzika**, katrs **IESL.** vai **IZSL.**.",
+          "src": "d57b1aee72"
+        },
+        "2": {
+          "text": "## Pogas\n\n- **Mainīt bumbu** atvieno un meklē citu bumbu.\n- Kad ir savienotas divas bumbas, **Mainīt bumbu** vispirms jautā, kuru bumbu nomainīt. Skatiet [Divu bumbu izmantošana](help:using-two-balls).\n- **Savienot otro bumbu** parādās, kad ir savienota tikai viena bumba. Skatiet [Divu bumbu izmantošana](help:using-two-balls).\n- **Par lietotni** parāda lietotnes versiju, bumbas licenci, tās ID un bumbas izmēru, ko lietotne izmanto saviem aprēķiniem. Ja bumbas izmērs nav zināms, tiek izmantots 19 cm un tas tiek atzīmēts kā *pieņemts*; iestatiet faktisko izmēru, kad savienojat bumbu. **Dzēst lietotāja datus** atdala jūsu konta e-pastu no bumbas.\n- **Palīdzība** atver šo rokasgrāmatu.\n- **Trenera režīms** atver [apmācību paneli](help:trainer-panel).\n\nNospiediet jebkur ārpus paneļa, lai to aizvērtu.\n\nKad ir savienotas divas bumbas, ekrāns ir sadalīts divās pusēs, pa vienai katrai bumbai, un panelī ir slēdzis **1** / **2** augšpusē, lai parādītu jebkuru no bumbām. Skatiet [Divu bumbu izmantošana](help:using-two-balls).",
+          "src": "2d988270d7"
+        },
+        "3": {
+          "text": "## Akumulators un savienojums\n\n- Ja akumulatora uzlādes līmenis ir 25% vai mazāks, indikators kļūst oranžs.\n- Ja akumulatora uzlādes līmenis ir 10% vai mazāks, jūs redzat **Kritisks akumulatora līmenis**. Izvēlieties **Uz pieteikšanos** vai **Uzlādēšu**.\n- Ja savienojums tiek pārtraukts, lietotne trīs reizes mēģina atjaunot savienojumu. Ja tas neizdodas, lietotne jautā, vai vēlaties pāriet uz savienojuma ekrānu vai mēģināt vēlreiz.\n- Kad lietotne tiek iestatīta fonā, savienojums tiek pārtraukts pēc dažām sekundēm un atjaunots, kad jūs atgriezaties.",
+          "src": "d3744d110c"
+        }
+      },
+      "title": "Sensoru panelis"
+    },
+    "trainer-panel": {
+      "sections": {
+        "0": {
+          "text": "# Trenera panelis\n\nTrenera panelis ir paredzēts personai, kas vada sesiju. Atveriet to, izmantojot **Trenera režīms** sensoru panelī ([sensor panel](help:sensor-panel)). Parole nav nepieciešama. Panelis tiek atvērts horizontālā režīmā un parāda pašreizējo lietotāju.\n\nTam ir piecas cilnes:\n\n- **Iestatījumi** - [spēles un testa iestatījumi](help:trainer-settings), datu eksports un privātums.\n- **Spēles rezultāti** - [spēles vēsture](help:trainer-game-results).\n- **Testu rezultāti** - [testu vēsture](help:trainer-test-results).\n- **Progresa ziņojums** - [kopsavilkums par viena lietotāja ārstēšanu](help:progress-report).\n- **Lietotāji** - [lietotāju pievienošana, rediģēšana un dzēšana](help:managing-users).\n\nNospiediet **Iziet no trenera režīma** vai aizvērtnes pogu, lai izietu.",
+          "src": "51ce97dba2"
+        }
+      },
+      "title": "Treneru panelis"
+    },
+    "trainer-settings": {
+      "sections": {
+        "0": {
+          "text": "# Treniņa iestatījumi\n\nIestatījumi tiek saglabāti katram lietotājam un katrai spēlei. Jauns lietotājs sāks katru spēli ar iepriekš iestatīto \"Vieglo\" režīmu.\n\n![Attēls: Treniņa panelis iestatījumu cilnē, kas parāda spēles izvēli un grūtības līmeņu iestatījumus.](img:trainer-settings.jpg)\n*Izvēlieties spēli un pēc tam iestatiet to.*",
+          "src": "dff5c6ca63"
+        },
+        "1": {
+          "text": "## Grūtības līmeņu iestatījumi\n\n**Grūtības pakāpe** piedāvā **Viegls**, **Vidējs**, **Grūts** un **Sprints**. Iestatījums nosaka tikai sākumpunktu: vēlāk jūs varat mainīt jebkuru slīdni.",
+          "src": "c56f4f4794"
+        },
+        "2": {
+          "text": "## Slīdkārtoļi\n\nKuri slīdkārtoļi ir pieejami, ir atkarīgs no spēles. Visbiežāk sastopamie:\n\n- **Sesijas ilgums** - no 1 līdz 5 minūtēm.\n- **Saspiešanas slieksnis** - lietotāja maksimālā spiediena daļa, kas nepieciešama, lai veiktu darbību.\n- **Sasvēriena diapazons** - cik daudz grādu novirzes nodrošina pilnu kustību. Zemāks rādītājs nozīmē lielāku jutību.\n\nCiti slīdkārtoļi regulē izmērus, ātrumu un laika ierobežojumus atsevišķām spēlēm, piemēram, **Briesmoņa izmērs**, **Pudeles izmērs**, **Monētas izmērs** un **Šautriņas izmērs**.\n\nDivu bumbu spēlēm ir arī **Spēka režīms**: **Neapstrādāts** salīdzina spēlētājus, pamatojoties uz faktisko spiedienu, ko viņi pielieto, **Normalizēts** pielāgo katra spēlētāja rādījumus atbilstoši viņa individuālajam spēka testam. \"Raw\" (neapstrādāts) ir noklusējums. Skatiet [Divu bumbu lietošana](help:using-two-balls).\n\nSpēlei [Tug of War](help:tug-of-war) ir savi slīdkārtoļi: **Vilkšanas ilgums** (no 20 līdz 120 sekundēm), **Atpūtas ilgums** (no 5 līdz 30 sekundēm) un **Raundi uzvarai** (no 1 līdz 10). Tai nav iestatījumu \"Sesijas ilgums\" vai \"Spiediena sliekšvārts\". \"Raw\" (neapstrādāta) spēka režīmā ir arī **Neapstrādātā spēka kartēšana** (1×, 3×, 5×, 7× vai 10×, noklusējums 5×): lielāka vērtība padara gan spēka mērītājus, gan virvi jutīgākus pret vienādu spiedienu. Tas nedarbojas \"Normalized\" (normalizētā) režīmā.\n\nLai mainītu slīdkārtoļa pozīciju, velciet punktu. Pieskāriens pie slīdkārtoļa joslas to nepārvieto, tāpēc nejaušs pieskāriens nevar izmainīt vērtību, kamēr jūs ritināt.",
+          "src": "3173357d1e"
+        },
+        "3": {
+          "text": "## Saglabāšana\n\nNospiediet **Saglabāt spēles iestatījumus**. Poga parāda **✓ Saglabāts**, līdz jūs vēlreiz kaut ko izmainīsiet. **Spēka tests** sadaļai ir savs iestatīšanas laiks, atpūtas laiks un raundu skaits, kas tiek saglabāti kopā ar **Saglabāt testa iestatījumus**.",
+          "src": "b54114b611"
+        },
+        "4": {
+          "text": "## Privātums un eksports\n\nTajā pašā cilnē atrodas slēdži, kas saistīti ar [izmantošanas datiem un kļūdu ziņošanu](help:privacy-and-usage-data), kā arī [datu eksportu](help:exporting-data).",
+          "src": "a699c4dbec"
+        }
+      },
+      "title": "Trenera iestatījumi"
+    },
+    "trainer-game-results": {
+      "sections": {
+        "0": {
+          "text": "# Spēļu rezultāti\n\nŠeit ir saraksts ar visām spēlēm, kurās lietotājs ir piedalījies, sākot ar jaunākajām, un norādīts rezultāts, spēles ilgums, ķermeņa daļa, puse un izmantotā bumba.\n\nDivu bumbu spēlē katram spēlētājam ir sava rinda, kas apzīmēta kā *Spēlētājs 1* vai *Spēlētājs 2*. Skatiet [Divu bumbu izmantošana](help:using-two-balls).\n\nFiltru pogas pakāpeniski sašaurina sarakstu: spēle, reģions, ķermeņa daļa, puse un bumba. Pogas parādās tikai tad, ja ir vairākas iespējas, no kurām izvēlēties. **Labākais rezultāts** ir lietotāja labākais rezultāts, un **Labākais klīnikā** ir labākais rezultāts visiem lietotājiem šajā spēlē.\n\n![Ievadlapas \"Spēļu rezultāti\" attēls, kas parāda spēlētās spēles ar rezultātu un ilgumu.](img:trainer-game-results.jpg)\n*Spēlēto spēļu saraksts.*",
+          "src": "df83977eb6"
+        }
+      },
+      "title": "Spēļu rezultāti"
+    },
+    "trainer-test-results": {
+      "sections": {
+        "0": {
+          "text": "# Testu rezultāti\n\nŠeit ir saraksts ar visiem izturības testiem, sakārtotiem pēc datuma (jaunākie pirmie), norādot maksimālo un vidējo spēku, bumbiņas izmēru un sākuma spiedienu. Atveriet rindu, lai redzētu, kura bumbina tika izmantota.\n\nFiltri ļauj ierobežot sarakstu: **Kategorija** (**Pirms spēles** vai **Klīniskais**), reģions, testa nosaukums, puse un bumbina. Testi, kas reģistrēti ar dažādām bumbinām, saglabā savas spēka vērtības, tāpēc rezultāts paliek pareizs, pat ja vēlāk tiek pievienota cita bumbina.\n\n![Izvēlne \"Testu rezultāti\", kas sarakstā parāda izturības testus ar maksimālo un vidējo spēku.](img:trainer-test-results.jpg)\n*Izturības testu saraksts.*",
+          "src": "f7385a5fb6"
+        }
+      },
+      "title": "Testu rezultāti"
+    },
+    "progress-report": {
+      "sections": {
+        "0": {
+          "text": "# Progresa ziņojums\n\nKopsavilkums par viena lietotāja visu ārstēšanas vēsturi, sākot no pirmās sesijas līdz šodienai. Nav filtrēšanas.\n\nTas parāda pacienta informāciju (vārds, identifikācijas numurs, ārstēšanas sākuma datums un kopējais ilgums), pirmos, jaunākos un labākos rezultātus katram klīniskajam testam un katrai ķermeņa daļai, grafikus, ja ir vismaz divi rezultāti, spēles veiktspējas grafikus un sesijas statistiku.\n\nLietotājam, kurš ir spēlējis [Bilateral Training](help:bilateral-training), ir pieejama arī **Abpusējs treniņš** sadaļa ar jaunāko simetrijas procentu (100% nozīmē, ka abas puses veica vienādi) un, \"Tracking\" režīmā, novirzes rādītāju, katram no tiem ir grafiks, ja ir divi rezultāti. Lietotājam, kuram nav ārstēšanas vēstures, tiek parādīts tukšs ziņojums.\n\n![Progresa ziņojuma cilne ar pacienta informāciju un rezultātiem.](img:trainer-progress.jpg)\n*Kopsavilkums par viena lietotāja ārstēšanu.*",
+          "src": "51be54c919"
+        }
+      },
+      "title": "Progresa ziņojums"
+    },
+    "managing-users": {
+      "sections": {
+        "0": {
+          "text": "# Lietotāju pārvaldība\n\nIzdevums **Lietotāji** sarakstā ir norādīti visi ierīcē esošie lietotāji. Jūs varat rediģēt lietotāja ID un vārdu, vai arī dzēst lietotāju. Lietotāja dzēšana izdzēš visas viņa sesijas un testa datus, tāpēc lietotne lūgs jūs apstiprināt šo darbību.\n\nJaunie lietotāji tiek pievienoti reģistrācijas ekrānā. Skatiet [reģistrēšanās un lietotāji](help:signing-in).\n\n![Izdevums \"Lietotāji\", kas sarakstā parāda ierīcē esošos lietotājus.](img:trainer-users.jpg)\n*Lietotāji šajā ierīcē.*",
+          "src": "cc48f671b9"
+        }
+      },
+      "title": "Lietotāju pārvaldība"
+    },
+    "exporting-data": {
+      "sections": {
+        "0": {
+          "text": "# Datu eksportēšana\n\nIestatījumi cilnes apakšā, Datu eksports saglabā katru reģistrēto sesiju katram lietotājam vienā CSV failā ar nosaukumu *PLAYWORK Data* un datumu. Nospiediet Eksportēt uz Excel.\n\nFails tiek atvērts programmā Excel vai līdzīgās programmās. Tam ir viena rinda katrai sesijai, kas satur informāciju par lietotāju, datumu, sesijas veidu, ķermeņa daļu, pusi, bumbiņas izmēru, spēku, rezultātu un ilgumu. Kolonnas, kas nav piemērojamas, paliek tukšas.\n\nDivu bumbiņu spēlēm pēdējās divas kolonnas, *Match ID* (spēles ID) un *Player* (spēlētājs), saista divus spēlētājus vienā spēlē: abas rindas dalās vienā un tajā pašā spēles ID. Skatiet [Izmantošana ar divām bumbām](help:using-two-balls)].\n\nTālrunī vai planšetdatorā fails tiek saglabāts mapē \"Dokumenti\". Pārlūkprogrammā tas tiek lejupielādēts.",
+          "src": "ae7aefd36a"
+        }
+      },
+      "title": "Datnes eksportēšana"
+    },
+    "privacy-and-usage-data": {
+      "sections": {
+        "0": {
+          "text": "# Privātums un lietošanas dati\n\nPlaywork pilnībā darbojas bezsaistē un jūsu dati tiek glabāti ierīcē. Divas papildu funkcijas var sūtīt informāciju.\n\n- **Lietošanas telemetrija** nosūta anonīmu informāciju par to, kuras ekrāna lapas un pogas tiek izmantotas. Tā nekad neiekļauj vārdus, identifikatorus vai mērījumus.\n- **Avāriju ziņošana** nosūta automātiskus kļūdu ziņojumus.\n\nPirmajā reizē, kad atverat lietotni, tā vienreiz jautā, vai vēlaties **Ieslēgt** tos vai izvēlēties **Ne tagad**. Nekas netiek savākts, ja vien jūs to neieslēdzat. Treniņa vadītājs vēlāk var mainīt jebkuru no šīm opcijām cilnē **Iestatījumi**.",
+          "src": "9897eb87dd"
+        }
+      },
+      "title": "Privātuma un lietošanas dati"
+    },
+    "sound-and-music": {
+      "sections": {
+        "0": {
+          "text": "# Skaņa un mūzika\n\nSpēlēs tiek atskaņoti skaņas efekti un fona mūzika. Ieslēdziet vai izslēdziet **Skaņas efekti** un **Mūzika** sensoru panelī ([sensor panel](help:sensor-panel)). Jūsu izvēle tiek saglabāta.",
+          "src": "61db902d42"
+        }
+      },
+      "title": "Skaņa un mūzika"
+    },
+    "two-ball-panels": {
+      "sections": {
+        "0": {
+          "text": "# Divu bumbu sensori\n\nSpēle diviem spēlētājiem, kas prasa divas savienotas bumbas. Ekrānā tiek parādīti divi paneļi blakus viens otram, *Bumba 1* pa kreisi un *Bumba 2* pa labi. Katrs panelis parāda attiecīgo bumbu: tās saspiešanas spiedienu un tās rotāciju X, Y un Z asīs.\n\n- Sākuma ekrānā pieskarieties **Izvēlēties 2. spēlētāju** un izvēlieties citu lietotāju vai viesi, pirms sākat spēli.\n- Saspiežiet un pagrieziet katru bumbu, lai novērotu, kā attiecīgais panelis pārvietojas.\n- Katra spēlētāja rezultāts ir maksimālais saspiešanas spiediens. Abi rezultāti tiek saglabāti kopā kā viens spēles rezultāts.\n- Ja kāda no bumbām atvienojas, spēle tiek apturēta, un tiek norādīta bumba, kas tika atvienota. Spēle atsākas tikai tad, kad abas bumbas ir savienotas atkal.\n\nLai savienotu otro bumbu, atveriet sensora paneli un pieskarieties **Savienot otro bumbu**. Skatiet [Sensora panelis](help:sensor-panel).",
+          "src": "6860767a20"
+        }
+      },
+      "title": "Divu sensoru sistēmas",
+      "titleSrc": "20d82ad54b"
+    },
+    "using-two-balls": {
+      "sections": {
+        "0": {
+          "text": "# Divu bumbu izmantošana\n\nSpēlēm ar diviem spēlētājiem nepieciešamas divas savienotas bumbas. Jūs varat arī savienot otro bumbu atsevišķi, lai redzētu abas vienlaikus.",
+          "src": "bb21470394"
+        },
+        "1": {
+          "text": "## Pievienojiet otro bumbu\n\n1. Pievienojiet pirmo bumbu kā parasti.\n2. Atveriet sensoru paneli un pieskarieties **Savienot otro bumbu**. Spēle ar divām bumbām pati par sevi atver to pašu logu, ja otra bumba nav pievienota.\n3. Izvēlieties otro bumbu no saraksta. Bumba, kuru jau esat pievienojis, netiek parādīta. Tīmekļa pārlūkprogrammā pieskarieties **🔵 Savienot sensoru** un izvēlieties to pārlūkprogrammas logā.\n4. Otrā bumba tiek pārbaudīta atbilstoši tās licencēm, tāpat kā pirmā. Ja tā tiek noraidīta, jūs redzat iemeslu un varat izmēģināt citu bumbu.\n\nTālrunis, kas nevar vienlaikus uzturēt divus savienojumus, parāda ziņojumu un turpina darboties ar vienu bumbu.\n\nPārlūkprogrammā logs lūdz jūs izvēlēties otro bumbu pārlūkprogrammu izvēlnē. Ja jūs izvēlaties bumbu, kas jau ir pievienota kā pirmā bumba, jums tiks lūgts izvēlēties citu.",
+          "src": "5e5234cdfd"
+        },
+        "2": {
+          "text": "## Tablete ar divām lodēm\n\nUz tabletes ir attēlots viena lodes sadalījums divās pusēs, pa pusei katrai locei. Panelī redzamā puse ir ietverta riņķī. Panelī esošajā augšējā daļā pieskarieties **1** vai **2**, lai pārslēgtu visu paneli starp lodēm.",
+          "src": "740933889b"
+        },
+        "3": {
+          "text": "## Nomainīt vienu bumbu\n\nKad divas bumbas ir savienotas, **Mainīt bumbu** jautā, kuru bumbu nomainīt. Tikai tā bumba, kuru jūs izvēlaties, tiek atvienota; otra paliek savienota. Spēle, kas ir noritējusi, tiek apturēta.",
+          "src": "5957cac862"
+        },
+        "4": {
+          "text": "## Atvienojiet otro bumbu\n\nAtveriet paneli un pieskarieties **Atvienot otro bumbu**. Otrā bumba ir atvienota, un jūs atgriezieties pie spēles ar vienu bumbu. Izstiepšanās no spēles ar divām bumbām nenotrauj to; tā paliek savienota, līdz jūs to darīsiet vai aizvērsiet lietotni.",
+          "src": "eb0ce0cb48"
+        },
+        "5": {
+          "text": "## Ja spēles laikā tiek atvienota bumbiņa\n\nSpēle apturas un parāda, kura bumbiņa tika atvienota. Tā automātiski mēģina pieslēgties atpakaļ vairākas reizes. Ja tas neizdodas, pieskarieties pogai **Mēģināt savienot vēlreiz** vai izslēdziet spēli. Spēle nekad neturpinās, ja ir palikusi tikai viena bumbiņa.\n\nSkatīt arī [Divu bumbiņu sensori](help:two-ball-panels), [Vilciens](help:tug-of-war) un [Sensoru panelis](help:sensor-panel).",
+          "src": "b0da39e8dc"
+        }
+      },
+      "title": "Izmantojot divas bumbas",
+      "titleSrc": "fbe8913111"
+    },
+    "tug-of-war": {
+      "sections": {
+        "0": {
+          "text": "# Vilkšanas spēle\n\nDivu spēlētāju spēle, kas prasa divas savienotas bumbiņas. Atzīme uz virves atrodas ekrāna vidū. Tas spēlētājs, kurš spiež spēcīgāk, pārvieto to tuvāk savai līnijai.\n\n- Sākuma ekrānā pieskarieties **Izvēlēties 2. spēlētāju** un izvēlieties citu lietotāju vai viesi, pirms sākat spēli.\n- Katrs raUNDS sākas ar atskaitei 3-2-1. Atzīme pārvietojas vienmērīgi: jo lielāka ir atšķirība starp diviem spiešanas spēkiem, jo ātrāk tā pārvietojas. Vienādi spiešanas spēki to atstāj neizzudinot.\n- RaUNDS beidzas, kad atzīme sasniedz viena spēlētāja līniju, vai arī, kad beidzas laiks. Ja beidzas laiks, uzvar tas spēlētājs, kuram atzīme ir tuvāk.\n- Pēc katra raUNDS ir pārtraukums, pēc tam sākas nākamais raUNDS. Pirmais spēlētājs, kas uzvar norādīto raUNDS skaitu, uzvar spēlē.\n- Katra virves puse parāda šī spēlētāja vārdu, un raUNDS un spēles rezultāts tiek parādīts zem augšējās joslas. Liels **SPIEŠ!!!** teksts ar atskaitei parādās, kamēr jūs spiežat, un **PĀRTRAUKUMS** teksts ar atskaitei parādās starp raUNDS.\n- Treneris var mainīt spiešanas laiku, pārtraukuma laiku, nepieciešamo raUNDS skaitu un, \"Raw force\" režīmā, to, cik spēcīgi spiešana ietekmē virves kustību (**Neapstrādātā spēka kartēšana**) sadaļā **Iestatījumi**. Skatiet [Trenera iestatījumus](help:trainer-settings).\n- Ja kāda no bumbām atvienojas, spēle tiek apturēta, un tiek norādīta bumbas nosaukums, kas tika zaudēta. Spēle atsākas tikai tad, kad abas bumbiņas ir savienotas atkal.\n\nLai savienotu otro bumbu, atveriet sensora paneli un pieskarieties **Savienot otro bumbu**. Skatiet [Sensora panelis](help:sensor-panel).",
+          "src": "d78b0c8fcd"
+        }
+      },
+      "title": "Vilciens",
+      "titleSrc": "5228a636fd"
+    },
+    "bilateral-training": {
+      "sections": {
+        "0": {
+          "text": "# Divpusēna treniņa programma\n\nSpēle, kas paredzēta vienam spēlētājam, bet prasa divas savienotas bumbiņas, pa vienai katrai ķermeņa pusei. Abas puses strādā kopā vienā no četrām režīmiem.\n\n- Sākuma ekrānā piešķiriet katru bumbiņu noteiktajai ķermeņa daļai. Spēle sākas tikai tad, ja abas bumbiņas ir savienotas un piešķirtas.\n- Izvēlieties režīmu: **Ierakstīt un atkārtot** (viena puse veic virkni kustību, otra to atkārto), **Spogulis** (abas puses sinhronizē kustības, lai sasniegtu noteiktu mērķi), **Pamīšus** (puses veic kustības pēc kārtas) vai **Sekošana** (viena puse seko otras kustību intensitātei).\n- Ekrāns ir sadalīts divās daļās, pa vienai daļai katrai bumbiņai. Katra daļa parāda attiecīgo ķermeņa daļu un reaģē tikai uz savu bumbiņu.\n- Katram režīmam ir divi vingrinājumi; otrais ir grūtāks par pirmo.\n- Ja spiediena sliekšvārts ir iestatīts uz 0 režīmā **Iestatījumi**, visi režīmi izmanto tikai novirzību, un nav nepieciešams spiest. Skatiet [Trenera iestatījumus](help:trainer-settings).\n- Ja kāda no bumbiņām atvienojas, spēle apturas un parāda, kura bumbiņa tika atvienota.\n\nLai savienotu otro bumbiņu, atveriet sensora paneli un pieskarieties **Savienot otro bumbu**. Skatiet [Sensora panelis](help:sensor-panel).",
+          "src": "77ed284cb2"
+        }
+      },
+      "title": "Divpusēji apmācības",
+      "titleSrc": "5cf353787d"
+    },
+    "team-rocket": {
+      "sections": {
+        "0": {
+          "text": "# Team Rocket\n\nKopīgas spēles režīms diviem spēlētājiem, kas prasa divas savienotas bumbas. Kopīgi jūs virzāt raķeti caur tuneļa atverēm.\n\n- Sākuma ekrānā pieskarieties **Izvēlēties 2. spēlētāju** un izvēlieties citu lietotāju vai viesi, pirms sākat spēli.\n- Raķete pati pārvietojas pa tuneli. Spiediet **kopā**, lai tā saručotos un iekļūtu šaurajās atverēs, un atlaidiet **kopā**, lai savāktu monētas plašākajās vietās.\n- Raķete saručojas, kad abu spiedienu vidējais rādītājs pārsniedz trenera noteikto sliekšņa vērtību. Ja abi spiedieni ļoti atšķiras, raķete nosvērsies uz vājāka spēlētāja pusi.\n- Apakšējā rādītājs **Sinhronizācija** parāda, cik labi saskaņoti ir abi spiedieni. Kad jūs esat sinhronizēti (ne vairāk kā 20% atšķirība starp abiem spiedieniem un abi spēlētāji vismaz nedaudz spiež), jūsu rezultāts tiek dubultots. Ja neesat sinhronizēti, jūsu rezultāts tiek aprēķināts parasti: nekas nesalūz.\n- Ja raķete ir pārāk liela, lai iekļūtu šaurā atverē, tā palēninās.\n- Ir viens kopīgs rezultāts un viens kopīgs līmenis. Jauns līmenis sākas pēc tam, kad ir savākti pietiekami daudz punktu un pagājuši vismaz 30 sekundes, un tunelis kļūst ātrāks.\n- Rezultāts tiek saglabāts abiem spēlētājiem kā viena saistīta spēle.\n- Treneris var mainīt spiediena sliekšņa vērtību, atpūtas laiku, spiediena laiku un spēka režīmu sadaļā **Iestatījumi**. Skatiet [Trenera iestatījumi](help:trainer-settings).\n- Ja kāda no bumbām atvienojas, spēle tiek apturēta, un tiek norādīta bumba, kas tika zaudēta. Spēle atsākas tikai tad, kad abas bumbas ir savienotas atkal.\n\nLai savienotu otro bumbu, atveriet sensora paneli un pieskarieties **Savienot otro bumbu**. Skatiet [Sensora panelis](help:sensor-panel).",
+          "src": "83c3a1a1c1"
+        }
+      },
+      "title": "Team Rocket [[n]]",
+      "titleSrc": "92a3e20f8c"
+    },
+    "space-chase": {
+      "sections": {
+        "0": {
+          "text": "# Kosmosa sacīkstes\n\nSpēle, kas vienlaikus trenē divas lietas, bet tās saglabā atsevišķi: cik stingri jūs spiežat un cik stabili turat bumbu. Jūsu kosmosa kuģis lido no kreisās uz labo pusi cauri asteroīdu laukam, kamēr ienaidnieka kuģis seko aiz jums.\n\n- Izvēlieties ķermeņa daļu un pusi, tāpat kā jebkurā citā spēlē. Spēlei ir nepieciešams stipruma tests, tāpat kā citām spiediena spēlēm, bet tā izlaiž izvēli starp galdu/sienu un iestatījumu \"Nulles pozīcija\", jo tā neizmanto novirzīšanos.\n- Spiešana kontrolē ātrumu. Punktētā \"Mērķa spēka\" indikators uz spiediena joslas ir jūsu mērķis. Ja jūs spiežat uz to vai virs tā, jūsu dzinējs darbojas ar pilnu jaudu, un kuģis virzās uz priekšu. Ja jūs spiežat zem tā, dzinējs vājina, un ienaidnieks tuvojas ātrāk. Spiešana stiprāk, nekā norāda indikators, nedod papildu bonusu.\n- Stabilitāte kontrolē augstumu. Viena vadlīnija parāda trajektoriju, pa kuru jums jālidina. Jo mazāk stabila ir bumba, jo tālāk kuģis novirzās virs vai zem līnijas, un tieši šis novirzīšanās izraisa sadursmes ar asteroīdiem. Turiet bumbu neuzticīgi, lai paliktu uz līnijas. Gan jūsu, gan ienaidnieka kuģis ir attēloti lielā izmērā, lai tos būtu viegli novērot.\n- Zelta zvaigznes atrodas uz vadlīnijas, pa divām vienlaikus jūsu priekšā. Lidinie savu kuģi tieši pār vienu zvaigzni, lai to savāktu un saņemtu +100 punktus un signālu. Zvaigzne, kuru jūs palaidāt garām, vienkārši pārvietojas; tā nekad nevirzās uz jums.\n- Ienaidnieks nekad nešauj. Sadursme ar asteroīdu vai ienaidnieku parāda KĻŪMU, īsu kratīšanos un punktu zaudēšanu, un spēle turpinās. Īss pauzes periods pēc katras sadursmes novērš to, ka viena un tā pati kļūda atkārtoti atņem punktus.\n- Posmi un atpūta. Spēle tiek spēlēta posmos. Katrs posms ir noteikta ilguma statisks režīms, pēc tam seko atpūta. Atpūtas laikā ienaidnieks apstājas, nav iegūti vai zaudēti punkti, un jūs varat atbrīvot bumbu. Ekrāns kļūst tumšāks, parādās mirgojošs **ATPŪTA** zīme un atskaite, pēc tam spēle automātiski atsākas. Pēc pēdējā posma nav atpūtas, un rezultāti parādās, kad tas beidzas.\n- **Mainīga spēka režīms**. Kad jūsu treneris ieslēdz ierīci, \"Mērķa spēka\" indikators pārvietojas uz augšu un uz leju ap parasto līmeni katra posma laikā, tāpēc jums jāseko tam. Ienaidnieks un jūsu punkti vienmēr seko indikatora pašreizējai pozīcijai.\n- **Rezultāts** sastāv no četrām daļām: punkti par laiku, ko jūs pavadāt uz vai virs indikatora, punkti, kas zaudēti par katru sadursmi, bonuss par katru pabeigtu posmu un +100 par katru savāktu zelta zvaigzni.\n- **Rezultāti** parāda jūsu kopējo rezultātu un trīs procentus: izturību (posma laika daļu, ko jūs pavadījāt uz vai virs indikatora), stabilitāti (posma laika daļu, kurā bumba bija stabila) un stabilizēto veiktspēju (divu rādītāju vidējais). Progresa ziņojums parāda stabilizēto veiktspēju katrai sesijai, izmantojot **Fizisko spēļu rezultāti**.\n- Treneris var mainīt mērķa spēku, stabilitātes jutību, mainīgas spējas režīmu un tā diapazonu, posmu skaitu, turēšanas laiku un atpūtas laiku sadaļā **Iestatījumi**, vai izmantot iepriekš iestatītos režimus: \"Viegli\", \"Vidēji\", \"Grūti\" un \"Sprint\". Skatiet [Trenera iestatījumus](help:trainer-settings).",
+          "src": "6472d9ca02"
+        }
+      },
+      "title": "Kosmosa došavums",
+      "titleSrc": "c7994f0625"
+    }
+  }
+}

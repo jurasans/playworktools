@@ -1,0 +1,49 @@
+##
+# ComfyUI local image-generation service (RTX GPU, Docker).
+#
+# Built for generating the Memory Cards Match card illustrations (see
+# CLAUDE.md's S-38 stub), but generic enough for any local batch image-gen
+# need on this machine.
+#
+# Image: mmartial/comfyui-nvidia-docker — plain ComfyUI + CUDA, no bundled
+# auth wall (unlike ai-dock/comfyui, which layers its own login system on
+# top — unnecessary complexity for a single-user local box).
+#
+# "basedir" is populated by the image on first boot with ComfyUI's own
+# models/output/input/user folders — after the first `docker compose up`,
+# you'll see them appear under ./basedir/. Drop checkpoints into
+# basedir/models/checkpoints and LoRAs into basedir/models/loras.
+##
+services:
+  comfyui:
+    image: mmartial/comfyui-nvidia-docker:latest
+    container_name: playwork-comfyui
+    ports:
+      - "8188:8188"
+    volumes:
+      - ./run:/comfy/mnt
+      - ./basedir:/basedir
+    environment:
+      - WANTED_UID=1000
+      - WANTED_GID=1000
+      - BASE_DIRECTORY=/basedir
+      - SECURITY_LEVEL=normal
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: "no"
+
+# Pin this project's network to a private range. Without it Docker picks the
+# next free default subnet, and once the 172.x pool is used up that has been
+# 192.168.0.0/20 -- which swallows the whole home LAN (192.168.11.x/12.x), so
+# every container on this machine (e.g. the Tdarr node) loses access to
+# tyrion and the NAS while ComfyUI is up.
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 10.200.50.0/24

@@ -1,0 +1,11 @@
+{
+  "name": "playwork-spec-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Browser front-end for tools/spec/spec.mjs — read the spec, track stubs, answer open questions. Zero runtime dependencies.",
+  "scripts": {
+    "start": "node server.mjs",
+    "tunnel": "node tunnel.mjs"
+  }
+}

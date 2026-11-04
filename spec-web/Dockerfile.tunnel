@@ -1,0 +1,13 @@
+# The official cloudflare/cloudflared image is scratch-based — no shell, no
+# grep, no tee — which is exactly why the URL it prints is easy to lose in
+# `docker logs`: there's nothing in that image able to re-announce it.
+# Grab just the binary from the official image and run it from a real
+# (tiny) shell instead, via tunnel-entrypoint.sh.
+FROM cloudflare/cloudflared:latest AS cloudflared
+
+FROM alpine:3.20
+COPY --from=cloudflared /usr/local/bin/cloudflared /usr/local/bin/cloudflared
+COPY tunnel-entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

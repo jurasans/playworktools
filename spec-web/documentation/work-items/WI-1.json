@@ -1,0 +1,4877 @@
+{
+  "id": "WI-1",
+  "domain": "app",
+  "status": "done",
+  "title": "SPACE CHASE – Complete Game Specification (+6 more)",
+  "createdBy": "Tomer",
+  "createdAt": "2026-11-01T12:21:13.221Z",
+  "changes": [
+    {
+      "doc": "spec/games",
+      "title": "Games, rotation HUD, sensor mode",
+      "by": [
+        "Tomer"
+      ],
+      "hunks": [
+        {
+          "aStart": 398,
+          "bStart": 398,
+          "lines": [
+            {
+              "t": " ",
+              "s": "---"
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "-",
+              "s": "## Wobble Island (S-260)"
+            },
+            {
+              "t": "+",
+              "s": "# SPACE CHASE – Complete Game Specification"
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "-",
+              "s": "Balance game from body sway: `src/games/wobbleisland/` (`sway.ts` pure maths, `constants.ts`, `engine.ts`, `index.tsx`). The first game that reads **acceleration**."
+            },
+            {
+              "t": "+",
+              "s": "## 1. Game Overview"
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "-",
+              "s": "- **Registry flags:** `requiresStrengthTest: false` (no Pre-Game grip test gates it, `useGameSession` skips `test_required`, and the Take Test button is hidden), `requiresCalibration: false` (no Table/Wall picker, no Set Zero) and `streams: { acceleration: true }` only. `GameHost` subscribes `facade.acceleration$` just for games that declare it and writes `GameProps.accelerationRef(x, y, z)` in the active phases. Every game declares `streams` (see \"Stream contract per game\" in `docs/spec/sensor-architecture.md`)."
+            },
+            {
+              "t": "-",
+              "s": "- **Sway measure:** the engine's first 3 s of play are a still baseline (the mean reading, gravity included, so any resting orientation works); after that sway is the rolling 1 s RMS of the vector difference from the baseline, in g. Backends already emit g (Android/iOS/web: Sensor Fusion bias-corrected acceleration; Playwork BLE: raw accelerometer g; mock: tilt in g), so the adapter only needs the baseline subtraction. **Unverified on a real PLAYBALL** (stream rate and suitability are checked after the build, A2); rotation is not used as a second signal yet (A7)."
+            },
+            {
+              "t": "-",
+              "s": "- **Game:** the island rises while sway is under the limit and sinks gradually (faster the further over) otherwise; score is 10 points per second times the level times island height. Every 30 s the level rises and the limit tightens 10% (floor 40%). The sway limit is `GameConfig.swayLimitG` (trainer slider, 0.02-0.30 g) and each preset sets it (Easy 0.15, Medium 0.12, Hard 0.08, Sprint 0.05). Eyes open only, visual feedback only, no sound cue and no safety notice (A1/A4/A9/A11)."
+            },
+            {
+              "t": "-",
+              "s": "- **Body part and side:** the standard funnel selection is used and saved on the session as usual; there is no exercise-position setting, the physiotherapist defines the position outside the app (A8/A12)."
+            },
+            {
+              "t": "-",
+              "s": "- **Result:** `GameResult.stabilityRmsG` is the RMS sway over the whole session after the baseline (lower is steadier). The Progress Report has a **Balance** section (best-of-day, lower is better) with a note to compare only sessions in the same exercise position (A10)."
+            },
+            {
+              "t": "-",
+              "s": "- Music is a placeholder copy of the Asteroid loop. Manual article `wobble-island` (English only)."
+            },
+            {
+              "t": "+",
+              "s": "**Space Chase** is a 2D side-scrolling space arcade game designed for stabilized isometric strength training using the Smart PLAYBALL."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The player controls a spaceship traveling from left to right through space."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The game trains two independent physical abilities simultaneously:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "1. **Isometric Strength:** The player must generate and maintain a minimum target force using PLAYBALL."
+            },
+            {
+              "t": "+",
+              "s": "2. **Isometric Stability:** The player must maintain PLAYBALL stability to keep the spaceship aligned with its intended flight path."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The game must clearly distinguish between these two abilities:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Force controls horizontal spaceship speed."
+            },
+            {
+              "t": "+",
+              "s": "- Ball stability controls vertical spaceship movement and deviation from the intended flight path."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The player is chased by an enemy spaceship from behind and must navigate through asteroid fields."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The game is designed for rehabilitation patients and must be enjoyable, accessible, calm, and visually engaging without excessive stimulation."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The game supports different exercise types and body parts, including:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Hand grip and pressing exercises."
+            },
+            {
+              "t": "+",
+              "s": "- Wall press exercises."
+            },
+            {
+              "t": "+",
+              "s": "- Static squat exercises using a large PLAYBALL."
+            },
+            {
+              "t": "+",
+              "s": "- Other suitable isometric exercises using Smart PLAYBALL."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 2. Sensor Integration and Control Logic"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The game must use only the following two sensor measurements:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "1. Force."
+            },
+            {
+              "t": "+",
+              "s": "2. Accelerometer."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Do not use:"
+            },
+            {
+              "t": "+",
+              "s": "- Tilt."
+            },
+            {
+              "t": "+",
+              "s": "- Gyroscope."
+            },
+            {
+              "t": "+",
+              "s": "- Orientation."
+            },
+            {
+              "t": "+",
+              "s": "- Tilt-based calculations."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 2.1 Force – Horizontal Movement"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Force controls the spaceship's horizontal speed."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- When force is equal to or above the current Target Force, the spaceship's engine operates effectively and the ship moves forward faster."
+            },
+            {
+              "t": "+",
+              "s": "- Higher force may provide a greater speed advantage."
+            },
+            {
+              "t": "+",
+              "s": "- When force falls below the Target Force, the engine weakens and the enemy spaceship gradually gets closer."
+            },
+            {
+              "t": "+",
+              "s": "- Force must never control vertical movement or flight direction."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Target Force is a minimum threshold, not a force value that the patient must match exactly."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Any force equal to or above the Target Force satisfies the force requirement."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "There is no upper force limit for achievement."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 2.2 Accelerometer – Ball Stability and Vertical Movement"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The accelerometer measures movement and acceleration fluctuations of PLAYBALL."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "These measurements are used to estimate ball stability."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Stable PLAYBALL: the spaceship remains aligned with its intended flight path."
+            },
+            {
+              "t": "+",
+              "s": "- Unstable PLAYBALL: the spaceship deviates vertically from the intended flight path."
+            },
+            {
+              "t": "+",
+              "s": "- Greater instability produces greater vertical deviation."
+            },
+            {
+              "t": "+",
+              "s": "- When stability improves, the spaceship gradually returns toward the intended flight path."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Accelerometer data must not control horizontal speed."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Stability must not affect the score directly."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The actual accelerometer signal processing, calibration, filtering, stability classification, and mapping to spaceship movement must be determined by reviewing the real PLAYBALL sensor characteristics and available sensor data."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Do not invent arbitrary acceleration thresholds without validating them against actual PLAYBALL behavior."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 2.3 Strict Separation Between Inputs"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The separation between the two controls is essential:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "| Input | Controls | Does Not Control |"
+            },
+            {
+              "t": "+",
+              "s": "|---|---|---|"
+            },
+            {
+              "t": "+",
+              "s": "| Force | Horizontal speed | Vertical direction |"
+            },
+            {
+              "t": "+",
+              "s": "| Ball Stability | Vertical deviation from intended path | Horizontal speed |"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The game must preserve this separation throughout all gameplay modes and difficulty presets."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 3. Gameplay Environment"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 3.1 General Gameplay"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Landscape orientation."
+            },
+            {
+              "t": "+",
+              "s": "- 2D side-scrolling space environment."
+            },
+            {
+              "t": "+",
+              "s": "- The spaceship travels from left to right."
+            },
+            {
+              "t": "+",
+              "s": "- The background scrolls continuously."
+            },
+            {
+              "t": "+",
+              "s": "- The player's spaceship remains generally at a stable horizontal position on the screen."
+            },
+            {
+              "t": "+",
+              "s": "- An enemy spaceship follows the player from behind, on the left."
+            },
+            {
+              "t": "+",
+              "s": "- Asteroids appear ahead of the player throughout all stages."
+            },
+            {
+              "t": "+",
+              "s": "- The player must maintain sufficient force to escape the enemy and sufficient stability to navigate safely through the asteroid field."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The game must not feel like a shooter."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "There are no weapons, shooting mechanics, lasers, missiles, or projectiles."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 3.2 Player Spaceship"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The player controls a friendly, modern-looking spaceship."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Required visual states:"
+            },
+            {
+              "t": "+",
+              "s": "- Standard flight."
+            },
+            {
+              "t": "+",
+              "s": "- Normal engine animation."
+            },
+            {
+              "t": "+",
+              "s": "- High-speed engine animation."
+            },
+            {
+              "t": "+",
+              "s": "- Collision reaction."
+            },
+            {
+              "t": "+",
+              "s": "- Recovery after collision."
+            },
+            {
+              "t": "+",
+              "s": "- Optional subtle visual feedback when the spaceship deviates from its intended path."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The spaceship should be visually distinguishable from the enemy."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 3.3 Enemy Spaceship"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The enemy spaceship follows the player from behind."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Its behavior is controlled exclusively by the player's Force performance."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- When Force is at or above Target Force, the player gains distance from the enemy."
+            },
+            {
+              "t": "+",
+              "s": "- When Force falls below Target Force, the enemy gradually approaches."
+            },
+            {
+              "t": "+",
+              "s": "- The enemy must communicate the physical consequence of insufficient force clearly."
+            },
+            {
+              "t": "+",
+              "s": "- The enemy does not attack or fire weapons."
+            },
+            {
+              "t": "+",
+              "s": "- The enemy can only cause a collision by physically catching up with the player."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The enemy should be slightly larger or more intimidating than the player's spaceship, but not frightening."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 3.4 Enemy Collision"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "When the enemy catches the player:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "1. Trigger a short physical collision animation."
+            },
+            {
+              "t": "+",
+              "s": "2. Show a subtle screen shake."
+            },
+            {
+              "t": "+",
+              "s": "3. Display a clear FAULT indication."
+            },
+            {
+              "t": "+",
+              "s": "4. Play the Enemy Collision sound."
+            },
+            {
+              "t": "+",
+              "s": "5. Deduct points."
+            },
+            {
+              "t": "+",
+              "s": "6. Display a floating MINUS bubble showing the deducted points."
+            },
+            {
+              "t": "+",
+              "s": "7. Separate the spaceships."
+            },
+            {
+              "t": "+",
+              "s": "8. Allow the player to recover and continue the chase."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Collisions must never end the game or disqualify the patient."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Implement a Fault Cooldown mechanism to prevent repeated deductions from one sustained collision. The exact cooldown duration should be determined during implementation."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The spaceship should gradually recover after a collision."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 4. Intended Flight Path"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The game must display **one visible Intended Flight Path line** ahead of the player's spaceship at all times."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "This is an essential gameplay and rehabilitation feedback element."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 4.1 Purpose"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The line represents the desired flight trajectory."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "It provides the patient with an immediate visual reference for maintaining PLAYBALL stability."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 4.2 Behavior"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- The spaceship should normally remain aligned with the Intended Flight Path."
+            },
+            {
+              "t": "+",
+              "s": "- When PLAYBALL is stable, the spaceship stays on the line."
+            },
+            {
+              "t": "+",
+              "s": "- When PLAYBALL becomes unstable, the spaceship visibly deviates vertically away from the line."
+            },
+            {
+              "t": "+",
+              "s": "- Greater instability produces greater deviation."
+            },
+            {
+              "t": "+",
+              "s": "- When stability improves, the spaceship gradually returns toward the line."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The distance between the spaceship and the line visually communicates the degree of deviation."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 4.3 Visual Requirements"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Display one clear, continuous Intended Flight Path line ahead of the spaceship."
+            },
+            {
+              "t": "+",
+              "s": "- The line should extend sufficiently far ahead to communicate the upcoming route."
+            },
+            {
+              "t": "+",
+              "s": "- The line should guide the player through a safe route between asteroids."
+            },
+            {
+              "t": "+",
+              "s": "- Asteroids should be arranged so that deviation from the intended path can create collision risk."
+            },
+            {
+              "t": "+",
+              "s": "- The line must remain visible across all background environments."
+            },
+            {
+              "t": "+",
+              "s": "- HUD elements must not obscure the line."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "**Important:**"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Display only ONE intended flight path line."
+            },
+            {
+              "t": "+",
+              "s": "- Do not display a second line."
+            },
+            {
+              "t": "+",
+              "s": "- Do not display a separate actual-flight-path line."
+            },
+            {
+              "t": "+",
+              "s": "- Do not show two simultaneous trajectories."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The Intended Flight Path is a visual guide only. It must not override or control the spaceship's movement, which remains determined by accelerometer-based stability input."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The mockup must demonstrate:"
+            },
+            {
+              "t": "+",
+              "s": "1. The spaceship aligned with the Intended Flight Path during stable PLAYBALL operation."
+            },
+            {
+              "t": "+",
+              "s": "2. The same spaceship visibly deviating from that same line due to instability."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 5. Asteroids and Obstacles"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Asteroids are a permanent gameplay element."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "They must appear throughout every stage and every background environment."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 5.1 Asteroid Behavior"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Asteroids appear ahead of the player."
+            },
+            {
+              "t": "+",
+              "s": "- They vary in size, shape, and spacing."
+            },
+            {
+              "t": "+",
+              "s": "- Different arrangements should create a visually interesting route."
+            },
+            {
+              "t": "+",
+              "s": "- The intended flight path should lead through safe passages between asteroids."
+            },
+            {
+              "t": "+",
+              "s": "- The number of simultaneously visible asteroids should remain limited to avoid visual clutter."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 5.2 Stability and Asteroid Collision"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The relationship between stability and asteroid collisions must be clear:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Stable PLAYBALL keeps the spaceship aligned with the intended path."
+            },
+            {
+              "t": "+",
+              "s": "- Unstable PLAYBALL causes vertical deviation."
+            },
+            {
+              "t": "+",
+              "s": "- Deviation may cause the spaceship to collide with an asteroid."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The player should be able to understand that maintaining stability helps avoid obstacles."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 5.3 Asteroid Collision Feedback"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "When the spaceship collides with an asteroid:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "1. Trigger a short impact animation."
+            },
+            {
+              "t": "+",
+              "s": "2. Show a subtle screen shake."
+            },
+            {
+              "t": "+",
+              "s": "3. Play the Asteroid Collision sound."
+            },
+            {
+              "t": "+",
+              "s": "4. Display a clear FAULT indication."
+            },
+            {
+              "t": "+",
+              "s": "5. Deduct points."
+            },
+            {
+              "t": "+",
+              "s": "6. Display a floating MINUS bubble showing the deducted points."
+            },
+            {
+              "t": "+",
+              "s": "7. Continue gameplay."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Asteroid collisions must never end the game."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The player must always have an opportunity to recover."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 6. Target Force"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Target Force is the minimum force required to satisfy the isometric strength requirement."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 6.1 Calculation"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Target Force is calculated using the patient's strength test result and the selected Force Threshold."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Formula:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Target Force = Strength Test Result × Force Threshold / 100"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Example:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Strength Test Result: 10 kg"
+            },
+            {
+              "t": "+",
+              "s": "- Force Threshold: 50%"
+            },
+            {
+              "t": "+",
+              "s": "- Target Force: 5 kg"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 6.2 Force Threshold Setting"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Range: 10%–100%."
+            },
+            {
+              "t": "+",
+              "s": "- Default: 50%."
+            },
+            {
+              "t": "+",
+              "s": "- Control: Slider."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The settings screen should clearly display:"
+            },
+            {
+              "t": "+",
+              "s": "- Selected Force Threshold."
+            },
+            {
+              "t": "+",
+              "s": "- Calculated Target Force."
+            },
+            {
+              "t": "+",
+              "s": "- Actual Force feedback."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 6.3 Force Feedback"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The game must clearly communicate whether the patient is:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Below Target Force."
+            },
+            {
+              "t": "+",
+              "s": "- At or above Target Force."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The spaceship's engine and the enemy's distance should provide additional visual feedback."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The patient should not be required to match the exact Target Force. Any force equal to or greater than the target satisfies the requirement."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 7. Stability Threshold"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "A separate setting named **Stability Threshold** controls the sensitivity of spaceship movement to PLAYBALL instability."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 7.1 Setting"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Range: 0–100."
+            },
+            {
+              "t": "+",
+              "s": "- Default: 50."
+            },
+            {
+              "t": "+",
+              "s": "- Control: Slider."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 7.2 Behavior"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- 0: Stability requirement disabled. Accelerometer movement does not cause spaceship deviation."
+            },
+            {
+              "t": "+",
+              "s": "- 1–99: Increasing sensitivity and proportional response to instability."
+            },
+            {
+              "t": "+",
+              "s": "- 100: Maximum sensitivity. Relatively small movements cause stronger deviation."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The actual signal processing, filtering, calibration, and mapping must be determined by Claude using real PLAYBALL sensor data."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The Stability Threshold must be independent of the Force Threshold."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Changing the Stability Threshold must not affect horizontal speed or Target Force."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 8. Variable Force Mode"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Variable Force Mode introduces changing Target Force requirements during gameplay."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 8.1 Setting"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Toggle: ON/OFF."
+            },
+            {
+              "t": "+",
+              "s": "- Default: OFF."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 8.2 Variable Force Range"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "When Variable Force Mode is ON, the Target Force changes randomly during each active stage based on the baseline Target Force."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Setting:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Range: ±10% to ±50%."
+            },
+            {
+              "t": "+",
+              "s": "- Default: ±20%."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Example:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Baseline Target Force: 10 kg."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Variable Force Range: ±20%."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The changing Target Force may vary between 8 kg and 12 kg."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 8.3 Gameplay Behavior"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- The player must remain at or above the currently displayed Target Force."
+            },
+            {
+              "t": "+",
+              "s": "- The current Target Force must be clearly visible at all times."
+            },
+            {
+              "t": "+",
+              "s": "- The force meter must reflect the current target."
+            },
+            {
+              "t": "+",
+              "s": "- The enemy's behavior must respond to the current Target Force."
+            },
+            {
+              "t": "+",
+              "s": "- Stability continues to control vertical movement independently."
+            },
+            {
+              "t": "+",
+              "s": "- The scoring system must compare actual Force against the current Target Force at each moment."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Claude should determine the appropriate frequency and transition behavior for changing the target."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Transitions should be smooth and predictable rather than abrupt."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 9. Stages, Exercise Duration, and Rest Periods"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 9.1 General Settings"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "| Setting | Range | Default |"
+            },
+            {
+              "t": "+",
+              "s": "|---|---|---|"
+            },
+            {
+              "t": "+",
+              "s": "| Number of Stages | 1–10 | 5 |"
+            },
+            {
+              "t": "+",
+              "s": "| Isometric Hold Duration per Stage | 20–180 seconds | 20 seconds |"
+            },
+            {
+              "t": "+",
+              "s": "| Rest Duration Between Stages | 5–30 seconds | 10 seconds |"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 9.2 Stage Progression"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Each stage consists of a fixed active exercise period."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The game displays:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "STAGE 3 / 5"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The stage timer counts down during the active exercise period."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The active stage duration is fixed."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "If Force falls below Target Force, the stage timer continues running. It must not pause simply because the patient is below target."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Only time spent at or above Target Force contributes to Isometric Endurance and force-related points."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 9.3 Rest Periods"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Between stages:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Display a large, clearly visible rest countdown."
+            },
+            {
+              "t": "+",
+              "s": "- Allow the patient to release or relax PLAYBALL."
+            },
+            {
+              "t": "+",
+              "s": "- The enemy stops chasing."
+            },
+            {
+              "t": "+",
+              "s": "- No points are earned."
+            },
+            {
+              "t": "+",
+              "s": "- No points are deducted."
+            },
+            {
+              "t": "+",
+              "s": "- The player is not expected to maintain force or stability."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "There is no rest period after the final stage."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "After the final stage, display the Results Screen."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 10. Background Environments"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The game should feature five visually distinct space environments, progressing across up to ten stages."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "| Stages | Environment |"
+            },
+            {
+              "t": "+",
+              "s": "|---|---|"
+            },
+            {
+              "t": "+",
+              "s": "| 1–2 | Dark blue space with stars |"
+            },
+            {
+              "t": "+",
+              "s": "| 3–4 | Space with planets and nebulae |"
+            },
+            {
+              "t": "+",
+              "s": "| 5–6 | Purple space with asteroid belts |"
+            },
+            {
+              "t": "+",
+              "s": "| 7–8 | Deep-space environment with different color tones |"
+            },
+            {
+              "t": "+",
+              "s": "| 9–10 | Distant deep space, dark blue and turquoise, distant stars and subtle galaxy elements |"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### Requirements"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Each environment group must be visually distinguishable."
+            },
+            {
+              "t": "+",
+              "s": "- Transitions between environments should be smooth and gradual."
+            },
+            {
+              "t": "+",
+              "s": "- Use layered parallax scrolling to create depth."
+            },
+            {
+              "t": "+",
+              "s": "- Background elements should remain subtle."
+            },
+            {
+              "t": "+",
+              "s": "- Asteroids must always be present, regardless of the background environment."
+            },
+            {
+              "t": "+",
+              "s": "- The Intended Flight Path must remain visible in every environment."
+            },
+            {
+              "t": "+",
+              "s": "- Background changes are cosmetic only."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Background environments must not change:"
+            },
+            {
+              "t": "+",
+              "s": "- Gameplay mechanics."
+            },
+            {
+              "t": "+",
+              "s": "- Sensor behavior."
+            },
+            {
+              "t": "+",
+              "s": "- Difficulty."
+            },
+            {
+              "t": "+",
+              "s": "- HUD layout."
+            },
+            {
+              "t": "+",
+              "s": "- Scoring rules."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "If fewer than ten stages are selected, only the corresponding environments should appear."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 11. Scoring System"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The scoring system consists of exactly three elements."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 11.1 Time Above Target Force"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Points are awarded for active exercise time during which:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Force >= Current Target Force"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The longer the patient maintains force at or above Target Force, the more points are earned."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "No force-related points are awarded when Force is below Target Force."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "When Variable Force Mode is enabled, scoring must compare actual Force against the current Target Force at each moment."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 11.2 Collision Penalties"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Every collision with an asteroid or enemy spaceship deducts points."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "After each collision:"
+            },
+            {
+              "t": "+",
+              "s": "- Display a FAULT indication."
+            },
+            {
+              "t": "+",
+              "s": "- Display a floating MINUS bubble with the deducted amount."
+            },
+            {
+              "t": "+",
+              "s": "- Apply the appropriate score deduction."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Claude should determine the exact deduction values and ensure they remain consistent throughout the game."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 11.3 Stage Completion Bonus"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Award a bonus for each successfully completed stage."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "No stage completion bonus is awarded for an incomplete stage."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 11.4 Scoring Restrictions"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Stability does not directly affect the score."
+            },
+            {
+              "t": "+",
+              "s": "- There is no direct score penalty for instability."
+            },
+            {
+              "t": "+",
+              "s": "- Instability affects spaceship direction and collision risk only."
+            },
+            {
+              "t": "+",
+              "s": "- No hidden bonuses or additional scoring categories are permitted."
+            },
+            {
+              "t": "+",
+              "s": "- The scoring formula must remain identical across all difficulty presets."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 12. Difficulty Presets"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Use the existing PLAYWORK difficulty preset conventions:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Easy"
+            },
+            {
+              "t": "+",
+              "s": "- Medium"
+            },
+            {
+              "t": "+",
+              "s": "- Hard"
+            },
+            {
+              "t": "+",
+              "s": "- Sprint"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Medium is the standard/default preset."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 12.1 Preset Configuration"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "| Setting | Easy | Medium | Hard | Sprint |"
+            },
+            {
+              "t": "+",
+              "s": "|---|---:|---:|---:|---:|"
+            },
+            {
+              "t": "+",
+              "s": "| Force Threshold | 35% | 50% | 65% | 80% |"
+            },
+            {
+              "t": "+",
+              "s": "| Stability Threshold | 30 | 50 | 70 | 70 |"
+            },
+            {
+              "t": "+",
+              "s": "| Isometric Hold Duration | 20 sec | 20 sec | 30 sec | 20 sec |"
+            },
+            {
+              "t": "+",
+              "s": "| Rest Duration | 20 sec | 10 sec | 10 sec | 5 sec |"
+            },
+            {
+              "t": "+",
+              "s": "| Number of Stages | 4 | 5 | 6 | 8 |"
+            },
+            {
+              "t": "+",
+              "s": "| Variable Force Mode | OFF | OFF | OFF | OFF |"
+            },
+            {
+              "t": "+",
+              "s": "| Variable Force Range | ±20% | ±20% | ±20% | ±20% |"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 12.2 Preset Behavior"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Selecting a preset automatically populates the corresponding settings."
+            },
+            {
+              "t": "+",
+              "s": "- The user can manually adjust any setting after selecting a preset."
+            },
+            {
+              "t": "+",
+              "s": "- A manually modified configuration should no longer be treated as an unchanged preset configuration."
+            },
+            {
+              "t": "+",
+              "s": "- Variable Force Mode is OFF by default for all presets."
+            },
+            {
+              "t": "+",
+              "s": "- The therapist can manually enable Variable Force Mode."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 12.3 Difficulty Intent"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "**Easy**"
+            },
+            {
+              "t": "+",
+              "s": "- Lower force requirement."
+            },
+            {
+              "t": "+",
+              "s": "- Lower stability sensitivity."
+            },
+            {
+              "t": "+",
+              "s": "- Longer rest periods."
+            },
+            {
+              "t": "+",
+              "s": "- Fewer stages."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "**Medium**"
+            },
+            {
+              "t": "+",
+              "s": "- Standard difficulty."
+            },
+            {
+              "t": "+",
+              "s": "- Balanced force and stability requirements."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "**Hard**"
+            },
+            {
+              "t": "+",
+              "s": "- Higher force requirement."
+            },
+            {
+              "t": "+",
+              "s": "- Higher stability sensitivity."
+            },
+            {
+              "t": "+",
+              "s": "- Longer active holds."
+            },
+            {
+              "t": "+",
+              "s": "- More stages."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "**Sprint**"
+            },
+            {
+              "t": "+",
+              "s": "- High force requirement."
+            },
+            {
+              "t": "+",
+              "s": "- High stability sensitivity."
+            },
+            {
+              "t": "+",
+              "s": "- Shorter active holds."
+            },
+            {
+              "t": "+",
+              "s": "- Shorter rest periods."
+            },
+            {
+              "t": "+",
+              "s": "- More stages."
+            },
+            {
+              "t": "+",
+              "s": "- High-intensity experience."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Difficulty presets change the exercise challenge, not the definitions of the clinical results."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 13. Results Screen and Clinical Metrics"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The Results Screen should be concise and display only the game-specific results."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 13.1 Total Score"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The final score, including:"
+            },
+            {
+              "t": "+",
+              "s": "- Points earned for time above Target Force."
+            },
+            {
+              "t": "+",
+              "s": "- Collision penalties."
+            },
+            {
+              "t": "+",
+              "s": "- Stage completion bonuses."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 13.2 Isometric Endurance (%)"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The percentage of active exercise time during which Force was equal to or above the current Target Force."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Formula:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Isometric Endurance ="
+            },
+            {
+              "t": "+",
+              "s": "(Time Above Target Force / Total Active Exercise Time) × 100"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Rest periods are excluded."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "When Variable Force Mode is enabled, actual Force must be compared against the current Target Force at each moment."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 13.3 Isometric Stability (%)"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The percentage of active exercise time during which PLAYBALL remained within the acceptable stability range defined by the selected Stability Threshold."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Rest periods are excluded."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Claude must determine the accelerometer processing and stability classification using actual PLAYBALL sensor data."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 13.4 Stabilized Isometric Performance (%)"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "A combined metric representing the patient's ability to generate sufficient isometric force while maintaining PLAYBALL stability."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Formula:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Stabilized Isometric Performance ="
+            },
+            {
+              "t": "+",
+              "s": "(Isometric Endurance + Isometric Stability) / 2"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Both metrics have equal weight."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "This is a summary tracking metric and must not be presented as a clinically validated scale."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 13.5 Standard PLAYWORK Session Metadata"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Use the existing PLAYWORK session metadata conventions:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Game Name."
+            },
+            {
+              "t": "+",
+              "s": "- Date & Time."
+            },
+            {
+              "t": "+",
+              "s": "- Treated Body Part."
+            },
+            {
+              "t": "+",
+              "s": "- Session Duration."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Do not add separate result-screen fields for:"
+            },
+            {
+              "t": "+",
+              "s": "- Therapist name."
+            },
+            {
+              "t": "+",
+              "s": "- Patient name."
+            },
+            {
+              "t": "+",
+              "s": "- Exercise configuration."
+            },
+            {
+              "t": "+",
+              "s": "- Collision counts."
+            },
+            {
+              "t": "+",
+              "s": "- Raw acceleration data."
+            },
+            {
+              "t": "+",
+              "s": "- Stage-by-stage performance."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Retain any settings required to interpret clinical results through the existing PLAYWORK session architecture, without adding unnecessary result-screen fields."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 14. HUD and User Interface"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The HUD should be clean, readable, and appropriate for rehabilitation patients."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Required elements:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "1. Current Stage / Total Stages."
+            },
+            {
+              "t": "+",
+              "s": "2. Stage countdown timer."
+            },
+            {
+              "t": "+",
+              "s": "3. Current Target Force."
+            },
+            {
+              "t": "+",
+              "s": "4. Actual Force feedback."
+            },
+            {
+              "t": "+",
+              "s": "5. Clear indication of whether Force is above or below target."
+            },
+            {
+              "t": "+",
+              "s": "6. Current Score."
+            },
+            {
+              "t": "+",
+              "s": "7. Enemy distance or pursuit indicator."
+            },
+            {
+              "t": "+",
+              "s": "8. Optional visual stability feedback."
+            },
+            {
+              "t": "+",
+              "s": "9. Rest countdown."
+            },
+            {
+              "t": "+",
+              "s": "10. FAULT feedback."
+            },
+            {
+              "t": "+",
+              "s": "11. Floating MINUS bubble showing collision deductions."
+            },
+            {
+              "t": "+",
+              "s": "12. One visible Intended Flight Path line ahead of the spaceship."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### HUD Requirements"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Target Force must always be visible, especially when Variable Force Mode is ON."
+            },
+            {
+              "t": "+",
+              "s": "- The Intended Flight Path must not be obscured by HUD elements."
+            },
+            {
+              "t": "+",
+              "s": "- Avoid overcrowding."
+            },
+            {
+              "t": "+",
+              "s": "- Use clear typography and readable indicators."
+            },
+            {
+              "t": "+",
+              "s": "- Do not rely exclusively on color to communicate status."
+            },
+            {
+              "t": "+",
+              "s": "- Provide sufficient contrast."
+            },
+            {
+              "t": "+",
+              "s": "- Use existing PLAYWORK UI conventions wherever possible."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 15. Visual Art Direction"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 15.1 Overall Style"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Create a modern, polished 2D space arcade experience."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The visual style should be:"
+            },
+            {
+              "t": "+",
+              "s": "- Calm."
+            },
+            {
+              "t": "+",
+              "s": "- Inviting."
+            },
+            {
+              "t": "+",
+              "s": "- Accessible."
+            },
+            {
+              "t": "+",
+              "s": "- Enjoyable."
+            },
+            {
+              "t": "+",
+              "s": "- Modern."
+            },
+            {
+              "t": "+",
+              "s": "- Suitable for rehabilitation patients."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "This is not an intense shooter game."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 15.2 Color Palette"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Use:"
+            },
+            {
+              "t": "+",
+              "s": "- Deep navy."
+            },
+            {
+              "t": "+",
+              "s": "- Soft blue."
+            },
+            {
+              "t": "+",
+              "s": "- Muted purple."
+            },
+            {
+              "t": "+",
+              "s": "- Subtle turquoise."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Brighter colors should be reserved for important gameplay elements and feedback."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 15.3 Player Spaceship"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Friendly, modern silhouette."
+            },
+            {
+              "t": "+",
+              "s": "- Turquoise and blue color palette."
+            },
+            {
+              "t": "+",
+              "s": "- Clearly facing right."
+            },
+            {
+              "t": "+",
+              "s": "- Easily distinguishable from the enemy."
+            },
+            {
+              "t": "+",
+              "s": "- Clear engine animation."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 15.4 Enemy Spaceship"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Distinguishable silhouette."
+            },
+            {
+              "t": "+",
+              "s": "- Muted orange or red accents."
+            },
+            {
+              "t": "+",
+              "s": "- Slightly larger or more intimidating than the player ship."
+            },
+            {
+              "t": "+",
+              "s": "- Not frightening."
+            },
+            {
+              "t": "+",
+              "s": "- No weapons."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 15.5 Asteroids"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Muted gray-blue and purple tones."
+            },
+            {
+              "t": "+",
+              "s": "- Different sizes and shapes."
+            },
+            {
+              "t": "+",
+              "s": "- Limited number visible simultaneously."
+            },
+            {
+              "t": "+",
+              "s": "- Optional slow rotation."
+            },
+            {
+              "t": "+",
+              "s": "- Consistent visual style across environments."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 15.6 Intended Flight Path"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- One clear visual line."
+            },
+            {
+              "t": "+",
+              "s": "- Consistent visual language across all environments."
+            },
+            {
+              "t": "+",
+              "s": "- Visible ahead of the spaceship."
+            },
+            {
+              "t": "+",
+              "s": "- High enough contrast to remain readable against all backgrounds."
+            },
+            {
+              "t": "+",
+              "s": "- Must clearly communicate the desired trajectory."
+            },
+            {
+              "t": "+",
+              "s": "- No second path line or actual trajectory line."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 15.7 Animation and Accessibility"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Smooth and gradual movement."
+            },
+            {
+              "t": "+",
+              "s": "- Controlled engine animation."
+            },
+            {
+              "t": "+",
+              "s": "- Optional subtle asteroid rotation."
+            },
+            {
+              "t": "+",
+              "s": "- No rapid transitions."
+            },
+            {
+              "t": "+",
+              "s": "- No excessive particles."
+            },
+            {
+              "t": "+",
+              "s": "- No flashing effects."
+            },
+            {
+              "t": "+",
+              "s": "- No strobing."
+            },
+            {
+              "t": "+",
+              "s": "- No excessive motion."
+            },
+            {
+              "t": "+",
+              "s": "- No distracting animations."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Collision effects should be short and controlled, using subtle sparks or particles and brief screen shake."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "FAULT indicators should be clear but not aggressive or flashing."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 16. Sound Design"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Use only the following four sound assets."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 16.1 Asteroid Collision / FAULT"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Plays when the player collides with an asteroid."
+            },
+            {
+              "t": "+",
+              "s": "- Clearly communicates a fault."
+            },
+            {
+              "t": "+",
+              "s": "- Short and controlled."
+            },
+            {
+              "t": "+",
+              "s": "- Not startling."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 16.2 Enemy Collision / FAULT"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Plays when the enemy catches and collides with the player."
+            },
+            {
+              "t": "+",
+              "s": "- Clearly distinguishable from the asteroid collision sound."
+            },
+            {
+              "t": "+",
+              "s": "- Short and controlled."
+            },
+            {
+              "t": "+",
+              "s": "- Not startling."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 16.3 Stage Completion Sound"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Short, pleasant completion sound."
+            },
+            {
+              "t": "+",
+              "s": "- Positive but not over-celebratory."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 16.4 Rest / Countdown Sound"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Subtle cue when entering a rest period and/or when the countdown ends."
+            },
+            {
+              "t": "+",
+              "s": "- Gentle and unobtrusive."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### Sound Restrictions"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Do not add:"
+            },
+            {
+              "t": "+",
+              "s": "- Engine sounds."
+            },
+            {
+              "t": "+",
+              "s": "- High-speed engine sounds."
+            },
+            {
+              "t": "+",
+              "s": "- Separate generic FAULT sound."
+            },
+            {
+              "t": "+",
+              "s": "- Decorative sound effects."
+            },
+            {
+              "t": "+",
+              "s": "- Additional background music or sound assets."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "All sounds must be suitable for rehabilitation patients."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Use existing PLAYWORK sound management and volume conventions."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 17. Required Graphics and Audio Assets"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 17.1 Player Spaceship"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Required states:"
+            },
+            {
+              "t": "+",
+              "s": "- Standard flight."
+            },
+            {
+              "t": "+",
+              "s": "- Standard engine."
+            },
+            {
+              "t": "+",
+              "s": "- High-speed engine."
+            },
+            {
+              "t": "+",
+              "s": "- Collision reaction."
+            },
+            {
+              "t": "+",
+              "s": "- Recovery after collision."
+            },
+            {
+              "t": "+",
+              "s": "- Optional subtle instability feedback."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 17.2 Enemy Spaceship"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Required states:"
+            },
+            {
+              "t": "+",
+              "s": "- Standard pursuit."
+            },
+            {
+              "t": "+",
+              "s": "- Closing distance."
+            },
+            {
+              "t": "+",
+              "s": "- Collision."
+            },
+            {
+              "t": "+",
+              "s": "- Separation and recovery."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 17.3 Asteroids"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- At least five different asteroid variations."
+            },
+            {
+              "t": "+",
+              "s": "- Different shapes and sizes."
+            },
+            {
+              "t": "+",
+              "s": "- Transparent backgrounds."
+            },
+            {
+              "t": "+",
+              "s": "- Optional slow rotation."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 17.4 Background Environments"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Five environment groups covering up to ten stages."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Each group should include:"
+            },
+            {
+              "t": "+",
+              "s": "- Seamless scrolling background."
+            },
+            {
+              "t": "+",
+              "s": "- Parallax layers."
+            },
+            {
+              "t": "+",
+              "s": "- Stars."
+            },
+            {
+              "t": "+",
+              "s": "- Relevant planets, nebulae, asteroid belts, or galaxy elements."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 17.5 Intended Flight Path"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- One reusable visual line."
+            },
+            {
+              "t": "+",
+              "s": "- Implement as a gameplay/UI element rather than separate image assets for every stage."
+            },
+            {
+              "t": "+",
+              "s": "- Must work across all five background environments."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 17.6 Engine Visual Effects"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Standard engine flame."
+            },
+            {
+              "t": "+",
+              "s": "- High-speed engine flame."
+            },
+            {
+              "t": "+",
+              "s": "- Subtle visual trail."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "These are visual effects only. Do not add engine sound assets."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 17.7 Collision Effects"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Separate visual effects for:"
+            },
+            {
+              "t": "+",
+              "s": "- Asteroid collision."
+            },
+            {
+              "t": "+",
+              "s": "- Enemy collision."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Include:"
+            },
+            {
+              "t": "+",
+              "s": "- Short impact animation."
+            },
+            {
+              "t": "+",
+              "s": "- Restrained sparks or particles."
+            },
+            {
+              "t": "+",
+              "s": "- Reusable FAULT visual."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 17.8 UI Assets"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Stage progress."
+            },
+            {
+              "t": "+",
+              "s": "- Force meter."
+            },
+            {
+              "t": "+",
+              "s": "- Target Force indicator."
+            },
+            {
+              "t": "+",
+              "s": "- Score."
+            },
+            {
+              "t": "+",
+              "s": "- Enemy distance indicator."
+            },
+            {
+              "t": "+",
+              "s": "- Rest countdown."
+            },
+            {
+              "t": "+",
+              "s": "- Floating MINUS bubble."
+            },
+            {
+              "t": "+",
+              "s": "- FAULT indicator."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 17.9 Audio Assets"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Only the four sound assets defined in Section 16."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Do not embed text in image assets. All text must be rendered through the UI."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 18. Technical and Implementation Requirements"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 18.1 Existing PLAYWORK Architecture"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Before implementation, review the existing PLAYWORK architecture and conventions."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Specifically review:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "1. PLAYBALL sensor integration and data access."
+            },
+            {
+              "t": "+",
+              "s": "2. Force measurement and calibration."
+            },
+            {
+              "t": "+",
+              "s": "3. Accelerometer data access and processing."
+            },
+            {
+              "t": "+",
+              "s": "4. Game settings and difficulty presets."
+            },
+            {
+              "t": "+",
+              "s": "5. Game session and results data structures."
+            },
+            {
+              "t": "+",
+              "s": "6. Scoring and score display."
+            },
+            {
+              "t": "+",
+              "s": "7. Sound management and volume conventions."
+            },
+            {
+              "t": "+",
+              "s": "8. Responsive UI and smartphone/tablet compatibility."
+            },
+            {
+              "t": "+",
+              "s": "9. Game lifecycle, stages, timers, and rest periods."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 18.2 Architecture Principles"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Reuse existing PLAYWORK components and services."
+            },
+            {
+              "t": "+",
+              "s": "- Reuse the existing game architecture and rendering engine."
+            },
+            {
+              "t": "+",
+              "s": "- Do not introduce a new game engine solely for Space Chase."
+            },
+            {
+              "t": "+",
+              "s": "- Avoid duplicate infrastructure."
+            },
+            {
+              "t": "+",
+              "s": "- Avoid unnecessary architecture changes."
+            },
+            {
+              "t": "+",
+              "s": "- Isolate game-specific implementation where appropriate."
+            },
+            {
+              "t": "+",
+              "s": "- Avoid shared-system changes that could affect other games."
+            },
+            {
+              "t": "+",
+              "s": "- If an existing convention conflicts with this specification, identify the conflict before making architecture changes."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 18.3 Sensor Integration"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Use existing PLAYBALL sensor integration."
+            },
+            {
+              "t": "+",
+              "s": "- Use Force and Accelerometer only."
+            },
+            {
+              "t": "+",
+              "s": "- Preserve the strict separation between horizontal speed and vertical stability control."
+            },
+            {
+              "t": "+",
+              "s": "- Do not introduce tilt, gyroscope, or orientation-based logic."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 18.4 Performance and Assets"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Optimize graphics and animations for smooth performance on supported mobile devices."
+            },
+            {
+              "t": "+",
+              "s": "- Use SVG for simple scalable UI elements."
+            },
+            {
+              "t": "+",
+              "s": "- Use transparent PNG or WebP for complex sprites."
+            },
+            {
+              "t": "+",
+              "s": "- Use sprite sheets where appropriate."
+            },
+            {
+              "t": "+",
+              "s": "- Maintain consistent frame dimensions and animation timing."
+            },
+            {
+              "t": "+",
+              "s": "- Avoid excessive transparent padding around sprites."
+            },
+            {
+              "t": "+",
+              "s": "- Do not embed text in images."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### 18.5 Device Compatibility"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Support smartphones and tablets using the existing PLAYWORK cross-device compatibility and responsive UI conventions."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Do not introduce a separate device compatibility system or new layout conventions."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 19. Development Workflow"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Follow this development workflow."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### Step 1 – Architecture Review"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Review the existing PLAYWORK architecture and identify the components and conventions that should be reused."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Do not begin implementation before understanding the existing sensor integration, game lifecycle, scoring, results, and UI architecture."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### Step 2 – Full-Screen Gameplay Mockup"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Create a full-screen visual mockup showing:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Player spaceship."
+            },
+            {
+              "t": "+",
+              "s": "- Enemy spaceship."
+            },
+            {
+              "t": "+",
+              "s": "- Scrolling space background."
+            },
+            {
+              "t": "+",
+              "s": "- Asteroids."
+            },
+            {
+              "t": "+",
+              "s": "- One Intended Flight Path line ahead of the spaceship."
+            },
+            {
+              "t": "+",
+              "s": "- Main HUD."
+            },
+            {
+              "t": "+",
+              "s": "- Force meter."
+            },
+            {
+              "t": "+",
+              "s": "- Target Force."
+            },
+            {
+              "t": "+",
+              "s": "- Actual Force feedback."
+            },
+            {
+              "t": "+",
+              "s": "- Score."
+            },
+            {
+              "t": "+",
+              "s": "- Stage timer."
+            },
+            {
+              "t": "+",
+              "s": "- Enemy distance indicator."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The mockup must demonstrate two states:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "1. Stable PLAYBALL: spaceship aligned with the Intended Flight Path."
+            },
+            {
+              "t": "+",
+              "s": "2. Unstable PLAYBALL: spaceship visibly deviating from the same Intended Flight Path."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Do not display two path lines."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### Step 3 – Background Environment Examples"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Create visual examples of all five background environment groups covering the ten stages."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Verify that the Intended Flight Path remains visible and that asteroids are present in every environment."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### Step 4 – Visual Review and Approval"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Present the mockups and background environment examples for review."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Do not produce the complete asset set or begin full implementation until the visual direction is approved."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### Step 5 – Asset Production and Implementation"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "After approval:"
+            },
+            {
+              "t": "+",
+              "s": "- Produce the complete graphics asset set."
+            },
+            {
+              "t": "+",
+              "s": "- Produce the four required sound assets."
+            },
+            {
+              "t": "+",
+              "s": "- Implement the gameplay."
+            },
+            {
+              "t": "+",
+              "s": "- Integrate PLAYBALL sensor input."
+            },
+            {
+              "t": "+",
+              "s": "- Integrate settings and difficulty presets."
+            },
+            {
+              "t": "+",
+              "s": "- Implement scoring and clinical calculations."
+            },
+            {
+              "t": "+",
+              "s": "- Integrate the results screen."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### Step 6 – Testing"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Test all four difficulty presets."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Validate independently:"
+            },
+            {
+              "t": "+",
+              "s": "- Force threshold calculations."
+            },
+            {
+              "t": "+",
+              "s": "- Time Above Target Force."
+            },
+            {
+              "t": "+",
+              "s": "- Isometric Endurance."
+            },
+            {
+              "t": "+",
+              "s": "- Accelerometer stability classification."
+            },
+            {
+              "t": "+",
+              "s": "- Isometric Stability."
+            },
+            {
+              "t": "+",
+              "s": "- Stabilized Isometric Performance."
+            },
+            {
+              "t": "+",
+              "s": "- Total Score."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Test:"
+            },
+            {
+              "t": "+",
+              "s": "- Asteroid collisions."
+            },
+            {
+              "t": "+",
+              "s": "- Enemy collisions."
+            },
+            {
+              "t": "+",
+              "s": "- Collision cooldown."
+            },
+            {
+              "t": "+",
+              "s": "- Recovery after collisions."
+            },
+            {
+              "t": "+",
+              "s": "- Stage transitions."
+            },
+            {
+              "t": "+",
+              "s": "- Rest periods."
+            },
+            {
+              "t": "+",
+              "s": "- Variable Force Mode."
+            },
+            {
+              "t": "+",
+              "s": "- Background transitions."
+            },
+            {
+              "t": "+",
+              "s": "- Asteroids in every stage."
+            },
+            {
+              "t": "+",
+              "s": "- Intended Flight Path visibility and behavior."
+            },
+            {
+              "t": "+",
+              "s": "- Smartphone and tablet compatibility."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### Step 7 – Final Validation"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Verify that:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- Force controls horizontal speed only."
+            },
+            {
+              "t": "+",
+              "s": "- Stability controls vertical deviation only."
+            },
+            {
+              "t": "+",
+              "s": "- The Intended Flight Path is a single visible line."
+            },
+            {
+              "t": "+",
+              "s": "- Stable PLAYBALL keeps the spaceship aligned with that line."
+            },
+            {
+              "t": "+",
+              "s": "- Unstable PLAYBALL causes visible deviation from that line."
+            },
+            {
+              "t": "+",
+              "s": "- Asteroids are present throughout the game."
+            },
+            {
+              "t": "+",
+              "s": "- Collisions never end the game."
+            },
+            {
+              "t": "+",
+              "s": "- Stability does not directly affect score."
+            },
+            {
+              "t": "+",
+              "s": "- Results calculations are correct."
+            },
+            {
+              "t": "+",
+              "s": "- The game remains calm, accessible, and suitable for rehabilitation patients."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "---"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## 20. Key Requirements – Do Not Deviate"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "1. Space Chase trains stabilized isometric strength."
+            },
+            {
+              "t": "+",
+              "s": "2. Use only Force and Accelerometer."
+            },
+            {
+              "t": "+",
+              "s": "3. Do not use Tilt, Gyroscope, or Orientation."
+            },
+            {
+              "t": "+",
+              "s": "4. Force controls horizontal spaceship speed."
+            },
+            {
+              "t": "+",
+              "s": "5. Ball Stability controls vertical flight direction."
+            },
+            {
+              "t": "+",
+              "s": "6. Target Force is a minimum threshold. The patient is rewarded at or above the target, not only when matching it exactly."
+            },
+            {
+              "t": "+",
+              "s": "7. Stability does not directly affect the score."
+            },
+            {
+              "t": "+",
+              "s": "8. Points are earned for active exercise time at or above Target Force."
+            },
+            {
+              "t": "+",
+              "s": "9. Collisions deduct points and display a floating MINUS bubble."
+            },
+            {
+              "t": "+",
+              "s": "10. Each completed stage awards a completion bonus."
+            },
+            {
+              "t": "+",
+              "s": "11. Collisions never end the game."
+            },
+            {
+              "t": "+",
+              "s": "12. Asteroids are present throughout all stages and environments."
+            },
+            {
+              "t": "+",
+              "s": "13. Background environments progress across up to ten stages."
+            },
+            {
+              "t": "+",
+              "s": "14. Display one visible Intended Flight Path line ahead of the spaceship."
+            },
+            {
+              "t": "+",
+              "s": "15. Stable PLAYBALL keeps the spaceship aligned with the line."
+            },
+            {
+              "t": "+",
+              "s": "16. Unstable PLAYBALL causes visible deviation from the same line."
+            },
+            {
+              "t": "+",
+              "s": "17. Never display a second actual-flight-path line."
+            },
+            {
+              "t": "+",
+              "s": "18. Results include Total Score, Isometric Endurance, Isometric Stability, and Stabilized Isometric Performance."
+            },
+            {
+              "t": "+",
+              "s": "19. Stabilized Isometric Performance is the equal-weight average of Isometric Endurance and Isometric Stability."
+            },
+            {
+              "t": "+",
+              "s": "20. Medium is the standard difficulty preset."
+            },
+            {
+              "t": "+",
+              "s": "21. Use only four sound assets: asteroid collision, enemy collision, stage completion, and rest/countdown."
+            },
+            {
+              "t": "+",
+              "s": "22. Support smartphones and tablets according to existing PLAYWORK conventions."
+            },
+            {
+              "t": "+",
+              "s": "23. Maintain a calm, accessible visual experience."
+            },
+            {
+              "t": "+",
+              "s": "24. Reuse the existing PLAYWORK architecture."
+            },
+            {
+              "t": "+",
+              "s": "25. Preserve the separation between generating sufficient isometric force and maintaining PLAYBALL stability while doing so."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "**The final implementation must preserve the fundamental training objective: the patient must generate sufficient isometric force while simultaneously maintaining PLAYBALL stability.**"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## Crew Claw "
+            }
+          ]
+        }
+      ],
+      "added": 1012,
+      "removed": 8
+    },
+    {
+      "doc": "spec/data-auth-identity",
+      "title": "Data models, auth, identity, sensor identity",
+      "by": [
+        "ilia"
+      ],
+      "hunks": [
+        {
+          "aStart": 105,
+          "bStart": 105,
+          "lines": [
+            {
+              "t": " ",
+              "s": "- **Wiring:** the connect scan enriches each row via `syncIdentity` (name + size badge in `DeviceRow`); registration resolves identity and writes name+size into the license + store (`sensorBallSizeCm` drives force calcs); the boot auto-connect path reconciles in the background (server wins on startup); the global pill shows the cached name + the MAC-tail id."
+            },
+            {
+              "t": " ",
+              "s": "- **Identity TTL (S-279):** each identify `GET` costs two backend Lambda runs (authorizer + register) against a tiny account concurrency quota, and names/sizes change rarely, so `syncIdentity` returns the local record without a server call when it is in sync (`pendingSync` false) and `updatedAt` is under `IDENTITY_TTL_MS` (6 h). Unparseable or future `updatedAt` counts as stale. A successful empty answer (200 with null name/size, a registered but unnamed ball) is remembered in memory for the same TTL; a 404 or network failure is never cached, because `fetchSensorIdentity` returns `null` for both and offline must retry. Pending edits are always flushed first. The two registration paths (`useSensorConnect`, `secondBallLicense`) pass `{ force: true }` so a newly registered ball adopts the server value. Trade-off: a rename made elsewhere (trainer web UI, another device) shows up here after the TTL or on the next registration, not on the next launch; change `IDENTITY_TTL_MS` to tune it."
+            },
+            {
+              "t": "-",
+              "s": "- **Ball-size fallback when nothing is known at all (S-296):** unlike name, ball size feeds real downstream math (force conversion), so it must not stay `null` forever. When `syncIdentity` has **no local cache for this MAC at all** and the server answer is also not meaningful (404/offline, or a genuine empty `200`), it returns the smallest supported ball (`BALL_SIZES_CM[0]` = 19cm) as `size` with `name` left `null` — this fallback is never written to `sensorIdentities` (so a later real server answer still overwrites it transparently; the in-memory `emptyAnswerAt` TTL still applies on top). Any local cache, however stale-adjacent, is still preferred over the fallback — the fallback is strictly last-resort. This covers the reported regression where a ball previously named/sized under the old v1 backend (pre S-277/S-281) has no record on the new v2 host and a fresh install has no local cache either, so size silently went missing end-to-end (corner pill, trainer Settings, force display) instead of ever asking the server again or showing a usable number."
+            },
+            {
+              "t": "+",
+              "s": "- **Ball-size fallback when nothing is known at all (S-296):** unlike name, ball size feeds real downstream math (force conversion), so it must not stay `null` forever. When `syncIdentity` has **no local cache for this MAC at all** and the server answer is also not meaningful (404/offline, or a genuine empty `200`), it returns the smallest supported ball (`BALL_SIZES_CM[0]` = 19cm) as `size` with `name` left `null` — this fallback is never written to `sensorIdentities` or pushed to the server (the About dialog and the panel mark it \"assumed\"; it is copied into the license record and the store, so every calculation uses 19 cm, never null) (so a later real server answer still overwrites it transparently; the in-memory `emptyAnswerAt` TTL still applies on top). Any local cache, however stale-adjacent, is still preferred over the fallback — the fallback is strictly last-resort. This covers the reported regression where a ball previously named/sized under the old v1 backend (pre S-277/S-281) has no record on the new v2 host and a fresh install has no local cache either, so size silently went missing end-to-end (corner pill, trainer Settings, force display) instead of ever asking the server again or showing a usable number."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "---"
+            }
+          ]
+        }
+      ],
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "doc": "spec/navigation-and-manual",
+      "title": "Navigation & in-app manual",
+      "by": [
+        "ilia"
+      ],
+      "hunks": [
+        {
+          "aStart": 47,
+          "bStart": 47,
+          "lines": [
+            {
+              "t": " ",
+              "s": "## One rule: agents write English, the nightly run translates"
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "-",
+              "s": "- **Agents write only `docs/manual/en/`.** Every skill run that implements something (`finish-ready-stubs`, `spec-work-item`, a sub-agent) updates the English manual and decides the analytics **in the same step**, and records both with `node tools/spec/spec.mjs docs <id> --manual=\"<slugs | none — reason>\" --analytics=\"<tracked | none — reason>\"`. `spec.mjs status <id> in-qa` is refused until both are recorded and every named article exists (backend registry excluded). No agent edits another language folder, `tools/spec-web/documentation/manual-i18n/`, or runs `manual-translate.mjs --save`."
+            },
+            {
+              "t": "+",
+              "s": "- **Agents write only `docs/manual/en/`.** Every skill run that implements something (`finish-ready-stubs`, `spec-work-item`, a sub-agent) updates the English manual and decides the analytics **in the same step**, and records both with `node tools/spec/spec.mjs docs <id> --manual=\"<slugs | none — reason>\" --analytics=\"<tracked | none — reason>\" --spec=\"<docs/spec/x.md[#section][, ...] | none — reason>\"`. `spec.mjs status <id> in-qa` is refused until all three (spec, manual, analytics) are recorded and every named article exists (backend registry excluded). No agent edits another language folder, `tools/spec-web/documentation/manual-i18n/`, or runs `manual-translate.mjs --save`."
+            },
+            {
+              "t": " ",
+              "s": "- **The nightly run translates.** `tools/spec/nightly-run.mjs` ends with the manual translation step: `manual-translate.mjs status` (the Ollama container on `OLLAMA_URL`, default `http://localhost:11434`, model `translategemma:12b`; skipped, not failed, when unreachable, and it catches up the next night) then `sync --lang all --save --prune`. It runs after the web build, tests and APK so a long translation never delays them."
+            },
+            {
+              "t": " ",
+              "s": "- **People may still review.** The spec-web Manual translation tab (Assets) stays for a human to correct a machine translation; a corrected section is not overwritten until its English source changes."
+            }
+          ]
+        }
+      ],
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "doc": "spec/sensor-architecture",
+      "title": "Sensor architecture",
+      "by": [
+        "ilia"
+      ],
+      "hunks": [
+        {
+          "aStart": 44,
+          "bStart": 44,
+          "lines": [
+            {
+              "t": " ",
+              "s": "### Two-ball slots (S-267, first piece of S-254)"
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "-",
+              "s": "Full two-ball flow, architecture and open items: `docs/spec/two-ball.md`. Short version: `SensorFacade.forSlot(2)` is a second, independent facade (slot 1 stays the singleton); on native a Playwork ball gets its own `PlayworkBleBackend`, a MetaWear ball is refused with `SecondBallUnsupportedError`."
+            },
+            {
+              "t": "+",
+              "s": "Full two-ball flow, architecture and open items: `docs/spec/two-ball.md`. Short version: `SensorFacade.forSlot(2)` is a second, independent facade (slot 1 stays the singleton); on native a Playwork ball gets its own `PlayworkBleBackend`, and a MetaWear ball (every real ball) gets its own link in the native plugin (Android: a `Link` per slot, calls carry `slot`; iOS: a second plugin instance, `SensorPlugin2`)."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "### Lazy streams"
+            }
+          ]
+        },
+        {
+          "aStart": 63,
+          "bStart": 63,
+          "lines": [
+            {
+              "t": " ",
+              "s": "- **Start order (every backend must match):** (1) clear old state: unsubscribe the outputs, `ENABLE` 0, `OUTPUT_ENABLE` [0x00, 0x7F], accel and gyro power off and data disabled, then wait ~150 ms; (2) accelerometer: `CONFIG` [ODR 0x28, 16g range byte for BMI160/BMI270], `DATA_ENABLE` [1, 0], `POWER` 1; (3) gyro: `CONFIG` [0x28, 2000dps], `DATA_ENABLE` [1, 0], `POWER` 1; (4) `MODE` [IMU_PLUS, ranges]; (5) `OUTPUT_ENABLE` [outputMask, **0x00**]; (6) subscribe each wanted output (Euler `0x08`, corrected acc `0x04`); (7) `ENABLE` 1."
+            },
+            {
+              "t": " ",
+              "s": "- **Stop order:** `ENABLE` 0, `OUTPUT_ENABLE` [0x00, 0x7F], then accel and gyro power off and data disabled."
+            },
+            {
+              "t": "+",
+              "s": "- **Units:** Euler angles are degrees as sent. Corrected acceleration arrives in **milli-g**; the SDK divides by 1000 (`CorrectedAccelerationData`), so every decoder (`decodeSFCorrectedAcc`, Kotlin, Swift) must too. Forgetting it made every acceleration reading 1000× too large, so Wobble Island sank at once."
+            },
+            {
+              "t": " ",
+              "s": "- **Output mask bits:** Euler 0x10, corrected acc 0x01 (`sfOutputMask`). `dataEnableMask` in the SDK is per-output; the mask is sent once at start, so changing the wanted set means stop then start."
+            },
+            {
+              "t": " ",
+              "s": "- **Implemented in:** `SensorPlugin.kt` (Android) and `SensorPlugin.swift` (iOS) follow it; `web-ble.ts` did **not** until S-297 was investigated."
+            }
+          ]
+        }
+      ],
+      "added": 2,
+      "removed": 1
+    },
+    {
+      "doc": "spec/sensor-pill",
+      "title": "Global sensor status indicator",
+      "by": [
+        "ilia"
+      ],
+      "hunks": [
+        {
+          "aStart": 17,
+          "bStart": 17,
+          "lines": [
+            {
+              "t": " ",
+              "s": "- **No Calibrate button** (S-26 — removed; it previously did nothing meaningful outside a game since no engine exists to hold a `calibrationRef` there. Calibration is only available as part of a game's own flow.)"
+            },
+            {
+              "t": " ",
+              "s": "- **No License Tier row** (S-40 — moved into the About dialog; the panel body was getting crowded and license tier is a lower-frequency lookup than the connection/battery/rotation rows a trainer checks constantly)."
+            },
+            {
+              "t": "-",
+              "s": "- **About** button → dialog showing app version + build, plus **License Tier** (S-26 data, S-40 placement — shown when known: Basic/MyPlayball/Premium, mapped from stored `licenseType` 1/2/3). The About dialog also contains the **Delete User Data** action (see *Delete user data* under Auth & Access)."
+            },
+            {
+              "t": "+",
+              "s": "- **About** button → dialog showing app version + build, plus the **Ball Size** the app is using for its calculations (the store's `sensorBallSizeCm`, the same value as the panel row), marked \"(assumed)\" when it is the S-296 19 cm last-resort fallback (`useBallSizeAssumed`: fallback size and no saved identity for the MAC, so there is no extra flag to keep in sync; the panel row carries the same marker; string `ball_size_assumed`), plus **License Tier** (S-26 data, S-40 placement — shown when known: Basic/MyPlayball/Premium, mapped from stored `licenseType` 1/2/3). The About dialog also contains the **Delete User Data** action (see *Delete user data* under Auth & Access)."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "**About version/build — real per-platform identity, not a baked Android number (S-228).** Reported live: iOS's About screen showed \"Build 73\" when TestFlight actually had \"Build 5\". Root cause: `VITE_APP_VERSION`/`VITE_APP_BUILD` are injected once at build time from `version.json` (`vite.config.ts`'s `define`) — Android's own `versionName`/`versionCode` — and that's the *one* web bundle both platforms ship, so an iOS build displayed Android's numbering verbatim. iOS's real build identity never comes from `version.json` at all — it comes from App Store Connect directly (`fastlane/Fastfile`'s `beta` lane asks for `latest_testflight_build_number` and uploads `+1`), a completely different, independently-incrementing number. Fixed in `GlobalSensorPill.tsx`: on mount, if `Capacitor.isNativePlatform()`, `@capacitor/app`'s `App.getInfo()` is called — it reads the *actually-installed* bundle's own `CFBundleShortVersionString`/`CFBundleVersion` on iOS or `versionName`/`versionCode` on Android — and overwrites the displayed version/build with the real native values on success. The baked `VITE_APP_VERSION`/`VITE_APP_BUILD` constants stay as the initial value (so About never shows blank while the native call resolves) and as the permanent value on web, where `getInfo()` has no implementation and rejects (caught, logged, ignored — same graceful-no-op pattern as Crashlytics on web). `@capacitor/app` was already a dependency (S-65's background/foreground detection), so no new native wiring was needed."
+            }
+          ]
+        }
+      ],
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "doc": "spec/spec-work-items",
+      "title": "Spec work items",
+      "by": [
+        "ilia"
+      ],
+      "hunks": [
+        {
+          "aStart": 28,
+          "bStart": 28,
+          "lines": [
+            {
+              "t": " ",
+              "s": "5. **Hand over.** Stubs go to `in-qa` (never `done`), the QA report names tests run, build result and what hardware cannot prove, and `work.mjs in-qa` moves the work item to QA. The worker then turns the banner green with the run's summary as its notes."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "-",
+              "s": "**Manual and analytics travel with every stub.** The analysis lists the English manual articles and the analytics the change affects; the rewrite updates the manual text and the telemetry spec; each sub-agent updates its stub's article and tracking code; each stub records them with `spec.mjs docs` before it can reach `in-qa`. Only `docs/manual/en/` is ever written by an agent: the nightly run translates it into the other languages with Ollama (`docs/spec/navigation-and-manual.md`)."
+            },
+            {
+              "t": "+",
+              "s": "**Manual and analytics travel with every stub.** The analysis lists the English manual articles and the analytics the change affects; the rewrite updates the manual text and the telemetry spec; each sub-agent updates its stub's article and tracking code; each stub records them, and the `docs/spec` files its finished behaviour was written into (`--spec`), with `spec.mjs docs` before it can reach `in-qa`. Only `docs/manual/en/` is ever written by an agent: the nightly run translates it into the other languages with Ollama (`docs/spec/navigation-and-manual.md`)."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "Rules that hold for both modes: never commit, push, deploy or touch AWS; the spec gate applies (the spec is authoritative, a line saying something was deliberately not built outranks a stub or an older note, and a conflict the answers do not settle becomes a blocking question, not code); a backend work item registers only `[Backend]` stubs in `SPEC_STUBS_BACKEND.md`."
+            }
+          ]
+        }
+      ],
+      "added": 1,
+      "removed": 1
+    },
+    {
+      "doc": "spec/two-ball",
+      "title": "Two-ball play",
+      "by": [
+        "ilia"
+      ],
+      "hunks": [
+        {
+          "aStart": 76,
+          "bStart": 76,
+          "lines": [
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "- `SensorFacade.forSlot(1)` is the existing singleton. `forSlot(2)` lazily creates a second facade with its own backend, streams, battery, connection state and reconnect/backoff, so streams never cross and one ball dropping does not touch the other. Both share slot 1's `DiscoveryService`. `SensorFacade.hasSlot2()` tells whether it was ever created. E2E builds expose slot 2 as `window.__e2eSensorFacade2`."
+            },
+            {
+              "t": "-",
+              "s": "- `selectBackend(deviceType, slot)`: mock and web work for both slots. On native, a Playwork ball gets its own `PlayworkBleBackend` for slot 2: that backend keeps all state per instance and sits on the multi-device `BleClient`, so **no second native plugin is needed**. A MetaWear ball (single Kotlin plugin) throws `SecondBallUnsupportedError`."
+            },
+            {
+              "t": "+",
+              "s": "- `selectBackend(deviceType, slot)`: mock and web work for both slots. On native, a Playwork ball gets its own `PlayworkBleBackend` for slot 2: that backend keeps all state per instance and sits on the multi-device `BleClient`, so **no second native plugin is needed**. A MetaWear ball (every real ball today) gets `CapacitorBackend(2)`: Android's `SensorPlugin.kt` holds one `Link` per slot inside the one plugin (every call carries `slot`, every per-ball event is tagged with it, and the JS backend filters on it); iOS registers a second plugin instance, `SensorPlugin2` (\"PlayworkSensor2\"), with its own central manager and link. Slot 2 never scans: it is picked from slot 1's scan list and, on iOS, reconnects through the persisted MAC to peripheral map slot 1 wrote. `SecondBallUnsupportedError` stays defined but nothing throws it now. **Android compiles and installs; the two-link behaviour and all of iOS are unverified on hardware.**"
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "### Store (S-270, S-273)"
+            }
+          ]
+        }
+      ],
+      "added": 1,
+      "removed": 1
+    }
+  ],
+  "analysis": {
+    "summary": "Tomer pasted a 20-section 'SPACE CHASE' game design document into docs/spec/games.md, overwriting (not appending after) the existing '## Wobble Island (S-260)' section — Wobble Island is a fully shipped, registered, localized game, so this looks like an accidental paste-over rather than a decision to retire it. The pasted text itself is a free-standing document (its own H1, its own 1-20 numbering, a human-review/mockup gate before implementation) rather than spec-house-style prose, and ends with a bare, content-free '## Crew Claw' heading. Separately, six small edits by ilia across data-auth-identity.md, navigation-and-manual.md, sensor-architecture.md (x2), sensor-pill.md, spec-work-items.md and two-ball.md all document behaviour that is already built and already in-qa (S-296, S-297, S-267, S-269) or already true of this very skill's own tooling — none of those six need any further work, only the games.md change is real. Space Chase itself reaches far: a new game combining pressure+acceleration streams (no existing game does both), a stage/rest game loop (closest precedent: Tug of War's round/rest state machine), an enemy-chase mechanic, a guide-line visual, new Settings sliders, new GameResult fields, and new sound assets — plus a 'Force'/'Accelerometer'-only framing that substantially overlaps the already-built squeezeThreshold/Target-Force infrastructure.",
+    "impact": [
+      {
+        "file": "docs/spec/games.md",
+        "sections": "new '## Space Chase' section (replacing the deleted Wobble Island content at its old location, or wherever the person answers it belongs)",
+        "why": "the pasted text is the new game's content but is in the wrong shape entirely — own H1, 20 numbered chapters, a standalone-document TOC feel — needs the same prose+bullet+table density as its closest siblings Wobble Island (acceleration, no calibration) and Dart Hit (squeeze-only, no calibration)"
+      },
+      {
+        "file": "CLAUDE.md",
+        "sections": "Games paragraph ('Eight single-ball games: Asteroid, Roll the Ball, ... and Wobble Island ...')",
+        "why": "every existing single-ball game is named in this one project-wide sentence with its own registry-flag parenthetical (Wobble Island's own clause is the closest sibling); Space Chase becomes the ninth and needs the same treatment"
+      },
+      {
+        "file": "docs/spec/sensor-architecture.md",
+        "sections": "'Stream contract per game' needs-today list",
+        "why": "the list enumerates every existing pressure/rotation/acceleration combination used today (pressure only; pressure+rotation; acceleration only) and Space Chase is the first game to need pressure+acceleration together with no rotation — the sibling sweep on Wobble Island's 'acceleration only' clause surfaces this list as the place every stream combination is tracked"
+      },
+      {
+        "file": "docs/spec/trainer.md",
+        "sections": "'Settings Tab — per-game slider visibility' table and the 'Difficulty presets' table",
+        "why": "every per-game slider (Tilt Range, Sway Limit, Pull Duration, Dart Size, ...) and every game's own preset row are tabulated here; Space Chase's Force Threshold / Stability Threshold / Variable Force Mode+Range / Number of Stages / Hold Duration / Rest Duration sliders and its 4-preset table are new rows of the same two tables, following Wobble Island's and Tug of War's sibling rows"
+      },
+      {
+        "file": "docs/spec/units-and-queries.md",
+        "sections": "Force display (S1-D)",
+        "why": "Section 6's 'Target Force = Strength Test Result × Force Threshold / 100', expressed in kg, is the same ΔkPa→kg conversion already specified here (deltaKpaToKg, ambientPressureKpa, ballSizeCm) — this should be cross-referenced, not re-derived"
+      },
+      {
+        "file": "docs/spec/tests-and-gating.md",
+        "sections": "Pre-game tests / per-extremity gating",
+        "why": "Space Chase needs requiresStrengthTest: true (unlike Wobble Island) to get a 'Strength Test Result' at all; the existing per-extremity Pre-Game gate (S-123) already covers every exercise position named in Section 1 (hand grip, wall press, squat with a large ball) the same way it covers every other game"
+      },
+      {
+        "file": "docs/spec/sound-music.md",
+        "sections": "music/SFX manifest list",
+        "why": "Section 16/17.9 names exactly four new sound assets (asteroid collision, enemy collision, stage completion, rest/countdown) that need a manifest entry the same way every other game's sounds are listed here"
+      },
+      {
+        "file": "docs/manual/en/ (new article)",
+        "sections": "game chooser / per-game article list",
+        "why": "every shipped game has an English manual article (wobble-island.md is the closest sibling); this is written in the work phase once the game exists, not now — listed so develop knows it is owed"
+      },
+      {
+        "file": "SPEC.md",
+        "sections": "§11 Games",
+        "why": "optional/low-priority: this human-readable doc already lacks 5 of the 9 current single-ball games and all four two-ball games, so it is not being kept current per-game; adding Space Chase alone would not fix that gap"
+      }
+    ],
+    "conflicts": [
+      "docs/spec/games.md: the edit deletes the entire '## Wobble Island (S-260)' section (registry flags, sway-measurement algorithm, scoring, body-part/side note, results field, manual pointer) and replaces it with unrelated new content. Wobble Island is fully built and shipping — src/games/wobbleisland/{engine.ts,sway.ts,constants.ts,index.tsx}, a GAME_REGISTRY entry, strings.csv keys, docs/manual/en/wobble-island.md, and a Progress Report 'Balance' section — and nothing in the new text says it should be removed. CLAUDE.md's own Games paragraph (untouched by this work item) still lists Wobble Isla",
+      "Sections 1-18/20 describe the two sensor inputs as 'Force' and 'Accelerometer' and treat 'Target Force' as a new kg-denominated concept, but the app has no raw Force stream — backends emit a pressure stream (kPa/Pa) and Force is a derived display (deltaKpaToKg via ballSizeCm, per units-and-queries.md) — and the 'minimum threshold, reward at-or-above, not exact-match' behaviour Section 6 asks for is already exactly how squeezeThreshold plus the shared pressure-bar's 'Target Force' marker/label (S-176/S-197) work in every existing game. The pasted text reads as if this is new ground, when most o"
+    ],
+    "codeGaps": [
+      "No existing GAME_REGISTRY entry declares streams: { pressure: true, acceleration: true } together (today: pressure-only, pressure+rotation, or acceleration-only) — GameHost's subscription logic is generic enough that this should just work, but it is an unexercised combination.",
+      "No existing engine runs a multi-stage/rest-cycle loop with a fixed per-stage hold duration and inter-stage rest — the closest precedent is Tug of War's own round/rest state machine (engine-internal rounds, a generous sessionDuration used only as a safety net), not the flat single 1-5 minute session timer every other game uses.",
+      "No existing game has a continuously-closing 'enemy' tied to a running threshold comparison — Asteroid's S-181 enemy gauntlet is the closest precedent but is a discrete per-segment pass/fail, not a continuously adjustable chase distance.",
+      "No existing game draws a persistent 'intended path' guide line that the player's own avatar deviates from — new visual mechanic, no code to reuse beyond the general PixiJS engine scaffolding.",
+      "GameResult has no existing 'isometric endurance / isometric stability / combined performance' percentage fields — would be new additive fields plumbed through a dedicated stats ref, the same pattern Dart Hit (dartHitStatsRef) and Memory Cards (memoryStatsRef) already use.",
+      "No Progress Report section exists for this game yet; Wobble Island's 'Balance' section is the only existing per-game Progress Report precedent, and the pasted spec is silent on whether Space Chase needs the same treatment (see question below)."
+    ],
+    "moves": [
+      {
+        "from": "docs/spec/games.md, pasted in place of the deleted '## Wobble Island (S-260)' section",
+        "to": "a single '## Space Chase (S-xxx)' section in games.md's own per-game prose/bullet/table style, positioned among the other single-ball games (exact position depends on the Wobble Island question below)",
+        "what": "the entire 'SPACE CHASE – Complete Game Specification' document (# H1 through the 20 numbered sections)"
+      },
+      {
+        "from": "the very last line of docs/spec/games.md",
+        "to": "removed, or given real content, depending on the person's answer — a heading with nothing under it cannot ship either way",
+        "what": "the bare '## Crew Claw' heading (zero body content)"
+      }
+    ],
+    "nonChanges": [
+      {
+        "file": "docs/spec/data-auth-identity.md",
+        "sections": "Ball-size fallback when nothing is known at all (S-296)",
+        "evidence": "S-296 is in-qa; the About-dialog/panel '(assumed)' marking and its propagation into the license record and store is the same behaviour this work item's own sensor-pill.md edit describes, confirming the mechanism already exists end to end."
+      },
+      {
+        "file": "docs/spec/sensor-pill.md",
+        "sections": "About dialog — Ball Size row",
+        "evidence": "same S-296 (in-qa) work; the About dialog pattern (reading a store value, marking it 'assumed') mirrors the already-shipped S-228 getInfo() precedent in the same file."
+      },
+      {
+        "file": "docs/spec/navigation-and-manual.md",
+        "sections": "'One rule: agents write English, the nightly run translates'",
+        "evidence": "tools/spec/spec.mjs:1492,1521,1806 already require and document the --spec flag on `docs`; this is this very skill's own current, running behaviour."
+      },
+      {
+        "file": "docs/spec/spec-work-items.md",
+        "sections": "'Manual and analytics travel with every stub'",
+        "evidence": "same as above — tools/spec/spec.mjs already enforces recording --spec alongside --manual/--analytics before in-qa."
+      },
+      {
+        "file": "docs/spec/sensor-architecture.md",
+        "sections": "MetaWear Sensor Fusion bring-up — Units (milli-g)",
+        "evidence": "src/sensor/backends/metawear-protocol.ts:151-153 (SF_CORRECTED_ACC_PER_G = 1000) already divides corrected acceleration by 1000; S-297 is in-qa."
+      },
+      {
+        "file": "docs/spec/sensor-architecture.md",
+        "sections": "Two-ball slots (S-267, first piece of S-254)",
+        "evidence": "src/plugins/sensor-sdk/android/SensorPlugin.kt already holds Link(1)/Link(2) with every call/event tagged by slot; S-267 is in-qa."
+      },
+      {
+        "file": "docs/spec/two-ball.md",
+        "sections": "selectBackend(deviceType, slot)",
+        "evidence": "src/plugins/sensor-sdk/ios/SensorPlugin.swift already defines SensorPlugin2 registered as \"PlayworkSensor2\"; S-269 is in-qa."
+      }
+    ],
+    "at": "2026-11-01T16:56:57.632Z"
+  },
+  "questions": [
+    {
+      "n": 1,
+      "blocking": true,
+      "text": "docs/spec/games.md: your edit deleted the entire '## Wobble Island (S-260)' section and put Space Chase in its place. Wobble Island is a shipped, registered game (engine, strings, manual article, Progress Report section) — was this intentional (retire Wobble Island), or should Wobble Island's section be restored and Space Chase added as a new section instead?",
+      "answer": "Yes, this was intentional. Space Chase is replacing Wobble Island (S-260), and Wobble Island is being retired.",
+      "answeredBy": "Tomer",
+      "answeredAt": "2026-11-01T19:17:27.808Z"
+    },
+    {
+      "n": 2,
+      "blocking": true,
+      "text": "The pasted text ends with a bare '## Crew Claw' heading with no content underneath it. What is Crew Claw — a second game you plan to describe later, or a leftover paste fragment to delete? A content-free heading can't be left in the spec.",
+      "answer": "Crew Claw is another game I plan to describe later.",
+      "answeredBy": "Tomer",
+      "answeredAt": "2026-11-01T19:18:27.352Z"
+    },
+    {
+      "n": 3,
+      "blocking": true,
+      "text": "Section 19 requires a human-reviewed visual mockup (background art + both stability states) to be approved before any asset production or implementation begins, and explicitly forbids building the full game before that approval. The normal autonomous build flow (this skill's 'develop' mode) goes straight from a confirmed spec to planning tickets and building, with no mid-run visual-approval checkpoint. Should the Space Chase ticket plan include a dedicated 'mockup for review' stub that blocks every other stub until a person approves it, or should development proceed straight through using the written mechanics (which are already detailed) without that gate?",
+      "answer": "I want to clarify the visual design workflow. Rather than approving one overall mockup before development, I want you to generate the actual game assets according to the specification. For each asset, create several design variations and present them to us for selection. We will choose our preferred versions. Once the assets are approved, proceed with integrating them and implementing the game. Please adjust the ticket plan accordingly.",
+      "answeredBy": "Tomer",
+      "answeredAt": "2026-11-01T19:28:57.565Z"
+    },
+    {
+      "n": 4,
+      "blocking": false,
+      "text": "Sections 1-18 call the two sensor inputs 'Force' and 'Accelerometer' and introduce 'Target Force'/'Force Threshold' as if new, but the app already has a squeezeThreshold field plus a shared pressure-bar 'Target Force' marker/label (S-176/S-197) that does exactly 'minimum threshold, reward at-or-above.' Should Space Chase's Force Threshold setting and Target Force simply be the existing squeezeThreshold + Target Force marker (now continuously driving horizontal speed instead of a pass/fail check), or does it need a genuinely separate kg-based mechanism? Default if unanswered: reuse squeezeThreshold and the existing Target Force marker/kg formula (deltaKpaToKg) — a parallel mechanism would fragment the Settings Tab.",
+      "answer": "Reuse the existing `squeezeThreshold` setting and the shared Target Force marker, including the existing `deltaKpaToKg` conversion logic. Do not introduce a separate kg-based mechanism or duplicate settings. The difference in Space Chase is gameplay behavior: Force should continuously control the spaceship's horizontal speed, while the existing Target Force remains the minimum threshold for achieving the required force performance. Keep the implementation consistent with the existing PLAYWORK Settings Tab and pressure-bar conventions.",
+      "answeredBy": "Tomer",
+      "answeredAt": "2026-11-01T19:30:35.632Z"
+    },
+    {
+      "n": 5,
+      "blocking": false,
+      "text": "Section 13.5 limits the per-session Results Screen fields but says nothing about the Trainer Progress Report (cross-session trends). Wobble Island's 'Balance' section is the only existing per-game Progress Report addition. Should Space Chase get an equivalent Progress Report section (e.g. best-of-day Stabilized Isometric Performance)? Default if unanswered: no new Progress Report section for now.",
+      "answer": "Please add a **Stabilized Isometric Performance** chart to the Trainer Progress Report. - **Section title:** Physical Games Performance. - **Placement:** At the very bottom of the report, after all Cognitive Games Performance charts. - **X-axis:** Actual session date. - **Y-axis:** Stabilized Isometric Performance (%), ranging from 0% to 100%. - **Data:** Show the patient's performance trend across sessions over time. Since Space Chase replaces Wobble Island, remove the old Wobble Island (Balance) section from the Progress Report.",
+      "answeredBy": "Tomer",
+      "answeredAt": "2026-11-01T19:45:17.452Z"
+    },
+    {
+      "n": 6,
+      "blocking": false,
+      "text": "Section 1 lists 'static squat exercises using a large PLAYBALL' alongside hand-grip/wall-press. Every other game (Wobble Island included) uses the standard region→extremity→laterality funnel with the physiotherapist defining the actual exercise position outside the app. Should Space Chase do the same, or does a squat-type exercise need its own funnel option? Default if unanswered: same as Wobble Island — standard funnel only, no new exercise-position setting.",
+      "answer": "Use the existing standard exercise selection funnel without any changes or additional exercise settings. The exercise types mentioned in the specification (hand grip, wall press, static squat, etc.) are examples of possible clinical uses only. The physiotherapist determines the actual exercise and patient position outside the app. These exercise types must not appear as options, settings, or part of the game's configuration or exercise selection process.",
+      "answeredBy": "Tomer",
+      "answeredAt": "2026-11-01T19:50:13.418Z"
+    }
+  ],
+  "stubIds": [
+    "S-302",
+    "S-303",
+    "S-304"
+  ],
+  "commits": [
+    {
+      "sha": "32f33ce6a0540d2055e3459501149bcf1b939c83",
+      "kind": "registry",
+      "subject": "registry(WI-1): register the tickets",
+      "at": "2026-11-01T20:33:17.991Z"
+    },
+    {
+      "sha": "98b42b2edc5585d6c911c5791637a3dc3ce44e89",
+      "kind": "feature",
+      "subject": "feat(WI-1): Space Chase foundation: registry/types, retire Wobble Island (S-302)",
+      "at": "2026-11-01T20:40:15.826Z"
+    },
+    {
+      "sha": "c8d6e00165c4edc465bb965343701206fbfa86ed",
+      "kind": "feature",
+      "subject": "feat(WI-1): Space Chase trainer settings, Progress Report chart, manual (S-304)",
+      "at": "2026-11-01T21:47:04.829Z"
+    },
+    {
+      "sha": "c1ed716e774d0e93feea73fc47a42b7e5df2725d",
+      "kind": "fix",
+      "subject": "fix(WI-1): add the S-304 files (S-304)",
+      "at": "2026-11-01T21:51:08.168Z"
+    },
+    {
+      "sha": "015a95d061e90c366f373dfa65276588a5808777",
+      "kind": "docs",
+      "subject": "chore(WI-1): stub statuses and QA report",
+      "at": "2026-11-01T21:51:30.974Z"
+    },
+    {
+      "sha": "b30baaaea62cb60d51d516bf51602a4bba1dbfd1",
+      "kind": "fix",
+      "subject": "fix(WI-1): open the Space Chase art generation pipeline (S-303)",
+      "at": "2026-11-02T00:11:25.360Z"
+    },
+    {
+      "sha": "76d36aff9de0db1518f8325ef72bdc19307ba701",
+      "kind": "spec",
+      "subject": "spec(WI-1): Space Chase art pipeline and texture slots",
+      "at": "2026-11-02T00:11:25.787Z"
+    },
+    {
+      "sha": "c25fac0e6e0fea9b7f395d8015daa57645fd02e4",
+      "kind": "docs",
+      "subject": "chore(WI-1): stub statuses and QA report for the art pipeline rework",
+      "at": "2026-11-02T00:11:46.979Z"
+    },
+    {
+      "sha": "38a8ae77db2897f1abb6f85707149199dcd5f993",
+      "kind": "fix",
+      "subject": "fix(WI-1): Space Chase ship art and 0-100% Force Threshold (S-303, S-304)",
+      "at": "2026-11-02T14:56:39.248Z"
+    },
+    {
+      "sha": "34bcd09900c5e4a68a98b8dc34b4ee80d26e4cc6",
+      "kind": "docs",
+      "subject": "chore(WI-1): stub statuses and QA report for the QA rework",
+      "at": "2026-11-02T14:56:53.228Z"
+    },
+    {
+      "sha": "03a4a228a8e3ddb13aa6cae4ee19e49130f133da",
+      "kind": "docs",
+      "subject": "chore(WI-1): stub statuses and QA report for the art integration rework",
+      "at": "2026-11-02T15:24:38.161Z"
+    }
+  ],
+  "runs": {
+    "analyze": "run-20261101T164927-759f",
+    "respec": "run-20261101T200209-7e39",
+    "develop": "run-20261102T151932-b0ce"
+  },
+  "qaReport": "Review the new art in spec-web, Assets -> Images: ship, enemy, 4 asteroid kinds (up to 3 chosen variants each), 5 backgrounds are now in the game; asteroid_5 (small chunky) is still unselected and falls back to the other rocks. Tests: npm run verify (584 pass), e2e/spacechase.spec.ts pass. Build: build:web-dev ok. Not verified: real PLAYBALL device feel.",
+  "log": [
+    {
+      "at": "2026-11-01T12:21:13.221Z",
+      "text": "Tomer completed 7 document changes"
+    },
+    {
+      "at": "2026-11-01T12:21:13.955Z",
+      "text": "Claude started analyzing the spec against these changes"
+    },
+    {
+      "at": "2026-11-01T12:28:40.058Z",
+      "text": "Claude's analysis: 7 file(s) affected, 6 documentation-only, 5 question(s) (2 blocking)"
+    },
+    {
+      "at": "2026-11-01T16:49:27.117Z",
+      "text": "claude redid the step: analysis"
+    },
+    {
+      "at": "2026-11-01T16:49:27.156Z",
+      "text": "Claude started analyzing the spec against these changes"
+    },
+    {
+      "at": "2026-11-01T16:56:57.633Z",
+      "text": "Claude's analysis: 9 file(s) affected, 7 documentation-only, 6 question(s) (3 blocking)"
+    },
+    {
+      "at": "2026-11-01T19:17:27.809Z",
+      "text": "Tomer answered Q1"
+    },
+    {
+      "at": "2026-11-01T19:18:27.352Z",
+      "text": "Tomer answered Q2"
+    },
+    {
+      "at": "2026-11-01T19:28:57.565Z",
+      "text": "Tomer answered Q3"
+    },
+    {
+      "at": "2026-11-01T19:30:35.632Z",
+      "text": "Tomer answered Q4"
+    },
+    {
+      "at": "2026-11-01T19:45:17.452Z",
+      "text": "Tomer answered Q5"
+    },
+    {
+      "at": "2026-11-01T19:50:13.419Z",
+      "text": "Tomer answered Q6"
+    },
+    {
+      "at": "2026-11-01T20:02:08.995Z",
+      "text": "ilia started the spec rewrite"
+    },
+    {
+      "at": "2026-11-01T20:09:31.847Z",
+      "text": "moved the pasted 'SPACE CHASE' doc (own H1, 20 numbered sections) from games.md's end into a single '## Space Chase' section in games.md's own prose+bullet style, positioned where the retired '## Wobble Island (S-260)' section used to sit"
+    },
+    {
+      "at": "2026-11-01T20:09:31.944Z",
+      "text": "removed the bare content-free '## Crew Claw' heading entirely (A2: a future game, described in its own later work item, not this one)"
+    },
+    {
+      "at": "2026-11-01T20:09:32.044Z",
+      "text": "retired Wobble Island (A1): dropped its games.md section, its CLAUDE.md games-list clause, its sensor-architecture.md stream-needs entry, its trainer.md Sway Limit slider row, and its telemetry-crash-encryption.md analytics line"
+    },
+    {
+      "at": "2026-11-01T20:09:32.141Z",
+      "text": "cross-referenced Space Chase into sensor-architecture.md (pressure+acceleration stream combo), trainer.md (new sliders + preset table row + Physical Games Performance Progress Report chart), sound-music.md (4 new SFX cues + no-background-music note), telemetry-crash-encryption.md (analytics placehol"
+    },
+    {
+      "at": "2026-11-01T20:12:28.056Z",
+      "text": "The spec rewrite is finished and waiting for review"
+    },
+    {
+      "at": "2026-11-01T20:16:05.484Z",
+      "text": "Tomer confirmed the rewritten spec"
+    },
+    {
+      "at": "2026-11-01T20:19:45.294Z",
+      "text": "Tomer started the work"
+    },
+    {
+      "at": "2026-11-01T20:33:08.132Z",
+      "text": "stubs: S-302, S-303, S-304"
+    },
+    {
+      "at": "2026-11-01T20:33:17.992Z",
+      "text": "commit 32f33ce (registry): registry(WI-1): register the tickets"
+    },
+    {
+      "at": "2026-11-01T20:40:15.827Z",
+      "text": "commit 98b42b2 (feature): feat(WI-1): Space Chase foundation: registry/types, retire Wobble Island (S-302)"
+    },
+    {
+      "at": "2026-11-01T20:45:35.285Z",
+      "text": "The development run failed."
+    },
+    {
+      "at": "2026-11-01T21:33:36.615Z",
+      "text": "claude started the work"
+    },
+    {
+      "at": "2026-11-01T21:47:04.831Z",
+      "text": "commit c8d6e00 (feature): feat(WI-1): Space Chase trainer settings, Progress Report chart, manual (S-304)"
+    },
+    {
+      "at": "2026-11-01T21:51:08.170Z",
+      "text": "commit c1ed716 (fix): fix(WI-1): add the S-304 files (S-304)"
+    },
+    {
+      "at": "2026-11-01T21:51:30.975Z",
+      "text": "commit 015a95d (docs): chore(WI-1): stub statuses and QA report"
+    },
+    {
+      "at": "2026-11-01T21:51:31.119Z",
+      "text": "The work is finished, waiting for QA"
+    },
+    {
+      "at": "2026-11-01T22:00:19.794Z",
+      "text": "ilia sent it back: No art generation pipeline was created or the assets needed. please open up the art generation pipeline as requested."
+    },
+    {
+      "at": "2026-11-01T22:00:27.153Z",
+      "text": "ilia started the work (rework)"
+    },
+    {
+      "at": "2026-11-02T00:11:25.361Z",
+      "text": "commit b30baaa (fix): fix(WI-1): open the Space Chase art generation pipeline (S-303)"
+    },
+    {
+      "at": "2026-11-02T00:11:25.788Z",
+      "text": "commit 76d36af (spec): spec(WI-1): Space Chase art pipeline and texture slots"
+    },
+    {
+      "at": "2026-11-02T00:11:46.980Z",
+      "text": "commit c25fac0 (docs): chore(WI-1): stub statuses and QA report for the art pipeline rework"
+    },
+    {
+      "at": "2026-11-02T00:11:47.097Z",
+      "text": "The work is finished, waiting for QA"
+    },
+    {
+      "at": "2026-11-02T14:38:01.359Z",
+      "text": "Tomer sent it back: Feedback & Required Changes\n\n1. Assets\n\nPlayer Ship: Use the second spaceship from the top in the selected image.\n\nPlayer Ship – Full Power: Do not use a separate spaceship asset for the full-power state. Instead, create a separate animated engine flame (thruster) effect that att"
+    },
+    {
+      "at": "2026-11-02T14:38:31.275Z",
+      "text": "Tomer started the work (rework)"
+    },
+    {
+      "at": "2026-11-02T14:56:39.250Z",
+      "text": "commit 38a8ae7 (fix): fix(WI-1): Space Chase ship art and 0-100% Force Threshold (S-303, S-304)"
+    },
+    {
+      "at": "2026-11-02T14:56:53.229Z",
+      "text": "commit 34bcd09 (docs): chore(WI-1): stub statuses and QA report for the QA rework"
+    },
+    {
+      "at": "2026-11-02T14:56:53.350Z",
+      "text": "The work is finished, waiting for QA"
+    },
+    {
+      "at": "2026-11-02T15:19:25.571Z",
+      "text": "Tomer sent it back: Implement the chosen assets to the game."
+    },
+    {
+      "at": "2026-11-02T15:19:32.548Z",
+      "text": "Tomer started the work (rework)"
+    },
+    {
+      "at": "2026-11-02T15:24:38.162Z",
+      "text": "commit 03a4a22 (docs): chore(WI-1): stub statuses and QA report for the art integration rework"
+    },
+    {
+      "at": "2026-11-02T15:24:38.309Z",
+      "text": "The work is finished, waiting for QA"
+    },
+    {
+      "at": "2026-11-03T13:19:18.886Z",
+      "text": "Tomer confirmed it done"
+    }
+  ],
+  "sentBack": {
+    "by": "Tomer",
+    "reason": "Implement the chosen assets to the game.",
+    "at": "2026-11-02T15:19:25.571Z"
+  },
+  "lastError": null,
+  "previousQuestions": [
+    {
+      "n": 1,
+      "blocking": true,
+      "text": "docs/spec/games.md: the edit replaces the entire '## Wobble Island (S-260)' section with the new Space Chase spec, with nothing in the pasted text mentioning Wobble Island's removal. Wobble Island is a shipped, registered game (src/games/wobbleisland/, in GAME_REGISTRY, named in CLAUDE.md's 'Eight single-ball games'). Was Wobble Island meant to be deleted/deprecated, or should its section be restored with Space Chase added as its own new section alongside it?",
+      "answer": null
+    },
+    {
+      "n": 2,
+      "blocking": true,
+      "text": "docs/spec/games.md ends with a bare '## Crew Claw' heading and no body text at all (end of file). Is Crew Claw a second game you want specified — if so, please supply its description — or is this stray paste debris that should simply be removed?",
+      "answer": null
+    },
+    {
+      "n": 3,
+      "blocking": false,
+      "text": "Section 6/7's Force Threshold and Stability Threshold read as the already-built Squeeze Threshold / Target Force marker mechanic (S-197) applied to this game, not a new concept. Should Space Chase reuse the existing squeezeThreshold field (given its own 10-100% range, the way Roll the Ball already gets a custom 0-80% range) and the existing Target Force marker, or does it need its own separately named setting and on-screen marker? Default if unanswered: reuse the existing field/marker under the established per-game-range pattern.",
+      "answer": null
+    },
+    {
+      "n": 4,
+      "blocking": false,
+      "text": "Several exact values are explicitly left to implementation by the pasted text itself (collision point deductions, the accelerometer stability-classification algorithm/filtering, variable-force transition timing, asteroid spawn density) — phrased as 'Claude should determine' / 'determined during implementation' / 'determined by reviewing real PLAYBALL sensor data'. Default if unanswered: follow the Wobble Island precedent — pick concrete values during the build, record each as a numbered open item in the new spec section, and confirm or adjust them after testing on a real PLAYBALL (acceleration-based stability stays unverified-on-hardware until then, the same caveat Wobble Island already carries).",
+      "answer": null
+    },
+    {
+      "n": 5,
+      "blocking": false,
+      "text": "The pasted spec doesn't ask for a Progress Report section for Space Chase's new metrics, and S-130 already deliberately limited Progress Report to exactly 3 fixed cross-game charts with no per-game breakdown. Should Space Chase's Isometric Endurance/Stability/Stabilized Performance stay Results-Screen-only with no Progress Report changes, matching that decision? Default if unanswered: yes, Results-Screen-only.",
+      "answer": null
+    }
+  ],
+  "specApprovedAt": "2026-11-01T20:16:05.484Z",
+  "specFeedback": null,
+  "failedPhase": null,
+  "runSummary": "- Art integration: the chosen Space Chase art was already promoted to `public/images/spacechase` and is loaded by `draw.ts` and `engine.ts`. It covers the ship, enemy, asteroid 1–4 and backgrounds 1–5. I added no code.\n- Checks: `npm run verify` passed (584 tests), `e2e/spacechase.spec.ts` passed, and `build:web-dev` succeeded.\n- Hand-over: S-302, S-303 and S-304 are in-qa with manual, analytics and spec recorded, and WI-1 is in QA. I made two chore commits, `03a4a22` and a work-item record commit.\n- Needs a person: asteroid 5 (small chunky) is still unselected, so the game falls back to the other rocks. They should review the art in spec-web under Assets → Images and press Complete there.\n- Not verified: how the game feels on a real PLAYBALL.",
+  "rewriteStartedAt": "2026-11-01T20:02:08.994Z",
+  "rewrittenBy": "ilia",
+  "specReviewAt": "2026-11-01T20:12:28.055Z",
+  "specApprovedBy": "Tomer",
+  "workStartedAt": "2026-11-02T15:19:32.548Z",
+  "workedBy": "Tomer",
+  "integratedAt": "2026-11-02T15:24:38.308Z",
+  "doneBy": "Tomer",
+  "doneAt": "2026-11-03T13:19:18.886Z"
+}

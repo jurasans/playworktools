@@ -1,0 +1,9 @@
+# Green-bg/yellow-outline group — 1st, 3rd, 5th test in each region's list
+# (matches OtherTestStep.tsx's isAccent = i % 2 === 1 alternation)
+# Format: key|description|reference image (in basedir/input/anatomy-ref/)
+hamstring|one leg only, hip to ankle, side view, knee bent sharply lifting the heel up and back, hamstring curl motion, the back of the thigh filled with a bright yellow gradient color, rest of the leg is outline only with no fill|legs_back.png
+adductors|hips and both upper legs only, front view, legs squeezing together, hip adduction motion, the inner thighs filled with a bright yellow gradient color, rest of the legs is outline only with no fill|legs_front.png
+quad|one leg only, hip to ankle, side view, knee straightening forward, quad extension motion, the front of the thigh filled with a bright yellow gradient color, rest of the leg is outline only with no fill|legs_front.png
+handgrip|one hand and forearm only, fist clenching tightly, grip squeeze motion, the palm and fingers filled with a bright yellow gradient color, rest of the hand is outline only with no fill|torso_front.png
+upper-abduction|one shoulder and upper arm only, arm raising outward to the side, shoulder abduction motion, the shoulder muscle filled with a bright yellow gradient color, rest of the arm is outline only with no fill|torso_front.png
+tricep|one upper arm and elbow only, arm straightening upward, tricep extension motion, the back of the upper arm filled with a bright yellow gradient color, rest of the arm is outline only with no fill|torso_back.png

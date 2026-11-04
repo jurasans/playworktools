@@ -1,0 +1,10 @@
+{
+  "name": "playwork-image-gen",
+  "private": true,
+  "type": "module",
+  "description": "Local ComfyUI batch image generation + post-processing tools for Playwork art assets. Not part of the shipped app — a standalone dev tool, deliberately scoped to its own package.json/node_modules so its dependencies (onnxruntime, etc.) never touch the main app's dependency tree.",
+  "dependencies": {
+    "@imgly/background-removal-node": "^1.4.5",
+    "sharp": "^0.33.5"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "30": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": { "ckpt_name": "flux1-schnell-fp8.safetensors" }
+  },
+  "40": {
+    "class_type": "LoadImage",
+    "inputs": { "image": "REPLACED_AT_RUNTIME" }
+  },
+  "41": {
+    "class_type": "VAEEncode",
+    "inputs": { "pixels": ["40", 0], "vae": ["30", 2] }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": { "text": "REPLACED_AT_RUNTIME", "clip": ["30", 1] }
+  },
+  "33": {
+    "class_type": "CLIPTextEncode",
+    "inputs": { "text": "", "clip": ["30", 1] }
+  },
+  "31": {
+    "class_type": "KSampler",
+    "inputs": {
+      "seed": 42,
+      "steps": 4,
+      "cfg": 1,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 0.65,
+      "model": ["30", 0],
+      "positive": ["6", 0],
+      "negative": ["33", 0],
+      "latent_image": ["41", 0]
+    }
+  },
+  "8": {
+    "class_type": "VAEDecode",
+    "inputs": { "samples": ["31", 0], "vae": ["30", 2] }
+  },
+  "9": {
+    "class_type": "SaveImage",
+    "inputs": { "images": ["8", 0], "filename_prefix": "flux_img2img" }
+  }
+}

@@ -1,0 +1,14 @@
+# Playwork's 9 SoundEffectName cues (src/audio/types.ts) — one line per effect.
+# Format: key|description fed to {{VAR}}|clip length in seconds
+# The key becomes the output filename (key.mp3) so it drops straight into
+# src/audio/index.ts's EFFECT_TONES map without any renaming.
+# Style pass 2: retro-futuristic synthwave/chiptune (see sfx-style-prompt.txt).
+pickup|bright ascending 8-bit chiptune coin blip, retro arcade synth sparkle, positive reward|1.0
+stuck|low analog synth buzz alert, muffled retro error blip, blocked negative tone|1.0
+game_start|rising synthwave power-up whoosh, futuristic arpeggio start-up chime|1.2
+game_over|triumphant ascending synth fanfare, bright retro arcade victory chime, upbeat major-key flourish, celebratory, festive|1.8
+record_broken|triumphant retro synth fanfare, rising chiptune arpeggio, celebratory laser sparkle|1.5
+calibration_success|gentle analog synth confirmation blip, soft retro success chime, calm positive|1.0
+countdown_tick|sharp retro synth countdown blip, crisp chiptune tick|1.0
+countdown_go|punchy retro laser start beep, energetic synth blip, higher pitched|1.0
+level_up|triumphant retro synthwave level-up arpeggio, ascending chiptune fanfare, futuristic rising tones|1.8

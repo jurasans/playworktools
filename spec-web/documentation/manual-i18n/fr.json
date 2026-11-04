@@ -1,0 +1,483 @@
+{
+  "groups": {
+    "Getting started": "Démarrage",
+    "Games": "Jeux",
+    "Strength tests": "Essais de résistance",
+    "The ball": "La balle",
+    "Trainer": "Formateur",
+    "Settings": "Paramètres"
+  },
+  "articles": {
+    "using-the-manual": {
+      "sections": {
+        "0": {
+          "text": "# Utilisation du manuel\n\nCe manuel explique chaque écran de Playwork. Vous pouvez l'ouvrir depuis n'importe quel endroit.\n\n![La fenêtre d'aide avec le bouton du menu des contenus, la zone de recherche et un bouton de fermeture.](img:help-overlay.jpg)\n*La fenêtre d'aide s'ouvre au-dessus de l'écran que vous consultiez.*",
+          "src": "3d1b34f607"
+        },
+        "1": {
+          "text": "## Aide\n\n- Appuyez sur le bouton `?` situé dans l'en-tête de l'écran. Cela ouvre l'article correspondant à l'écran que vous consultez.\n- Ou, ouvrez le panneau des capteurs (en appuyant sur le petit bouton \"Capteur\" en haut à droite) et appuyez sur **Aide**.\n\nSi vous ouvrez l'aide pendant une partie, la partie est mise en pause. Lorsque vous fermez l'aide, vous restez sur l'écran de pause et vous pouvez reprendre la partie en appuyant sur le bouton **Reprendre**.",
+          "src": "eb16cf54e4"
+        },
+        "2": {
+          "text": "## Trouver des éléments\n\n- La liste des contenus regroupe les articles en chapitres. Sur un téléphone, appuyez sur le bouton du menu en haut à gauche pour afficher ou masquer la liste.\n- Tapez dans la zone de recherche pour trouver des articles. Chaque mot que vous tapez doit apparaître dans l'article.\n- Les liens à l'intérieur des articles renvoient vers d'autres articles ou vers des écrans de l'application.\n\nLes articles marqués *Formateur* sont destinés à la personne qui anime la session.",
+          "src": "1614fb2824"
+        }
+      },
+      "title": "Utilisation du manuel"
+    },
+    "connecting-your-ball": {
+      "sections": {
+        "0": {
+          "text": "# Connexion de votre balle\n\nPlaywork utilise une balle équipée d'un capteur. Vous devez la connecter une seule fois au démarrage de l'application, avant de pouvoir vous connecter.\n\n![L'écran de connexion avec le bouton \"Connecter le capteur\".](img:connect.jpg)\n*Dans un navigateur web, appuyez sur \"Connecter le capteur\" et sélectionnez votre balle.*",
+          "src": "951ed9fc5e"
+        },
+        "1": {
+          "text": "## Sur un téléphone ou une tablette\n\n1. Activez le ballon et gardez-le près de l'appareil.\n2. Autorisez la connexion Bluetooth lorsque l'application vous le demande. Sur les versions plus anciennes d'Android, l'application a également besoin de l'autorisation de localisation, et la fonction de localisation de l'appareil (GPS) doit être activée.\n3. Si vous avez déjà utilisé un ballon, l'application se reconnecte automatiquement à celui-ci. Sinon, elle effectue une recherche et affiche la liste des ballons qu'elle trouve, avec leur nom et leur taille.\n4. Appuyez sur le ballon dans la liste. L'application vérifie sa licence et vous redirige vers l'écran de connexion.",
+          "src": "41a1809e6b"
+        },
+        "2": {
+          "text": "## Dans un navigateur web\n\nAppuyez sur **Connecter le capteur** et sélectionnez votre balle dans le sélecteur Bluetooth du navigateur.",
+          "src": "e76532987a"
+        },
+        "3": {
+          "text": "## Si cela ne fonctionne pas\n\n- *Le Bluetooth est désactivé* : activez le Bluetooth. La recherche redémarrera automatiquement.\n- Appuyez sur **Ouvrir les paramètres** si l'application indique que l'autorisation Bluetooth est requise.\n- Appuyez sur **Activer la localisation** si les services de localisation sont désactivés.\n- Une ligne marquée **Problèmes de connexion** n'a pas pu être lue. Rapprochez-vous et attendez le prochain scan.\n- **Connexion échouée — réessayez.** signifie que la connexion a été interrompue. Appuyez à nouveau sur la bille.\n\nPour coupler une autre bille ultérieurement, utilisez **Changer de balle** dans le [panneau des capteurs](help:sensor-panel).",
+          "src": "5ea4d740d1"
+        }
+      },
+      "title": "Connecter votre balle"
+    },
+    "signing-in": {
+      "sections": {
+        "0": {
+          "text": "# Connexion et utilisateurs\n\nUne fois la balle connectée, vous choisissez qui va jouer.\n\n![L'écran de connexion avec un pavé numérique, un bouton \"Connexion\", \"Nouvel utilisateur\" et \"Continuer en tant qu'invité\".](img:login.jpg)\n*Entrez votre identifiant sur le pavé numérique.*",
+          "src": "5bb62d2734"
+        },
+        "1": {
+          "text": "## Connexion\n\n1. Entrez votre identifiant numérique sur le pavé numérique. Utilisez **Afficher l'ID** pour voir les chiffres que vous avez tapés.\n2. Appuyez sur **Se connecter**.\n\nSi l'identifiant est inconnu, vous verrez **ID introuvable**. Les personnes récemment utilisées apparaissent sous **Utilisateurs récents** uniquement par leur nom. Leur identifiant n'est jamais affiché, vous pouvez donc appuyer sur un nom pour vous connecter sans que quelqu'un à proximité puisse lire l'identifiant affiché à l'écran.",
+          "src": "272e5deda5"
+        },
+        "2": {
+          "text": "## Visiteur\n\n**Continuer en tant qu'invité** s'inscrit sans présenter de pièce d'identité. Les informations relatives aux visiteurs sont enregistrées de la même manière que celles des autres utilisateurs.",
+          "src": "7a8b2c5791"
+        },
+        "3": {
+          "text": "## Ajouter un utilisateur\n\n1. Appuyez sur **Nouvel utilisateur**.\n2. Entrez un identifiant numérique et un nom.\n3. Appuyez sur **Créer et se connecter**.\n\nVous verrez **ID déjà utilisé** si cet identifiant existe déjà. Le nombre d'utilisateurs dépend de la licence du dispositif : 1 utilisateur, 50 utilisateurs, ou un nombre illimité. Si la limite est atteinte, l'application vous le signalera.\n\nVous pouvez fermer la fenêtre en cliquant sur le bouton de fermeture ou en cliquant en dehors de celle-ci. Consultez également [langue et unités](help:language-and-units).",
+          "src": "2321392aab"
+        }
+      },
+      "title": "Connexion et utilisateurs"
+    },
+    "language-and-units": {
+      "sections": {
+        "0": {
+          "text": "# Langue et unités\n\nSur l'écran de connexion, en haut, vous trouverez deux éléments de contrôle.",
+          "src": "6448dcbaef"
+        },
+        "1": {
+          "text": "## Langue\n\nOuvrez le sélecteur de langue et choisissez votre langue. L'application se configure instantanément et enregistre votre choix. L'hébreu s'affiche de droite à gauche.",
+          "src": "3df2209d70"
+        },
+        "2": {
+          "text": "## Unités\n\nLe commutateur d'unités modifie la façon dont la force et la distance sont affichées. Les forces sont calculées à partir de la mesure de la pression et de la taille de votre balle, il est donc important de vérifier que la taille de la balle est correcte dans le [panneau des capteurs](help:sensor-panel).",
+          "src": "2fea811b3f"
+        }
+      },
+      "title": "Langue et unités"
+    },
+    "home-screen": {
+      "sections": {
+        "0": {
+          "text": "# L'écran d'accueil\n\nAprès vous être connecté, vous voyez deux grandes cartes.\n\n- **Jeux thérapeutiques** - Jouez à des jeux que vous contrôlez en serrant et en inclinant la balle. Consultez [le choix d'un jeu](help:choosing-a-game).\n- **Tests** - Mesurez votre force. Consultez [les tests cliniques de force](help:clinical-strength-tests).\n\n**Se déconnecter** vous ramène à l'écran de connexion afin qu'une autre personne puisse se connecter.\n\n![L'écran d'accueil avec les cartes \"Jeux de thérapie\" et \"Tests\".](img:home.jpg)\n*Choisissez des jeux ou des tests de force.*",
+          "src": "cf1536c9ed"
+        }
+      },
+      "title": "L'écran d'accueil"
+    },
+    "choosing-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Choisir un jeu\n\nLa liste des jeux affiche une carte par jeu, avec une courte description des commandes et une étiquette :\n\n- *Squeeze uniquement* - vous n'effectuez que des pressions sur la balle.\n- *Squeeze + Roulement* - vous effectuez des pressions et inclinez également la balle.\n- *Deux balles* - un jeu qui nécessite deux balles connectées. Consultez [Utilisation de deux balles](help:using-two-balls).\n\nAppuyez sur une carte pour démarrer. Utilisez le bouton retour pour revenir à l'écran d'accueil.\n\nLes jeux sont : [Asteroid](help:asteroid), [Roll the Ball](help:roll-the-ball), [Shoot the Bottle](help:shoot-the-bottle), [Car Ride](help:car-ride), [Memory Cards](help:memory-cards), [Dart Hit](help:dart-hit) et le [Matching Game](help:matching-game).\n\n[Two-Ball Sensors](help:two-ball-panels), [Tug of War](help:tug-of-war) et [Bilateral Training](help:bilateral-training) nécessitent deux balles connectées.\n\n![La liste des jeux, une carte par jeu.](img:game-select.jpg)\n*Chaque carte affiche le jeu et la manière dont il est contrôlé.*",
+          "src": "f6a583f547"
+        }
+      },
+      "title": "Choisir un jeu"
+    },
+    "choosing-the-body-part": {
+      "sections": {
+        "0": {
+          "text": "# Choisir la partie du corps et le côté\n\nAvant un entraînement ou un test, vous indiquez ce sur quoi vous travaillez, en trois étapes.\n\n1. **Sur quelle zone travaillez-vous ?** Choisissez **Haut du corps** ou **Bas du corps**.\n2. Choisissez la partie du corps. Haut du corps : **Main**, **Coude**, **Épaule** ou **Autre**. Bas du corps : **Pied**, **Cheville**, **Genou**, **Hanche** ou **Autre**.\n3. **Quel côté utilisez-vous ?** Choisissez **Gauche**, **Droite** ou **Les deux**.\n\nChaque partie du corps et chaque côté sont mesurés séparément. Un test de force effectué pour la main droite ne compte pas pour la main gauche.\n\nSi ce sur quoi vous travaillez ne figure pas dans la liste, choisissez **Autre**. Cela ne vous demande pas de taper ce que c'est — chaque option \"Autre\" du même côté partage un seul test de force, alors évitez de regrouper des parties du corps très différentes (par exemple, une séance pour le cou et une séance pour la mâchoire) sous cette option si possible.\n\nLes points en haut indiquent votre progression. Utilisez le bouton \"retour\" pour modifier une réponse précédente.\n\n![Première étape : choix de la zone à travailler (haut du corps et bas du corps).](img:funnel-region.jpg)\n*Étape 1 : choisissez la zone.*\n\n![Deuxième étape : choix de la partie du corps (main, coude, épaule et autre).](img:funnel-body-part.jpg)\n*Étape 2 : choisissez la partie du corps.*\n\n![Troisième étape : choix du côté (gauche, droite et les deux).](img:funnel-side.jpg)\n*Étape 3 : choisissez le côté.*",
+          "src": "4dbb26c18e"
+        }
+      },
+      "title": "Choisir la partie du corps et le côté"
+    },
+    "strength-test-before-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Le test de force avant un jeu\n\nLa première fois que vous jouez pour une partie du corps et un côté, Playwork doit savoir à quel point vous pouvez serrer. Vous voyez **Test de force nécessaire**.\n\n1. Appuyez sur **Passer le test**.\n2. Serrez la balle aussi fort que vous le pouvez confortablement pendant 10 secondes.\n3. Enregistrez le résultat.\n\nLes jeux s'adaptent ensuite à vous : la force de serrage nécessaire dans un jeu représente une proportion de votre maximum. Consultez [la procédure pour effectuer un test de force](help:running-a-strength-test).\n\nVous avez besoin d'un nouveau test si vous connectez une balle de taille différente, car les mesures de pression ne sont pas comparables entre les tailles. Le résultat est enregistré par utilisateur, partie du corps et côté, ce qui permet de passer directement au jeu lors des visites ultérieures.\n\n![Un message indiquant qu'un test de force est nécessaire, avec un bouton \"Effectuer le test\".](img:test-needed.jpg)\n*La première fois pour une partie du corps et un côté, effectuez d'abord le test.*",
+          "src": "cd805efa19"
+        }
+      },
+      "title": "Le test de résistance avant un match"
+    },
+    "starting-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Démarrer une partie\n\nLorsque un test de force existe déjà pour la partie du corps et le côté concernés, vous voyez deux boutons.\n\n- **Démarrer le jeu** démarre la partie.\n- **Passer le test** répète le test de force. Un nouveau résultat remplace l'ancien pour définir le seuil de compression.\n\nLes jeux qui utilisent l'inclinaison affichent ensuite les écrans de [position de la balle](help:holding-the-ball). Ensuite, un compte à rebours court lance le [jeu](help:playing-a-game).\n\n![L'écran de préparation avec les boutons \"Démarrer la partie\" et \"Effectuer le test\".](img:start-game.jpg)\n*Démarrez la partie ou effectuez un nouveau test.*",
+          "src": "8eec1b8ab0"
+        }
+      },
+      "title": "Démarrer une partie"
+    },
+    "holding-the-ball": {
+      "sections": {
+        "0": {
+          "text": "# Contrôle de la balle et position de départ\n\nLes jeux qui se contrôlent en inclinant la balle doivent déterminer ce qui constitue une position \"droite\" pour le joueur.",
+          "src": "f1184d2582"
+        },
+        "1": {
+          "text": "## Comment allez-vous tenir la balle ?\n\nChoisissez **Table** si la balle repose sur une table et que vous la faites rouler. Choisissez **Mur** si vous appuyez sur la balle contre un mur et que vous tournez votre avant-bras.\n\n1. Placez la balle sur la table, ou contre le mur.\n2. Assurez-vous que le connecteur se trouve du côté gauche de la balle.\n3. Faites pivoter la balle de sorte que la flèche pointe vers le plafond.\n\nAppuyez sur **Définir zéro et démarrer** pour continuer.\n\n![L'écran de configuration de la table avec une image d'une main appuyant sur la balle sur une table et trois étapes.](img:hold-table.jpg)\n*Table : la balle repose sur une table.*\n\n![L'écran de configuration du mur avec une image d'une main appuyant sur la balle contre un mur et trois étapes.](img:hold-wall.jpg)\n*Mur : la balle est appuyée contre un mur.*",
+          "src": "1e255c4139"
+        },
+        "2": {
+          "text": "## Définir votre position de référence\n\nMaintenez la balle dans votre position de repos naturelle et appuyez à nouveau sur **Définir zéro et démarrer**. Tout ce que vous ferez ensuite sera mesuré à partir de cette position. L'écran affiche une image de la balle avec un point qui se déplace lorsque vous l'inclinez.\n\nVous pouvez redéfinir la position de référence pendant un jeu, à partir du [panneau de capteurs](help:sensor-panel).\n\n![L'écran de définition de la position de référence, avec un cadran d'orientation de la balle et un bouton \"Définir la référence\" et \"Démarrer\".](img:set-zero.jpg)\n*Maintenez la balle dans votre position naturelle et définissez la référence.*",
+          "src": "f025d0d484"
+        }
+      },
+      "title": "Contrôle du ballon et score de zéro"
+    },
+    "matching-game": {
+      "sections": {
+        "0": {
+          "text": "# Jeu de Correspondances\n\nToutes les cartes restent face visible. Faites rouler la balle pour déplacer le curseur et appuyez pour sélectionner une carte. Deux cartes qui correspondent disparaissent et vous attribuent des points. Une paire incorrecte clignote en rouge et les deux cartes sont annulées.",
+          "src": "e166873f19"
+        },
+        "1": {
+          "text": "## Choisir un mode de jeu\n\nAvant de commencer la partie, vous choisissez le type de correspondance : une image avec son mot, des contraires, ou des images qui vont ensemble. Vous pouvez choisir à nouveau à chaque partie.",
+          "src": "76574dbbae"
+        },
+        "2": {
+          "text": "## Tableaux\n\nLa première série de tableaux comporte 2 paires, puis 4, 6, 8 et 10. Ensuite, chaque série de tableaux comprend 10 paires avec du contenu nouveau. Chaque série de tableaux a une limite de temps que le formateur peut modifier.\n\nLe jeu utilise un système d'inclinaison, il est donc nécessaire de configurer d'abord la [position de la balle](help:holding-the-ball).",
+          "src": "1e2a9a2629"
+        }
+      },
+      "title": "Jeu de correspondance"
+    },
+    "playing-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Jouer à un jeu\n\n## Introduction\n1.  Choose a game.\n2.  Gather the necessary materials.\n3.  Explain the rules to the players.\n4.  Start playing!\n5.  Have fun!\n\n## Tips\n*   Be patient.\n*   Be fair.\n*   Be respectful.\n*   Don't be afraid to ask for help.\n*   Most importantly, have fun!\n\n## Conclusion\nPlaying games is a great way to spend time with friends and family. It's also a great way to learn new things and to develop your skills. So, next time you're looking for something to do, why not try playing a game?\n\n# Jouer à un jeu\n## Introduction\n1. Choisissez un jeu.\n2. Rassemblez le matériel nécessaire.\n3. Expliquez les règles aux joueurs.\n4. Commencez à jouer !\n5. Amusez-vous !\n\n## Conseils\n* Soyez patient.\n* Soyez juste.\n* Soyez respectueux.\n* N'hésitez pas à demander de l'aide.\n* Surtout, amusez-vous !\n\n## Conclusion\nJouer à des jeux est un excellent moyen de passer du temps avec vos amis et votre famille. C'est aussi un excellent moyen d'apprendre de nouvelles choses et de développer vos compétences. Alors, la prochaine fois que vous cherchez quelque chose à faire, pourquoi ne pas essayer de jouer à un jeu ?",
+          "src": "8e7aef9764"
+        },
+        "1": {
+          "text": "## Compte à rebours\n\n**Préparez-vous !** et un compte à rebours de 3, 2, 1, DÉPART. Maintenez la balle immobile pendant le compte à rebours : l'application mesure la pression de la balle au repos afin de garantir la précision du seuil de compression.",
+          "src": "c191701fc8"
+        },
+        "2": {
+          "text": "## Pendant le jeu\n\n- Votre score et le temps restant sont affichés en haut.\n- La barre située à droite indique la force de votre pression. La ligne marquée **Force cible** représente la pression nécessaire pour agir dans le jeu.\n- L'écran reste allumé pendant que vous jouez. Vous n'avez besoin que de la balle.\n\n![Une partie en cours, avec le score, le chronomètre et la barre de pression à droite.](img:game-playing.jpg)\n*Pendant une partie : score et temps en haut, barre de force à droite.*",
+          "src": "d4ce271b21"
+        },
+        "3": {
+          "text": "## Pause et paramètres\n\n- Le bouton de pause (en bas à gauche) ouvre **Jeu en pause** avec les options **Reprendre**, **Sélection de jeu** et **Aller à l'accueil**.\n- L'icône en forme d'engrenage (en haut à gauche) ouvre **Paramètres du jeu**. Enregistrer les modifications met fin à la partie en cours sans enregistrer de résultat, et le prochain tour utilise les nouveaux paramètres.\n- Si la balle se déconnecte, le jeu se met automatiquement en pause. **Reprendre** redevient fonctionnel après que la balle se soit reconnectée.\n- Dans un jeu avec deux balles, le message de pause indique la balle qui s'est déconnectée, et **Réessayer la connexion** apparaît si la reconnexion n'a pas été possible. Consultez [Utilisation de deux balles](help:using-two-balls).\n\n![Le menu de pause avec les options Reprendre, Sélectionner le jeu et Retour à l'écran d'accueil.](img:game-paused.jpg)\n*Le menu de pause.*",
+          "src": "35bd3f93f8"
+        },
+        "4": {
+          "text": "## Fin de partie\n\nVous voyez votre score, votre meilleur score et un message si vous avez établi un nouveau record personnel. Appuyez sur **Rejouer** ou **Sélection de jeu**.",
+          "src": "2265361c1d"
+        }
+      },
+      "title": "Jouer à un jeu"
+    },
+    "asteroid": {
+      "sections": {
+        "0": {
+          "text": "# Astéroïde\n\nVotre vaisseau traverse un tunnel tout seul. Vous contrôlez une seule chose : sa taille.\n\n- *Comprimez* la bille pour réduire la taille du vaisseau dans les sections étroites.\n- *Relâchez* dans les sections larges pour que le vaisseau retrouve sa taille normale et collectez des récompenses (+100 points chacune).\n- Les vaisseaux ennemis se trouvent près d'un des murs du passage. Réduisez la taille du vaisseau et passez de l'autre côté. Un contact inflige la moitié de votre score ; un passage réussi ajoute la moitié.\n\nVous passez au niveau supérieur lorsque vous atteignez le score cible et que vous avez joué au moins 30 secondes dans le niveau. Chaque niveau a ses propres couleurs et récompenses.\n\nCommandes : compression uniquement.",
+          "src": "ab0650bd1f"
+        }
+      },
+      "title": "Astéroïde"
+    },
+    "roll-the-ball": {
+      "sections": {
+        "0": {
+          "text": "# Faites rouler la balle\n\nDes monstres apparaissent sur un anneau situé au centre de l'écran. Inclinez la balle pour déplacer votre curseur, placez-la sur l'anneau à l'endroit du monstre, puis appuyez pour l'attraper.\n\n- Un monstre qui n'est pas attrapé disparaît après un certain temps, défini par le joueur.\n- Le curseur change de couleur lorsqu'il se trouve sur l'anneau et lorsque vous appuyez.\n- Vous passez au niveau supérieur lorsque vous atteignez le score cible et que vous avez joué au moins 30 secondes dans ce niveau.\n\nCommandes : appuyez et inclinez. Configurez d'abord la [position de la balle](help:holding-the-ball).",
+          "src": "bed335395a"
+        }
+      },
+      "title": "Faites rouler la balle"
+    },
+    "shoot-the-bottle": {
+      "sections": {
+        "0": {
+          "text": "# Détruire les bouteilles\n\nDes bouteilles, des boîtes et des canettes tombent du haut. Un canon situé en bas à gauche tire sur ces objets.\n\n1. Appuyez sur la barre située au-dessus du seuil pour armer le canon. La barre de puissance en bas se remplit à mesure que vous appuyez plus fort.\n2. Relâchez le bouton, ou appuyez jusqu'à 100 %, pour tirer. La puissance du tir correspond à celle que vous avez atteinte.\n3. Les cibles plus éloignées, les pressions plus fortes et les petites bouteilles rapportent plus de points.\n\nCommandes : appuyer uniquement.",
+          "src": "a319cfe59c"
+        }
+      },
+      "title": "Tirer sur la bouteille"
+    },
+    "car-ride": {
+      "sections": {
+        "0": {
+          "text": "# Course en voiture\n\nConduisez la voiture le long d'un chemin sinueux en inclinant la bille. Appuyez pour ralentir ; relâchez pour accélérer.\n\n- Collectez des pièces pour 50 points chacune.\n- Si vous heurtez un obstacle, vous perdez une vie et la voiture est immobilisée. Contournez-le pour continuer.\n- Vous passez au niveau supérieur lorsque vous atteignez le score cible et que vous avez joué au moins 30 secondes dans ce niveau.\n\nCommandes : appuyez et inclinez. Configurez d'abord la [position de la bille](help:holding-the-ball).",
+          "src": "d282dc55ce"
+        }
+      },
+      "title": "Trajet en voiture"
+    },
+    "memory-cards": {
+      "sections": {
+        "0": {
+          "text": "# Cartes Mémoire\n\nLes cartes sont disposées face cachée. Faites rouler la balle pour déplacer le curseur et appuyez pour retourner la carte située en dessous. Trouvez deux cartes identiques pour les éliminer.\n\n- Le niveau 1 comporte 2 paires. Chaque niveau ajoute 2 paires.\n- Le bouton en bas à droite permet de basculer entre les images seules et les images avec des mots. En mode \"mots\", chaque paire est composée d'une carte image et d'une carte mot.\n- Chaque niveau a une limite de temps que l'utilisateur peut modifier.\n\nCommandes : appuyer et incliner. Configurez d'abord la [position de la balle](help:holding-the-ball).",
+          "src": "854ea2dc15"
+        }
+      },
+      "title": "Cartes mémoire"
+    },
+    "dart-hit": {
+      "sections": {
+        "0": {
+          "text": "# Dart Hit\n\nUne bûche en bois tourne au centre de l'écran. Chaque pression sur le bouton lance une fléchette verticalement. La bûche continue de tourner entre les lancers, donc le timing est crucial.\n\n- Une fléchette qui atterrit sur une fléchette déjà plantée dans la bûche coûte une vie. Vous avez 3 vies.\n- Toucher une pomme sur la bûche rapporte 100 points.\n- Pour terminer un niveau, il faut retirer toutes les fléchettes nécessaires. Il y a 50 niveaux.\n\nLe mode entraînement permet de modifier la taille des fléchettes, la taille des pommes, la précision requise, la vitesse de la bûche et la fréquence à laquelle elle change de direction. Consultez les [paramètres d'entraînement](help:trainer-settings).\n\nCommandes : uniquement une pression sur le bouton.",
+          "src": "e22095fc90"
+        }
+      },
+      "title": "Flèche [n]"
+    },
+    "clinical-strength-tests": {
+      "sections": {
+        "0": {
+          "text": "# Tests de force cliniques\n\nUtilisez la carte **Tests** sur l'écran d'accueil pour mesurer la force, et non pour lancer un jeu.\n\n1. Choisissez **Haut du corps** ou **Bas du corps**.\n2. Choisissez un test. La liste comprend les tests de force des ischio-jambiers, des muscles abducteurs, des muscles adducteurs, du mollet et des quadriceps pour le bas du corps, ainsi que les tests de force de la prise de main, des biceps, des triceps, des pectoraux et de l'abduction de l'épaule pour le haut du corps.\n3. Choisissez le côté.\n\nUn test clinique ne modifie jamais les paramètres d'un jeu. Les résultats apparaissent dans l'onglet **Résultats des tests** du coach, indiqué par **Clinique**.\n\n![Liste des tests de force du haut du corps parmi lesquels choisir.](img:test-names.jpg)\n*Choisissez le test que vous souhaitez effectuer.*",
+          "src": "ea5dd6a86c"
+        }
+      },
+      "title": "Tests de résistance clinique"
+    },
+    "running-a-strength-test": {
+      "sections": {
+        "0": {
+          "text": "# Réalisation d'un test de résistance\n\n## Préparation\n\n1.  Assurez-vous que l'équipement est en bon état de fonctionnement.\n2.  Vérifiez les paramètres du test.\n3.  Préparez l'échantillon à tester.\n\n## Exécution du test\n\n1.  Placez l'échantillon dans le dispositif de test.\n2.  Appliquez la charge progressivement.\n3.  Surveillez attentivement le comportement de l'échantillon.\n4.  Enregistrez les données pertinentes.\n\n## Analyse des résultats\n\n1.  Analysez les données enregistrées.\n2.  Déterminez la résistance de l'échantillon.\n3.  Rédigez un rapport sur les résultats.\n\n## Conseils\n\n*   Suivez scrupuleusement les instructions du fabricant.\n*   Portez l'équipement de protection approprié.\n*   Soyez attentif aux signes de défaillance.\n*   Consultez un professionnel si nécessaire.\n\n**Important :** Ce guide fournit des informations générales. Pour des instructions spécifiques, veuillez consulter la documentation du fabricant.\n\n*Sécurité avant tout.*",
+          "src": "007f41fb90"
+        },
+        "1": {
+          "text": "## Préparation\n\nUn test clinique affiche **Comment effectuer le test ?** avec une description. Appuyez sur **Regarder la vidéo de démonstration** pour voir l'exercice et sur **Démarrer le test** lorsque vous êtes prêt. Maintenez la balle immobile sur cet écran : l'application mesure sa pression de repos, ce qui permet de faire démarrer la mesure à partir de zéro.\n\nUn test avant le début d'un match se lance automatiquement après une courte attente.\n\n![L'écran de préparation du test, avec la description du test, un bouton pour visionner une vidéo de démonstration et un bouton pour démarrer le test.](img:test-preparation.jpg)\n*Lisez les instructions pour effectuer le test, puis démarrez.*",
+          "src": "a4bc7592ca"
+        },
+        "2": {
+          "text": "## Les phases\n\n1. Un compte à rebours de 3 secondes lance le test.\n2. **PRESSEZ !** - Pressez aussi fort que possible pendant que le chronomètre tourne. La barre indique votre force, et un repère indique votre force maximale jusqu'à présent.\n3. **REPOS !** - Relâchez. Rien n'est enregistré pendant la phase de repos.\n\nUn test clinique utilise le temps de pression, le temps de repos et le nombre de phases (de 1 à 3), définis par l'entraîneur. Un test avant un match comprend toujours une seule phase de 10 secondes.\n\n![Un test en cours, affichant le numéro de la phase, une bannière \"PRESS\" et la barre de force.](img:test-pressing.jpg)\n*Pressez pendant que \"PRESS\" est affiché.*",
+          "src": "710b953749"
+        },
+        "3": {
+          "text": "## Test terminé\n\nVotre score le plus élevé sur toutes les manches est affiché. Appuyez sur **Enregistrer les résultats** pour le conserver, ou sur **Répéter le test** pour le rejeter et réessayer.\n\n![Fenêtre \"Test terminé\" avec les boutons \"Enregistrer les résultats\" et \"Refaire le test\".](img:test-completed.jpg)\n*Enregistrez le résultat ou refaites le test.*",
+          "src": "c68e93334c"
+        }
+      },
+      "title": "Réalisation d'un test de résistance"
+    },
+    "strength-test-results": {
+      "sections": {
+        "0": {
+          "text": "# Résultats du test de force\n\nAprès l'enregistrement, l'écran de résultats affiche votre force maximale et votre force moyenne, ainsi que la comparaison avec vos tests précédents pour le même test et le même côté.\n\nLa force est affichée en kilogrammes ou en livres, et est calculée à partir de la pression et de la taille de la balle utilisée. Vos résultats sont conservés sur l'appareil et peuvent être consultés à nouveau dans l'onglet [Résultats des tests](help:trainer-test-results) du logiciel.\n\n![L'écran des résultats du test de force, affichant la force maximale et la force moyenne.](img:test-result.jpg)\n*Le résultat d'un test enregistré.*",
+          "src": "1d104706ec"
+        }
+      },
+      "title": "Résultats des tests de résistance"
+    },
+    "sensor-panel": {
+      "sections": {
+        "0": {
+          "text": "# Le panneau des capteurs\n\nAprès l'appairage, une petite icône \"Capteur\" se trouve en haut à droite de chaque écran. Le point indique l'état : vert pour connecté, orange pour batterie faible ou en cours de reconnexion, rouge pour déconnecté. Appuyez dessus pour ouvrir le panneau.\n\n![Le panneau des capteurs, affiché après avoir cliqué sur l'icône en haut à droite. Il comprend le nom de la balle, sa taille, la batterie, la pression, la rotation, les commandes sonores, ainsi que les boutons \"Changer de balle\", \"À propos\", \"Aide\" et \"Mode entraînement\".](img:sensor-panel.jpg)\n*Le panneau des capteurs, accessible en cliquant sur l'icône en haut à droite.*",
+          "src": "8a203d2923"
+        },
+        "1": {
+          "text": "## Ce que le tableau affiche\n\n- Le nom du ballon, son identifiant, sa **Taille de la balle** et le niveau de **Batterie**.\n- La barre de pression en temps réel, et **Rotation de la balle** avec **Remettre à zéro** pour remettre à zéro.\n- **Effets sonores** et **Musique**, chacun étant **ACTIVÉ** ou **DÉSACTIVÉ**.",
+          "src": "d57b1aee72"
+        },
+        "2": {
+          "text": "## Boutons\n\n- **Changer de balle** permet de déconnecter et de rechercher une autre sphère.\n- Lorsque deux sphères sont connectées, **Changer de balle** demande d'abord quelle sphère remplacer. Consultez [Utilisation de deux sphères](help:using-two-balls).\n- **Connecter une deuxième balle** apparaît uniquement lorsqu'une seule sphère est connectée. Consultez [Utilisation de deux sphères](help:using-two-balls).\n- **À propos** affiche la version de l'application, la licence de la sphère, son identifiant et la taille de la sphère utilisée par l'application pour ses calculs. Si la taille de la sphère n'est pas connue, elle utilise 19 cm et l'indique comme *estimée* ; définissez la taille réelle lorsque vous connectez la sphère. **Supprimer les données utilisateur** permet de dissocier votre adresse e-mail du compte de la sphère.\n- **Aide** ouvre ce manuel.\n- **Mode entraîneur** ouvre le [panneau de l'entraîneur](help:trainer-panel).\n\nAppuyez n'importe où en dehors du panneau pour le fermer.\n\nLorsque deux sphères sont connectées, l'écran affiche une sphère divisée en deux moitiés, une pour chaque sphère, et le panneau comporte un commutateur **1** / **2** en haut pour afficher soit la première, soit la deuxième sphère. Consultez [Utilisation de deux sphères](help:using-two-balls).",
+          "src": "2d988270d7"
+        },
+        "3": {
+          "text": "## Batterie et connexion\n\n- Lorsque la batterie est à 25 % ou moins, le point devient orange.\n- Lorsque la batterie est à 10 % ou moins, vous voyez **Batterie critique**. Choisissez **Aller à la connexion** ou **Je vais le charger**.\n- Si la connexion est perdue, l'application tente de se reconnecter trois fois. Si cela échoue, elle vous demande si vous souhaitez accéder à l'écran de connexion ou réessayer.\n- Lorsque l'application passe en arrière-plan, la sphère se déconnecte après quelques secondes et se reconnecte lorsque vous revenez.",
+          "src": "d3744d110c"
+        }
+      },
+      "title": "Le panneau de capteurs"
+    },
+    "trainer-panel": {
+      "sections": {
+        "0": {
+          "text": "# Le panneau de l'animateur\n\nLe panneau de l'animateur est destiné à la personne qui anime la session. Pour l'ouvrir, utilisez le bouton **Mode entraîneur** dans le [panneau des capteurs](help:sensor-panel). Aucun mot de passe n'est requis. Le panneau s'ouvre en mode paysage et affiche l'utilisateur actuellement connecté.\n\nIl comporte cinq onglets :\n\n- **Paramètres** - [paramètres du jeu et des tests](help:trainer-settings), exportation des données et confidentialité.\n- **Résultats du jeu** - [historique des jeux](help:trainer-game-results).\n- **Résultats des tests** - [historique des tests](help:trainer-test-results).\n- **Rapport de progression** - un [résumé du traitement d'un utilisateur](help:progress-report).\n- **Utilisateurs** - [ajouter, modifier et supprimer des utilisateurs](help:managing-users).\n\nAppuyez sur **Quitter le mode entraîneur** ou sur le bouton de fermeture pour quitter.",
+          "src": "51ce97dba2"
+        }
+      },
+      "title": "Le tableau de bord du formateur"
+    },
+    "trainer-settings": {
+      "sections": {
+        "0": {
+          "text": "# Paramètres de l'entraîneur\n\nLes paramètres sont enregistrés pour chaque utilisateur et pour chaque jeu. Un nouvel utilisateur commence avec le paramètre \"Facile\" pour chaque jeu.\n\n![Le panneau de l'entraîneur dans l'onglet \"Paramètres\", affichant le choix du jeu et les paramètres de difficulté.](img:trainer-settings.jpg)\n*Choisissez un jeu, puis configurez-le.*",
+          "src": "dff5c6ca63"
+        },
+        "1": {
+          "text": "## Niveaux de difficulté\n\n**Niveau de difficulté** propose les niveaux **Facile**, **Moyen**, **Difficile** et **Sprint**. Un niveau de difficulté ne fait que définir un point de départ : vous pouvez modifier n'importe quel paramètre par la suite.",
+          "src": "c56f4f4794"
+        },
+        "2": {
+          "text": "## Curseurs\n\nLes curseurs qui apparaissent dépendent du jeu. Voici les plus courants :\n\n- **Durée de session** : de 1 à 5 minutes.\n- **Seuil de pression** : la proportion de la force maximale que l'utilisateur doit exercer pour agir.\n- **Plage d'inclinaison** : le nombre de degrés d'inclinaison nécessaires pour obtenir un mouvement complet. Une valeur plus faible indique une plus grande sensibilité.\n\nD'autres curseurs concernent les tailles, les vitesses et les limites de temps pour les jeux individuels, tels que **Taille du monstre**, **Taille de la bouteille**, **Taille de la pièce** et **Taille de la fléchette**.\n\nLes jeux à deux balles ont également **Mode de force** : **Brute** compare les joueurs en fonction de la force réelle qu'ils exercent, **Normalisée** ajuste chaque joueur en fonction de son propre test de force. Le mode \"Raw\" est le mode par défaut. Consultez [Utilisation de deux balles](help:using-two-balls).\n\n[Tug of War](help:tug-of-war) possède ses propres curseurs : **Durée de traction** (de 20 à 120 secondes), **Durée du repos** (de 5 à 30 secondes) et **Manches pour gagner** (de 1 à 10). Il n'a pas de durée de session ni de seuil de force. En mode de force \"Raw\", il possède également **Mappage de force brute** (1×, 3×, 5×, 7× ou 10×, par défaut 5×) : une valeur plus élevée fait réagir davantage les jauges de force et la corde à la même pression. Il ne fait rien en mode \"Normalisé\".\n\nPour modifier un curseur, faites glisser le point. Appuyer sur la barre ne la déplace pas, de sorte qu'un contact accidentel ne peut pas modifier une valeur pendant que vous faites défiler.",
+          "src": "3173357d1e"
+        },
+        "3": {
+          "text": "## Enregistrement\n\nAppuyez sur **Enregistrer les paramètres du jeu**. Le bouton affiche **✓ Enregistré** jusqu'à ce que vous modifiiez quelque chose à nouveau. La section **Test de force** possède ses propres paramètres de durée de pression, de temps de repos et de nombre de tours, qui sont enregistrés avec **Enregistrer les paramètres du test**.",
+          "src": "b54114b611"
+        },
+        "4": {
+          "text": "## Confidentialité et exportation\n\nL'onglet concerné comprend les options relatives aux [données d'utilisation et aux rapports de plantage](help:privacy-and-usage-data) ainsi qu'à l' [exportation des données](help:exporting-data).",
+          "src": "a699c4dbec"
+        }
+      },
+      "title": "Paramètres de l'entraîneur"
+    },
+    "trainer-game-results": {
+      "sections": {
+        "0": {
+          "text": "# Résultats des parties\n\nCette liste affiche toutes les parties jouées par l'utilisateur sélectionné, en commençant par les plus récentes, avec le score, la durée, la partie du corps sollicitée, le côté du corps et le type de balle utilisé.\n\nDans une partie avec deux balles, chaque joueur a sa propre ligne, identifiée comme *Joueur 1* ou *Joueur 2*. Consultez [Utilisation de deux balles](help:using-two-balls).\n\nLes filtres permettent de réduire progressivement la liste : type de jeu, région, partie du corps, côté du corps et type de balle. Un filtre n'apparaît que s'il existe plusieurs options possibles. **Meilleur score** représente le meilleur score de l'utilisateur et **Meilleur de la clinique** est le meilleur score de tous les utilisateurs pour ce type de jeu.\n\n![L'onglet Résultats des parties affiche les parties jouées avec le score et la durée.](img:trainer-game-results.jpg)\n*La liste des parties jouées.*",
+          "src": "df83977eb6"
+        }
+      },
+      "title": "Résultats des matchs"
+    },
+    "trainer-test-results": {
+      "sections": {
+        "0": {
+          "text": "# Résultats des tests\n\nCette liste présente tous les tests de résistance, en commençant par les plus récents, avec la force maximale et la force moyenne, la taille de la balle et la pression de départ. Cliquez sur une ligne pour voir quelle balle a été utilisée.\n\nLes filtres permettent de réduire la liste : **Catégorie** (**Avant le jeu** ou **Clinique**), région, nom du test, côté et balle. Les tests enregistrés avec différentes balles conservent leurs propres valeurs de force, de sorte qu'un résultat reste correct même si une autre balle est connectée ultérieurement.\n\n![L'onglet Résultats des tests, qui liste les tests de résistance avec la force maximale et la force moyenne.](img:trainer-test-results.jpg)\n*La liste des tests de résistance.*",
+          "src": "f7385a5fb6"
+        }
+      },
+      "title": "Résultats des tests"
+    },
+    "progress-report": {
+      "sections": {
+        "0": {
+          "text": "# Rapport de progression\n\nUn résumé de l'ensemble de l'historique de traitement d'un utilisateur, de la première séance jusqu'à aujourd'hui. Il n'y a pas de filtres.\n\nIl affiche les informations du patient (nom, identifiant, date de début et durée totale du traitement), les premiers, les derniers et les meilleurs résultats pour chaque test clinique et chaque partie du corps. Des graphiques sont affichés lorsqu'il y a au moins deux résultats, ainsi que des graphiques de performance du jeu et des statistiques de session.\n\nUn utilisateur qui a joué à [Bilateral Training](help:bilateral-training) dispose également d'une section **Entraînement bilatéral** avec le pourcentage de symétrie le plus récent (100 % signifie que les deux côtés ont fonctionné de manière égale) et, pour le mode de suivi, l'erreur de suivi, chacun accompagné d'un graphique lorsqu'il y a deux résultats. Un utilisateur sans historique voit un message indiquant qu'il n'y a pas de données disponibles.\n\n![L'onglet Rapport de progression, affichant les informations du patient et les résultats.](img:trainer-progress.jpg)\n*Résumé du traitement d'un utilisateur.*",
+          "src": "51be54c919"
+        }
+      },
+      "title": "Rapport d'avancement"
+    },
+    "managing-users": {
+      "sections": {
+        "0": {
+          "text": "# Gestion des utilisateurs\n\nL'onglet **Utilisateurs** affiche la liste de tous les utilisateurs du dispositif. Vous pouvez modifier l'identifiant et le nom d'un utilisateur, ou supprimer un utilisateur. La suppression d'un utilisateur supprime toutes ses sessions et ses données de test, c'est pourquoi l'application vous demande de confirmer l'opération.\n\nLes nouveaux utilisateurs sont ajoutés à partir de l'écran de connexion. Consultez [la section sur la connexion et les utilisateurs](help:signing-in).\n\n![L'onglet Utilisateurs affiche la liste des utilisateurs du dispositif.](img:trainer-users.jpg)\n*Les utilisateurs de ce dispositif.*",
+          "src": "cc48f671b9"
+        }
+      },
+      "title": "Gestion des utilisateurs"
+    },
+    "exporting-data": {
+      "sections": {
+        "0": {
+          "text": "# Exporter les données\n\nEn bas de l'onglet **Paramètres**, **Exporter les données** enregistre chaque session pour chaque utilisateur dans un seul fichier CSV nommé *PLAYWORK Data* et incluant la date. Appuyez sur **Exporter vers Excel**.\n\nLe fichier s'ouvre dans Excel ou un logiciel similaire. Il contient une ligne par session, avec les informations suivantes : utilisateur, date, type de session, partie du corps, côté, taille de la balle, force, score et durée. Les colonnes qui ne sont pas applicables sont laissées vides.\n\nPour les jeux à deux balles, les deux dernières colonnes, *Match ID* et *Joueur*, relient les deux joueurs d'un même match : les deux lignes partagent le même identifiant de match. Consultez [Utilisation de deux balles](help:using-two-balls) pour plus de détails.\n\nSur un téléphone ou une tablette, le fichier est enregistré dans le dossier Documents. Dans un navigateur, il est téléchargé.",
+          "src": "ae7aefd36a"
+        }
+      },
+      "title": "Exportation des données"
+    },
+    "privacy-and-usage-data": {
+      "sections": {
+        "0": {
+          "text": "# Confidentialité et données d'utilisation\n\nPlaywork fonctionne entièrement hors ligne et conserve vos données sur l'appareil. Deux fonctionnalités facultatives peuvent envoyer des informations.\n\n- **Télémétrie d'utilisation** envoie des informations anonymes sur les écrans et les boutons utilisés. Ces informations ne comprennent jamais de noms, d'identifiants ou de mesures.\n- **Rapport de plantage** envoie des rapports d'erreurs automatiques.\n\nLa première fois que vous ouvrez l'application, elle vous demande une seule fois si vous souhaitez **Activer** ces fonctionnalités ou choisir **Pas maintenant**. Aucune donnée n'est collectée à moins que vous ne l'activiez. L'utilisateur peut modifier ces options ultérieurement dans l'onglet **Paramètres**.",
+          "src": "9897eb87dd"
+        }
+      },
+      "title": "Données relatives à la confidentialité et à l'utilisation"
+    },
+    "sound-and-music": {
+      "sections": {
+        "0": {
+          "text": "# Son et musique\n\nLes jeux utilisent des effets sonores et de la musique de fond. Activez ou désactivez **Effets sonores** et **Musique** dans le [panneau des capteurs](help:sensor-panel). Votre choix est enregistré.",
+          "src": "61db902d42"
+        }
+      },
+      "title": "Son et musique"
+    },
+    "two-ball-panels": {
+      "sections": {
+        "0": {
+          "text": "# Capteurs à deux balles\n\nUn jeu pour deux joueurs qui nécessite deux balles connectées. L'écran affiche deux panneaux côte à côte, la *Balle 1* à gauche et la *Balle 2* à droite. Chaque panneau affiche les données de la balle en temps réel : sa pression de compression et sa rotation sur les axes X, Y et Z.\n\n- Sur l'écran de préparation, appuyez sur **Choisir le joueur 2** et choisissez un autre utilisateur ou un invité avant de commencer.\n- Pressez et inclinez chaque balle pour observer le mouvement de son panneau.\n- Le score de chaque joueur correspond à sa pression de compression maximale. Les deux scores sont enregistrés ensemble comme une partie.\n- Si l'une des balles se déconnecte, le jeu est mis en pause et le nom de la balle déconnectée est affiché. La partie reprend uniquement lorsque les deux balles sont reconnectées.\n\nPour connecter la deuxième balle, ouvrez le panneau du capteur et appuyez sur **Connecter une deuxième balle**. Consultez le [Panneau du capteur](help:sensor-panel).",
+          "src": "6860767a20"
+        }
+      },
+      "title": "Capteurs à deux boules",
+      "titleSrc": "20d82ad54b"
+    },
+    "using-two-balls": {
+      "sections": {
+        "0": {
+          "text": "# Utilisation de deux boules\n\nLes jeux à deux joueurs nécessitent deux boules connectées. Vous pouvez également connecter une deuxième boule séparément pour pouvoir les voir toutes les deux en même temps.",
+          "src": "bb21470394"
+        },
+        "1": {
+          "text": "## Connecter une deuxième balle\n\n1. Connectez la première balle comme d'habitude.\n2. Ouvrez le panneau des capteurs et appuyez sur **Connecter une deuxième balle**. Un jeu avec deux balles ouvre la même fenêtre automatiquement lorsqu'une des balles est manquante.\n3. Sélectionnez la deuxième balle dans la liste. La balle que vous avez déjà connectée n'apparaît pas. Sur le web, appuyez sur **🔵 Connecter le capteur** et choisissez-la dans la fenêtre du navigateur.\n4. La deuxième balle est vérifiée par rapport à sa propre licence, comme la première. Si elle est refusée, vous verrez la raison et vous pourrez essayer une autre balle.\n\nUn téléphone qui ne peut pas gérer deux connexions simultanément affiche un message et continue de fonctionner avec une seule balle.\n\nDans un navigateur, la fenêtre vous demande de choisir la deuxième balle via le sélecteur de navigateur. Si vous choisissez la balle qui est déjà connectée en tant que balle 1, vous serez invité à en choisir une autre.",
+          "src": "5e5234cdfd"
+        },
+        "2": {
+          "text": "## La pilule avec deux sphères\n\nLa pilule représente une sphère divisée en deux moitiés, une pour chaque sphère. La moitié de la sphère que le panneau affiche est entourée d'un anneau. En haut du panneau, appuyez sur **1** ou **2** pour alterner l'affichage entre les deux sphères.",
+          "src": "740933889b"
+        },
+        "3": {
+          "text": "## Remplacer une balle\n\nLorsque deux balles sont connectées, **Changer de balle** demande quelle balle remplacer. Seule la balle que vous choisissez est déconnectée ; l'autre reste connectée. Une partie en cours est interrompue.",
+          "src": "5957cac862"
+        },
+        "4": {
+          "text": "## Déconnecter la deuxième balle\n\nOuvrez le panneau et appuyez sur **Déconnecter la deuxième balle**. La deuxième balle est déconnectée et vous revenez à un jeu avec une seule balle. Quitter un jeu à deux balles ne le déconnecte pas ; il reste connecté jusqu'à ce que vous le fassiez ou que vous fermiez l'application.",
+          "src": "eb0ce0cb48"
+        },
+        "5": {
+          "text": "## Si une balle se déconnecte pendant une partie\n\nLe jeu est interrompu et indique quelle balle a été perdue. Il tente de se reconnecter automatiquement plusieurs fois. Si cela échoue, appuyez sur **Réessayer la connexion** ou quittez la partie. Le jeu ne reprend jamais avec une seule balle.\n\nVoir également [Capteurs à deux balles](help:two-ball-panels), [Tir à la corde](help:tug-of-war) et [Le panneau de capteurs](help:sensor-panel).",
+          "src": "b0da39e8dc"
+        }
+      },
+      "title": "Utilisation de deux balles",
+      "titleSrc": "fbe8913111"
+    },
+    "tug-of-war": {
+      "sections": {
+        "0": {
+          "text": "# Tir à la corde\n\nUn jeu pour deux joueurs qui nécessite deux appareils connectés. Un marqueur sur une corde se trouve au milieu de l'écran. Celui qui serre le plus fort tire le marqueur vers sa propre ligne.\n\n- Sur l'écran de préparation, appuyez sur **Choisir le joueur 2** et choisissez un autre utilisateur ou un invité avant de commencer.\n- Chaque manche commence avec un compte à rebours de 3-2-1. Le marqueur se déplace en douceur : plus la différence entre les deux pressions est grande, plus il se déplace rapidement. Des pressions égales le maintiennent immobile.\n- Une manche se termine lorsque le marqueur atteint la ligne d'un des joueurs, ou lorsque le temps imparti est écoulé. Si le temps est écoulé, le joueur dont le marqueur est le plus proche remporte la manche.\n- Après chaque manche, il y a une pause, puis la manche suivante commence. Le premier joueur à gagner le nombre de manches requis remporte la partie.\n- Chaque côté de la corde affiche le nom du joueur, et le score de la manche et de la partie est affiché sous la barre supérieure. Une grande bannière **PRESSEZ!!!** avec un compte à rebours s'affiche pendant que vous tirez, et une bannière **PAUSE** avec un compte à rebours s'affiche entre les manches.\n- Un entraîneur peut modifier le temps de tirage, le temps de pause, le nombre de manches nécessaires et, en mode \"Force brute\", l'intensité avec laquelle la pression déplace la corde (**Mappage de force brute**) dans **Paramètres**. Consultez les [paramètres de l'entraîneur](help:trainer-settings).\n- Si l'un des appareils se déconnecte, le jeu est mis en pause et le nom de l'appareil déconnecté est affiché. Il reprend uniquement lorsque les deux appareils sont à nouveau connectés.\n\nPour connecter le deuxième appareil, ouvrez le panneau des capteurs et appuyez sur **Connecter une deuxième balle**. Consultez le [panneau des capteurs](help:sensor-panel).",
+          "src": "d78b0c8fcd"
+        }
+      },
+      "title": "Tir à la corde",
+      "titleSrc": "5228a636fd"
+    },
+    "bilateral-training": {
+      "sections": {
+        "0": {
+          "text": "# Entraînement Bilatéral\n\nUn jeu pour un seul joueur qui nécessite deux balles connectées, une pour chaque côté du corps. Les deux côtés travaillent ensemble dans l'un des quatre modes.\n\n- Sur l'écran de démarrage, attribuez chaque balle à une partie du corps. Le jeu ne commence que lorsque les deux balles sont connectées et attribuées.\n- Choisissez un mode : **Enregistrer et copier** (un côté effectue une séquence, l'autre la copie), **Miroir** (les deux côtés atteignent un objectif ensemble), **Alterné** (les côtés alternent) ou **Suivi** (un côté suit la force appliquée en temps réel par l'autre).\n- L'écran est divisé en deux, une moitié pour chaque balle. Chaque moitié affiche la partie du corps correspondante et réagit uniquement à sa propre balle.\n- Chaque mode comporte deux exercices ; le deuxième est plus difficile que le premier.\n- Si le seuil de pression est réglé sur 0 dans **Paramètres**, tous les modes utilisent uniquement l'inclinaison et aucune pression n'est nécessaire. Consultez les [paramètres de l'entraîneur](help:trainer-settings).\n- Si l'une des balles se déconnecte, le jeu est mis en pause et le nom de la balle déconnectée est affiché.\n\nPour connecter la deuxième balle, ouvrez le panneau des capteurs et appuyez sur **Connecter une deuxième balle**. Consultez le [panneau des capteurs](help:sensor-panel).",
+          "src": "77ed284cb2"
+        }
+      },
+      "title": "Formation bilatérale",
+      "titleSrc": "5cf353787d"
+    },
+    "team-rocket": {
+      "sections": {
+        "0": {
+          "text": "# Équipe Rocket\n\nUn jeu coopératif pour deux joueurs qui nécessite deux appareils connectés. Ensemble, vous faites voler une fusée à travers un tunnel rempli d'espaces.\n\n- Sur l'écran de préparation, appuyez sur **Choisir le joueur 2** et choisissez un autre utilisateur ou un invité avant de commencer.\n- La fusée se déplace d'elle-même le long du tunnel. Appuyez **simultanément** pour la réduire afin qu'elle passe dans les espaces étroits, et relâchez **simultanément** pour collecter les pièces dans les parties larges.\n- La fusée se rétrécit lorsque la moyenne des deux pressions dépasse le seuil défini par le \"formateur\". Si les deux pressions sont très différentes, la fusée penche vers le joueur le moins actif.\n- La barre **Synchro** en bas de l'écran indique à quel point les deux pressions sont synchronisées. Tant que vous êtes synchronisés (dans un intervalle de 20 % l'un de l'autre et que vous appuyez tous les deux au moins un peu), votre score est doublé. Si vous n'êtes pas synchronisés, vous marquez normalement : rien ne se passe.\n- Si la fusée est trop grande pour un espace étroit, elle ralentit jusqu'à ce que vous la réduisiez.\n- Il y a un score partagé et un niveau partagé. Un nouveau niveau commence après avoir accumulé suffisamment de points et après au moins 30 secondes, et le tunnel devient plus rapide.\n- Le résultat est enregistré dans les historiques des deux joueurs comme une partie liée.\n- Le \"formateur\" peut modifier le seuil de pression, les temps de repos et de pression, ainsi que le mode de force dans **Paramètres**. Consultez les [Paramètres du formateur](help:trainer-settings).\n- Si l'un des appareils se déconnecte, le jeu est mis en pause et le nom de l'appareil déconnecté est affiché. La partie reprend uniquement lorsque les deux appareils sont à nouveau connectés.\n\nPour connecter le deuxième appareil, ouvrez le panneau des capteurs et appuyez sur **Connecter une deuxième balle**. Consultez le [Panneau des capteurs](help:sensor-panel).",
+          "src": "83c3a1a1c1"
+        }
+      },
+      "title": "Équipe Rocket",
+      "titleSrc": "92a3e20f8c"
+    },
+    "space-chase": {
+      "sections": {
+        "0": {
+          "text": "# Course poursuite dans l'espace [[n]]\n\nUn jeu de poursuite spatiale qui entraîne deux compétences simultanément, tout en les séparant : la fermeté de votre prise et la stabilité avec laquelle vous maintenez la balle. Votre vaisseau spatial vole de gauche à droite à travers un champ d'astéroïdes, tandis qu'un vaisseau ennemi le suit.\n\n- Choisissez la partie du corps et le côté, comme pour n'importe quel autre jeu. Le jeu nécessite un test de force au préalable, comme les autres jeux de compression, mais il ne propose pas les options \"Table/Mur\" et \"Réinitialisation\" car il ne fait pas appel à l'inclinaison.\n- La pression sur la barre contrôle la vitesse. Le repère \"Target Force\" [cible] en pointillés sur la barre de pression indique votre objectif. Lorsque la pression est à ce niveau ou supérieure, le moteur fonctionne à pleine puissance et le vaisseau avance. Si la pression est inférieure, le moteur perd de sa puissance et l'ennemi se rapproche plus rapidement. Appliquer une pression supérieure au repère ne procure aucun avantage supplémentaire.\n- La stabilité contrôle la hauteur. Une ligne de guidage indique le chemin que vous devez suivre. Plus la trajectoire de la balle est instable, plus le vaisseau dérive au-dessus ou en dessous de la ligne, et c'est cette dérive qui vous fait percuter les astéroïdes. Maintenez la balle immobile pour rester sur la ligne. Les deux vaisseaux sont représentés en grand pour qu'ils soient faciles à suivre.\n- Les étoiles dorées se trouvent le long de la ligne de guidage, par paires, juste devant vous. Pilotez votre vaisseau directement au-dessus d'une étoile pour la collecter et obtenir +100 points et un son. Une étoile manquée passe simplement devant vous ; elle ne se déplace jamais vers vous.\n- L'ennemi ne tire jamais. Toucher un astéroïde ou l'ennemi provoque une « erreur » [FAULT], qui se manifeste par un bref tremblement et une perte de points, et le jeu continue. Une courte pause après chaque impact évite qu'une même zone ne fasse perdre des points à plusieurs reprises.\n- Étapes et pauses. Le jeu se déroule en plusieurs étapes. Chaque étape est une phase de jeu en vue isométrique d'une durée déterminée, suivie d'une pause. Pendant la pause, l'ennemi s'arrête, aucun point n'est gagné ou perdu, et vous pouvez relâcher la balle. L'écran s'assombrit avec un symbole **REPOS** clignotant et un compte à rebours, puis le jeu reprend automatiquement. Il n'y a pas de pause après la dernière étape, et les résultats apparaissent à la fin.\n- **Mode force variable**. Lorsque votre entraîneur active l'appareil, le repère de la force cible se déplace de haut en bas autour du niveau habituel pendant chaque phase, vous devez donc le suivre. L'ennemi et vos points suivent toujours la position actuelle du repère.\n- **Score** ne comporte que quatre éléments : des points attribués pour le temps passé au-dessus ou à proximité du marqueur, des points déduits pour chaque collision, un bonus pour chaque niveau terminé, et +100 pour chaque étoile dorée collectée.\n- Les **résultats** affichent votre score total ainsi que trois pourcentages : Endurance (pourcentage du temps de jeu passé au niveau ou au-dessus du repère), Stabilité (pourcentage du temps de jeu pendant lequel la balle est restée stable) et Performance Stabilisée (la moyenne des deux). Le rapport de progression présente la Performance Stabilisée pour chaque session, sous **Performance des jeux physiques**.\n- Un entraîneur peut modifier la cible de force, la sensibilité de la stabilité, le mode de force variable et sa plage, le nombre de phases, le temps de maintien et le temps de repos dans **Paramètres**, ou utiliser les préréglages Facile, Moyen, Difficile et Sprint. Consultez les [paramètres de l'entraîneur](help:trainer-settings).",
+          "src": "6472d9ca02"
+        }
+      },
+      "title": "Course poursuite dans l'espace",
+      "titleSrc": "c7994f0625"
+    }
+  }
+}

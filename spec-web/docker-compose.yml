@@ -1,0 +1,67 @@
+services:
+  spec-web:
+    build:
+      context: .
+    image: playwork-spec-web
+    container_name: playwork-spec-web
+    ports:
+      - "${SPEC_WEB_PORT:-8888}:8888"
+    environment:
+      # Tells server.mjs it's running inside this container (vs. someone
+      # running `node server.mjs` bare on the host) — see server.mjs's own
+      # IN_DOCKER comment. The container's node_modules native addons don't
+      # match its Alpine/musl userland even though the repo itself is
+      # bind-mounted in, so the "Run Full Suite" button delegates the actual
+      # test execution to tools/spec/host-runner.mjs, a small companion process
+      # kept running on the real host (`npm run spec:host-runner`), reached
+      # here via Docker Desktop's host.docker.internal.
+      - SPEC_WEB_IN_DOCKER=1
+      # Manual machine-translation assist (manual-mt.mjs): the Ollama container publishes 11434 on the host.
+      - OLLAMA_URL=${OLLAMA_URL:-http://host.docker.internal:11434}
+    volumes:
+      # Bind-mount the whole repo, not a copy — CLAUDE.md and tools/spec/spec.mjs
+      # must be the real files so writes from the container land on disk and
+      # a host-side git checkout/edit is picked up on the next restart.
+      - ../..:/repo
+      # The Audio tab (S-235) reads public/audio, tools/generate/data and
+      # e2e-artifacts through this same mount — no extra volumes needed. Only
+      # set SPEC_WEB_AUDIO_LIVE_DIR / SPEC_WEB_AUDIO_GEN_DIR if you relocate them.
+    restart: unless-stopped
+
+  tunnel:
+    # Built (not the raw official image) — see Dockerfile.tunnel's comment:
+    # cloudflare/cloudflared is scratch-based with no shell, so it can only
+    # ever print the public URL ONCE, easy to lose under the connectivity-
+    # precheck wall of text. The build wraps it in a tiny entrypoint that
+    # re-announces the URL on a timer and drops it in a plain file, so
+    # `docker logs` near the tail — or `docker exec playwork-spec-tunnel cat
+    # /tmp/tunnel-url.txt` — always has it, restart or not.
+    #
+    # Runs as a sibling service rather than a host-installed binary in the
+    # first place because the host-side cloudflared.exe on this machine hit a
+    # reproducible edge-routing 404 (registers fine, TLS/HTTP2 handshake
+    # completes, edge still returns 404 with no origin headers) across every
+    # hostname/protocol tried — Docker's own network stack is a genuinely
+    # different path than the one that was failing, and did work.
+    build:
+      context: .
+      dockerfile: Dockerfile.tunnel
+    container_name: playwork-spec-tunnel
+    environment:
+      # Talks to spec-web over the compose network by service name — NOT
+      # 127.0.0.1, which inside this container would mean itself.
+      - TUNNEL_TARGET=http://spec-web:8888
+      # Named mode: a real, permanent hostname instead of a random
+      # *.trycloudflare.com one that changes every restart. TUNNEL_ID is the
+      # `cloudflared tunnel create` UUID; the matching credentials JSON must
+      # be at .secrets/tunnel-creds.json (gitignored — never commit it).
+      # Unset TUNNEL_MODE (or set it to "quick") to fall back to an
+      # anonymous quick tunnel, e.g. if .secrets/ isn't populated.
+      - TUNNEL_MODE=${TUNNEL_MODE:-named}
+      - TUNNEL_ID=${TUNNEL_ID:-6a6d2d03-acb3-4c3f-911c-5b13bf23e634}
+      - TUNNEL_HOSTNAME=${TUNNEL_HOSTNAME:-playwork-spec.iliadevhub.com}
+    volumes:
+      - ./.secrets/tunnel-creds.json:/etc/cloudflared/creds.json:ro
+    depends_on:
+      - spec-web
+    restart: unless-stopped

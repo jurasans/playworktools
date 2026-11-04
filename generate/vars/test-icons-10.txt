@@ -1,0 +1,10 @@
+hamstring|hamstring curl exercise, standing leg bending knee back
+abductors|hip abduction exercise, leg raising to the side
+adductors|hip adduction exercise, leg pulling inward
+calf|calf raise exercise, standing on tiptoes
+quad|leg extension exercise, seated leg kicking forward
+handgrip|hand grip exercise, fist squeezing
+bicep|bicep curl exercise, arm lifting weight
+tricep|tricep extension exercise, arm reaching overhead
+pec|chest press exercise, arms pushing forward
+upper-abduction|shoulder abduction exercise, arm raising sideways

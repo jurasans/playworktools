@@ -1,0 +1,483 @@
+{
+  "groups": {
+    "Getting started": "Comenzando",
+    "Games": "Juegos",
+    "Strength tests": "Pruebas de resistencia",
+    "The ball": "La pelota",
+    "Trainer": "Entrenador",
+    "Settings": "Configuración"
+  },
+  "articles": {
+    "using-the-manual": {
+      "sections": {
+        "0": {
+          "text": "# Usando el manual\n\nEste manual explica cada una de las pantallas de Playwork. Puede abrirlo desde cualquier lugar.\n\n![La ventana de ayuda con el botón del menú de contenidos, la barra de búsqueda y un botón de cerrar.](img:help-overlay.jpg)\n*La ventana de ayuda se abre sobre la pantalla en la que se encontraba.*",
+          "src": "3d1b34f607"
+        },
+        "1": {
+          "text": "## Ayuda\n\n- Toque el botón `?` en la parte superior de la pantalla. Esto abrirá el artículo correspondiente a la pantalla en la que se encuentra.\n- O bien, abra el panel de sensores (toque el pequeño botón \"Sensor\" en la esquina superior derecha) y toque **Ayuda**.\n\nSi abre la ayuda durante un juego, el juego se pausará. Cuando cierre la ayuda, permanecerá en la pantalla de pausa y podrá reanudar el juego con el botón **Reanudar**.",
+          "src": "eb16cf54e4"
+        },
+        "2": {
+          "text": "## Encontrar información\n\n- El índice organiza los artículos en capítulos. En un teléfono, toque el botón de menú en la esquina superior izquierda para mostrarlo u ocultarlo.\n- Escriba en la barra de búsqueda para encontrar artículos. Cada palabra que escriba debe aparecer en el artículo.\n- Los enlaces dentro de los artículos dirigen a otros artículos o a pantallas de la aplicación.\n\nLos artículos marcados como *Trainer* (Entrenador) son para la persona que dirige la sesión.",
+          "src": "1614fb2824"
+        }
+      },
+      "title": "Utilización del manual"
+    },
+    "connecting-your-ball": {
+      "sections": {
+        "0": {
+          "text": "# Conectar su pelota\n\nPlaywork utiliza una pelota con sensor. Debe conectarla una vez al iniciar la aplicación, antes de poder iniciar sesión.\n\n![La pantalla de conexión con el botón \"Conectar sensor\".](img:connect.jpg)\n*En un navegador web, toque \"Conectar sensor\" y seleccione su pelota.*",
+          "src": "951ed9fc5e"
+        },
+        "1": {
+          "text": "## En un teléfono o tableta\n\n1. Encienda el dispositivo y manténgalo cerca del aparato.\n2. Permita la conexión Bluetooth cuando la aplicación lo solicite. En versiones más antiguas de Android, la aplicación también necesita el permiso de ubicación y que la función de ubicación (GPS) del dispositivo esté activada.\n3. Si ha utilizado un dispositivo antes, la aplicación se volverá a conectar automáticamente. De lo contrario, buscará y mostrará una lista de los dispositivos que encuentra, junto con su nombre y tamaño.\n4. Toque el dispositivo que desea utilizar en la lista. La aplicación verificará su licencia y le dirigirá a la pantalla de inicio de sesión.",
+          "src": "41a1809e6b"
+        },
+        "2": {
+          "text": "## En un navegador web\n\nToque **Conectar sensor** y seleccione su balón en el selector de Bluetooth del navegador.",
+          "src": "e76532987a"
+        },
+        "3": {
+          "text": "## Si no funciona\n\n- *El Bluetooth está desactivado* - active el Bluetooth. La búsqueda comenzará de nuevo automáticamente.\n- Toque **Abrir configuración** si la aplicación indica que se requiere el permiso de Bluetooth.\n- Toque **Activar ubicación** si los servicios de ubicación están desactivados.\n- Una fila marcada como **Problemas de conexión** no pudo ser leída. Acérquese y espere a la siguiente búsqueda.\n- **Conexión fallida — inténtalo de nuevo.** significa que la conexión se ha interrumpido. Toque la pelota nuevamente.\n\nPara emparejar una pelota diferente más tarde, utilice **Cambiar pelota** en el [panel del sensor](help:sensor-panel).",
+          "src": "5ea4d740d1"
+        }
+      },
+      "title": "Conectando su pelota"
+    },
+    "signing-in": {
+      "sections": {
+        "0": {
+          "text": "# Inicio de sesión y usuarios\n\nUna vez que la pelota está conectada, elige quién va a jugar.\n\n![Pantalla de inicio de sesión con un teclado numérico, un botón de \"Iniciar sesión\", \"Nuevo usuario\" y \"Continuar como invitado\".](img:login.jpg)\n*Introduce tu identificación en el teclado numérico.*",
+          "src": "5bb62d2734"
+        },
+        "1": {
+          "text": "## Inicio de sesión\n\n1. Introduzca su identificación numérica en el teclado. Utilice **Mostrar ID** para ver los dígitos que ha ingresado.\n2. Toque **Iniciar sesión**.\n\nSi la identificación es desconocida, verá **ID no encontrado**. Las personas utilizadas recientemente aparecen debajo de **Usuarios recientes** solo por nombre; su identificación nunca se muestra allí, por lo que puede tocar un nombre para iniciar sesión sin que alguien cercano pueda leer la identificación que se muestra en la pantalla.",
+          "src": "272e5deda5"
+        },
+        "2": {
+          "text": "## Invitado\n\n**Continuar como invitado** se registra sin presentar una identificación. Los datos de los invitados se guardan de la misma manera que los de cualquier otro usuario.",
+          "src": "7a8b2c5791"
+        },
+        "3": {
+          "text": "## Agregar un usuario\n\n1. Toque **Nuevo usuario**.\n2. Introduzca un ID numérico y un nombre.\n3. Toque **Crear e iniciar sesión**.\n\nVerá **El ID ya está en uso** si ese ID ya existe. El número de usuarios depende de la licencia del dispositivo: 1 usuario, 50 usuarios o ilimitado. Si se alcanza el límite, la aplicación le informará.\n\nPuede cerrar la ventana pulsando el botón de cierre o tocando fuera de ella. Consulte también [idioma y unidades](help:language-and-units).",
+          "src": "2321392aab"
+        }
+      },
+      "title": "Inicio de sesión y usuarios"
+    },
+    "language-and-units": {
+      "sections": {
+        "0": {
+          "text": "# Idioma y unidades\n\nEn la pantalla de inicio de sesión, en la parte superior, hay dos controles.",
+          "src": "6448dcbaef"
+        },
+        "1": {
+          "text": "## Idioma\n\nAbra el selector de idioma y elija su idioma. La aplicación se actualizará inmediatamente y recordará su elección. El hebreo se muestra de derecha a izquierda.",
+          "src": "3df2209d70"
+        },
+        "2": {
+          "text": "## Unidades\n\nEl cambio de unidades afecta la forma en que se muestran la fuerza y la distancia. Las fuerzas se calculan a partir de la lectura de presión y el tamaño de su pelota, así que asegúrese de que el tamaño de la pelota sea correcto en el [panel del sensor](help:sensor-panel).",
+          "src": "2fea811b3f"
+        }
+      },
+      "title": "Idioma y unidades"
+    },
+    "home-screen": {
+      "sections": {
+        "0": {
+          "text": "# La pantalla de inicio\n\nDespués de iniciar sesión, verá dos tarjetas grandes.\n\n- **Juegos terapéuticos** - Juegue a juegos que controla apretando y moviendo la pelota. Consulte [cómo elegir un juego](help:choosing-a-game).\n- **Pruebas** - Mida su fuerza. Consulte [pruebas clínicas de fuerza](help:clinical-strength-tests).\n\n**Cerrar sesión** le permite volver a la pantalla de inicio para que otra persona pueda iniciar sesión.\n\n![La pantalla de inicio con las tarjetas \"Juegos de terapia\" y \"Pruebas\".](img:home.jpg)\n*Elija juegos o pruebas de fuerza.*",
+          "src": "cf1536c9ed"
+        }
+      },
+      "title": "La pantalla de inicio"
+    },
+    "choosing-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Elegir un juego\n\nLa lista de juegos muestra una tarjeta por cada juego, con una breve descripción de los controles y una etiqueta:\n\n- *Solo apretar* - solo se aprieta la pelota.\n- *Apretar + Rodar* - se aprieta y también se inclina la pelota.\n- *Dos pelotas* - un juego que necesita dos pelotas conectadas. Consulte [Usando dos pelotas](help:using-two-balls).\n\nToque una tarjeta para comenzar. Use el botón de volver para regresar al menú principal.\n\nLos juegos son: [Asteroid](help:asteroid), [Roll the Ball](help:roll-the-ball), [Shoot the Bottle](help:shoot-the-bottle), [Car Ride](help:car-ride), [Memory Cards](help:memory-cards), [Dart Hit](help:dart-hit) y el [Matching Game](help:matching-game).\n\n[Two-Ball Sensors](help:two-ball-panels), [Tug of War](help:tug-of-war) y [Bilateral Training](help:bilateral-training) necesitan dos pelotas conectadas.\n\n![La lista de juegos, una tarjeta por juego.](img:game-select.jpg)\n*Cada tarjeta muestra el juego y cómo se controla.*",
+          "src": "f6a583f547"
+        }
+      },
+      "title": "Elegir un juego"
+    },
+    "choosing-the-body-part": {
+      "sections": {
+        "0": {
+          "text": "# Selección de la parte del cuerpo y el lado\n\nAntes de un juego o una prueba, indica en qué estás trabajando, en tres pasos.\n\n1. **¿En qué área estás trabajando?** Elige **Parte superior del cuerpo** o **Parte inferior del cuerpo**.\n2. Elige la parte del cuerpo. Parte superior del cuerpo: **Mano**, **Codo**, **Hombro** o **Otro**. Parte inferior del cuerpo: **Pie**, **Tobillo**, **Rodilla**, **Cadera** o **Otro**.\n3. **¿Qué lado estás usando?** Elige **Izquierda**, **Derecha** o **Ambos**.\n\nCada parte del cuerpo y cada lado se miden por separado. Una prueba de fuerza realizada para la mano derecha no cuenta para la mano izquierda.\n\nSi lo que estás trabajando no está en la lista, elige **Otro**. No te pide que escribas qué es; cada opción de \"Otro\" en el mismo lado comparte una prueba de fuerza, así que evita combinar partes del cuerpo muy diferentes (por ejemplo, una sesión de cuello y una sesión de mandíbula) dentro de la misma opción si es posible.\n\nLos puntos en la parte superior muestran tu progreso. Utiliza el botón de retroceso para cambiar una respuesta anterior.\n\n![El primer paso pregunta en qué área estás trabajando, con \"Parte superior del cuerpo\" y \"Parte inferior del cuerpo\".](img:funnel-region.jpg)\n*Paso 1: elige el área.*\n\n![El segundo paso muestra las partes del cuerpo superior: Mano, Codo, Hombro y Otro.](img:funnel-body-part.jpg)\n*Paso 2: elige la parte del cuerpo.*\n\n![El tercer paso pregunta qué lado estás utilizando, con \"Izquierdo\", \"Derecho\" y \"Ambos\".](img:funnel-side.jpg)\n*Paso 3: elige el lado.*",
+          "src": "4dbb26c18e"
+        }
+      },
+      "title": "Seleccionar la parte del cuerpo y el lado"
+    },
+    "strength-test-before-a-game": {
+      "sections": {
+        "0": {
+          "text": "# La prueba de fuerza antes de un juego\n\nLa primera vez que juegues por una parte del cuerpo y un lado, Playwork necesita saber con cuánta fuerza puedes apretar. Verás **Se necesita una prueba de fuerza**.\n\n1. Toca **Realizar prueba**.\n2. Aprieta la pelota con la mayor fuerza que puedas, de forma cómoda, durante 10 segundos.\n3. Guarda el resultado.\n\nLos juegos se adaptarán a ti: la fuerza necesaria en un juego es una proporción de tu máxima fuerza. Consulta [cómo realizar una prueba de fuerza](help:running-a-strength-test).\n\nNecesitas una nueva prueba si conectas una pelota de un tamaño diferente, porque las lecturas de presión no son comparables entre tamaños. El resultado se guarda por usuario, parte del cuerpo y lado, por lo que las visitas posteriores irán directamente al juego.\n\n![Un mensaje que indica que se necesita una prueba de fuerza, con un botón de \"Realizar prueba\".](img:test-needed.jpg)\n*La primera vez para una parte del cuerpo y un lado, realiza la prueba primero.*",
+          "src": "cd805efa19"
+        }
+      },
+      "title": "La prueba de resistencia antes de un partido"
+    },
+    "starting-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Comenzar un juego\n\nCuando ya existe una prueba de fuerza para la parte del cuerpo y el lado especificados, verá dos botones.\n\n- **Iniciar juego** inicia el juego.\n- **Realizar prueba** repite la prueba de fuerza. Un nuevo resultado reemplaza al anterior para establecer el umbral de presión.\n\nLos juegos que utilizan la función de inclinación muestran a continuación las pantallas de [posición de la pelota](help:holding-the-ball). Luego, una cuenta regresiva corta inicia el [juego](help:playing-a-game).\n\n![La pantalla \"Listo para jugar\" con los botones \"Iniciar juego\" y \"Realizar prueba\".](img:start-game.jpg)\n*Inicie el juego o realice una nueva prueba.*",
+          "src": "8eec1b8ab0"
+        }
+      },
+      "title": "Comenzar un juego"
+    },
+    "holding-the-ball": {
+      "sections": {
+        "0": {
+          "text": "# Mantener el control de la pelota y establecer el punto cero\n\nLos juegos que se controlan inclinando la pelota necesitan saber cuál es la posición \"recta\" para el jugador.",
+          "src": "f1184d2582"
+        },
+        "1": {
+          "text": "## ¿Cómo sujetarás la pelota?\n\nElige **Mesa** si la pelota está sobre una mesa y la haces rodar. Elige **Pared** si presionas la pelota contra una pared y giras tu antebrazo.\n\n1. Coloca la pelota sobre la mesa o contra la pared.\n2. Asegúrate de que el conector esté en el lado izquierdo de la pelota.\n3. Gira la pelota para que la flecha apunte hacia el techo.\n\nToca **Fijar cero e iniciar** para continuar.\n\n![Pantalla de configuración con una mesa, mostrando una mano presionando la pelota sobre la mesa y tres pasos.](img:hold-table.jpg)\n*Mesa: la pelota está sobre una mesa.*\n\n![Pantalla de configuración con una pared, mostrando una mano presionando la pelota contra la pared y tres pasos.](img:hold-wall.jpg)\n*Pared: la pelota está presionada contra una pared.*",
+          "src": "1e255c4139"
+        },
+        "2": {
+          "text": "## Establece tu posición de referencia\n\nSostén la pelota en tu posición natural de reposo y pulsa **Fijar cero e iniciar** de nuevo. Todo lo que hagas a partir de ahora se medirá a partir de esta posición. La pantalla muestra una imagen de la pelota con un punto que se mueve a medida que la inclinas.\n\nPuedes establecer la posición de referencia nuevamente durante un juego desde el [panel de sensores](help:sensor-panel).\n\n![Pantalla de \"Establece tu posición de referencia\" con un dial de orientación de la pelota y un botón de \"Establecer referencia\" y \"Iniciar\".](img:set-zero.jpg)\n*Sostén la pelota en tu posición natural y establece la posición de referencia.*",
+          "src": "f025d0d484"
+        }
+      },
+      "title": "Mantener el balón y marcar cero"
+    },
+    "matching-game": {
+      "sections": {
+        "0": {
+          "text": "# Juego de Emparejamiento\n\nTodas las cartas permanecen boca arriba. Mueva el cursor haciendo rodar la bola y presione para seleccionar una carta. Dos cartas que coincidan se eliminan y se suman puntos. Si se selecciona un par incorrecto, las cartas parpadean en rojo y se liberan.",
+          "src": "e166873f19"
+        },
+        "1": {
+          "text": "## Selección del modo de juego\n\nAntes de que comience el juego, elige qué tipo de actividad realizar: asociar una imagen con su palabra, encontrar antónimos o combinar imágenes que se relacionen. Puedes elegir una opción diferente cada vez que juegues.",
+          "src": "76574dbbae"
+        },
+        "2": {
+          "text": "## Tableros\n\nLa primera pantalla muestra 2 pares, luego 4, 6, 8 y 10. Después de eso, cada pantalla muestra 10 pares con contenido nuevo. Cada pantalla tiene un límite de tiempo que el instructor puede modificar.\n\nEl juego utiliza la función de inclinación, por lo que primero debe configurar la [posición de la bola](help:holding-the-ball).",
+          "src": "1e2a9a2629"
+        }
+      },
+      "title": "Juego de emparejamiento"
+    },
+    "playing-a-game": {
+      "sections": {
+        "0": {
+          "text": "# Jugando un juego\n\n## Introduction\n## Introducción\n\n1.  Choose a game.\n    1.  Elige un juego.\n\n> *   There are many different types of games.\n    *   Hay muchos tipos diferentes de juegos.\n\n2.  Gather the necessary materials.\n    2.  Reúne los materiales necesarios.\n\n3.  Explain the rules of the game.\n    3.  Explica las reglas del juego.\n\n4.  Start playing.\n    4.  Comienza a jugar.\n\n5.  Have fun!\n    5.  ¡Diviértete!\n\n## Tips\n## Consejos\n\n*   Read the instructions carefully.\n    *   Lee las instrucciones cuidadosamente.\n*   Ask questions if you don't understand something.\n    *   Haz preguntas si no entiendes algo.\n*   Be a good sport.\n    *   Sé un buen deportista.\n*   Don't give up!\n    *   ¡No te rindas!\n*   Most importantly, have fun!\n    *   Lo más importante, ¡diviértete!",
+          "src": "8e7aef9764"
+        },
+        "1": {
+          "text": "## Cuenta regresiva\n\n**¡Prepárate!** y una cuenta regresiva de 3, 2, 1, ¡Comenzar! Mantenga la pelota inmóvil durante la cuenta regresiva: la aplicación mide la presión de reposo de la pelota para que el umbral de presión se mantenga preciso.",
+          "src": "c191701fc8"
+        },
+        "2": {
+          "text": "## Durante el juego\n\n- Tu puntuación y el tiempo restante se muestran en la parte superior.\n- La barra que se encuentra a la derecha indica la fuerza con la que estás apretando. La línea marcada con **Fuerza objetivo** indica la presión necesaria para realizar una acción en el juego.\n- La pantalla permanece encendida mientras juegas. Solo necesitas la pelota.\n\n![Un juego en progreso que muestra la puntuación, el temporizador y la barra de presión a la derecha.](img:game-playing.jpg)\n*Durante un juego: puntuación y tiempo en la parte superior, barra de fuerza a la derecha.*",
+          "src": "d4ce271b21"
+        },
+        "3": {
+          "text": "## Pausa y configuración\n\n- El botón de pausa (esquina inferior izquierda) abre **Juego pausado** con las opciones **Reanudar**, **Selección de juego** y **Ir al inicio**.\n- El icono de engranaje (esquina superior izquierda) abre **Ajustes del juego**. Guardar los cambios finaliza la ronda actual sin registrar un resultado, y la siguiente ronda utilizará la nueva configuración.\n- Si la pelota se desconecta, el juego se pausa automáticamente. **Reanudar** vuelve a funcionar después de que la pelota se reconecte.\n- En un juego con dos pelotas, el mensaje de pausa indica cuál de las pelotas se perdió, y **Reintentar conexión** aparece si no se pudo reconectar. Consulte [Usando dos pelotas](help:using-two-balls).\n\n![El menú de pausa con las opciones \"Reanudar\", \"Seleccionar juego\" y \"Volver al menú principal\".](img:game-paused.jpg)\n*El menú de pausa.*",
+          "src": "35bd3f93f8"
+        },
+        "4": {
+          "text": "## Fin del juego\n\nVerá su puntuación, su mejor puntuación y un mensaje si ha logrado un nuevo récord personal. Toque **Jugar de nuevo** o **Selección de juego**.",
+          "src": "2265361c1d"
+        }
+      },
+      "title": "Jugar un juego"
+    },
+    "asteroid": {
+      "sections": {
+        "0": {
+          "text": "# Asteroide\n\nTu nave vuela sola a través de un túnel. Tú controlas una cosa: su tamaño.\n\n- *Aprieta* la bola para reducir el tamaño de la nave en secciones estrechas.\n- *Suelta* en secciones anchas para que la nave vuelva a su tamaño completo y recoja recompensas (+100 puntos cada una).\n- Las naves enemigas se encuentran cerca de una de las paredes del túnel. Reduce el tamaño de la nave y pasa al otro lado. Un impacto reduce tu puntuación a la mitad; un paso exitoso la aumenta en la mitad.\n\nSubes de nivel cuando alcanzas la puntuación objetivo y has jugado al menos 30 segundos en el nivel. Cada nivel tiene sus propios colores y recompensas.\n\nControles: solo aprieta.",
+          "src": "ab0650bd1f"
+        }
+      },
+      "title": "Asteroides"
+    },
+    "roll-the-ball": {
+      "sections": {
+        "0": {
+          "text": "# Haz rodar la bola\n\nLos monstruos aparecen en un anillo en el centro de la pantalla. Inclina la bola para mover el cursor, colócalo en el anillo en la ubicación del monstruo y presiónalo para atraparlo.\n\n- Un monstruo que no se captura desaparece después de un tiempo que el jugador establece.\n- El cursor cambia de color cuando está sobre el anillo y cuando se presiona.\n- Subes de nivel cuando alcanzas la puntuación objetivo y has jugado al menos 30 segundos en el nivel.\n\nControles: presionar e inclinar. Primero, configura la [posición de la bola](help:holding-the-ball).",
+          "src": "bed335395a"
+        }
+      },
+      "title": "Haz rodar la bola"
+    },
+    "shoot-the-bottle": {
+      "sections": {
+        "0": {
+          "text": "# Lanza la Botella\n\nBotellas, latas y envases caen desde la parte superior. Un cañón en la parte inferior izquierda dispara contra ellos.\n\n1. Presione la pantalla en la zona indicada para preparar el cañón. La barra de energía en la parte inferior se llena a medida que presiona con más fuerza.\n2. Suelte el botón o presione hasta el 100% para disparar. La potencia del disparo dependerá de la fuerza que haya aplicado.\n3. Los objetivos más lejanos, las presiones más fuertes y las botellas más pequeñas otorgan más puntos.\n\nControles: solo presionar.",
+          "src": "a319cfe59c"
+        }
+      },
+      "title": "Tirar a la botella"
+    },
+    "car-ride": {
+      "sections": {
+        "0": {
+          "text": "# Viaje en Coche\n\nConduce el coche por un camino sinuoso inclinando la pelota. Aprieta para reducir la velocidad; suelta para acelerar.\n\n- Recoge monedas, cada una vale 50 puntos.\n- Si chocas con un obstáculo, pierdes una vida y el coche se detiene. Evita el obstáculo para continuar.\n- Subes de nivel cuando alcanzas la puntuación objetivo y has jugado al menos 30 segundos en el nivel.\n\nControles: aprieta e inclina. Configura primero la [posición de la pelota](help:holding-the-ball).",
+          "src": "d282dc55ce"
+        }
+      },
+      "title": "Viaje en coche"
+    },
+    "memory-cards": {
+      "sections": {
+        "0": {
+          "text": "# Tarjetas de Memoria\n\nLas tarjetas están boca abajo. Mueva el cursor con la mano haciendo rodar la pelota y presione para voltear la tarjeta que esté debajo. Encuentre dos tarjetas que coincidan para eliminarlas.\n\n- El nivel 1 tiene 2 pares. Cada nivel agrega 2 pares.\n- El botón en la esquina inferior derecha permite alternar entre imágenes únicamente e imágenes con palabras. En el modo de palabras, cada par consta de una tarjeta con una imagen y una tarjeta con una palabra.\n- Cada nivel tiene un límite de tiempo que el usuario puede modificar.\n\nControles: presión y inclinación. Configure primero la [posición de la pelota](help:holding-the-ball).",
+          "src": "854ea2dc15"
+        }
+      },
+      "title": "Tarjetas de memoria"
+    },
+    "dart-hit": {
+      "sections": {
+        "0": {
+          "text": "# Dart Hit\n\nUn tronco de madera gira en el centro de la pantalla. Cada vez que presionas, se lanza una flecha directamente hacia arriba. El tronco sigue girando entre lanzamientos, por lo que el tiempo es crucial.\n\n- Una flecha que aterriza sobre otra flecha ya presente en el tronco te cuesta una vida. Tienes 3 vidas.\n- Golpear una manzana en el tronco otorga 100 puntos.\n- Debes eliminar todas las flechas necesarias para completar un nivel. Hay 50 niveles.\n\nEl entrenador puede modificar el tamaño de las flechas, el tamaño de las manzanas, la precisión requerida, la velocidad del tronco y la frecuencia con la que cambia de dirección. Consulta [la configuración del entrenador](help:trainer-settings).\n\nControles: solo presión.",
+          "src": "e22095fc90"
+        }
+      },
+      "title": "Impacto de dardo"
+    },
+    "clinical-strength-tests": {
+      "sections": {
+        "0": {
+          "text": "# Pruebas de fuerza clínicas\n\nUtilice la tarjeta **Pruebas** en la pantalla de inicio para medir la fuerza de forma independiente, y no para iniciar un juego.\n\n1. Elija **Parte superior del cuerpo** o **Parte inferior del cuerpo**.\n2. Elija una prueba. La lista incluye pruebas de fuerza para los isquiotibiales, abductores, aductores, gemelos y cuádriceps (para la parte inferior del cuerpo), y pruebas de fuerza para el agarre de manos, bíceps, tríceps, pectorales y abducción del hombro (para la parte superior del cuerpo).\n3. Elija el lado.\n\nUna prueba clínica nunca modifica la configuración de un juego. Los resultados aparecen en la pestaña de \"Resultados de pruebas\" del entrenador, marcada como **Clínico**.\n\n![La lista de pruebas de fuerza para la parte superior del cuerpo entre las que elegir.](img:test-names.jpg)\n*Seleccione la prueba que desea realizar.*",
+          "src": "ea5dd6a86c"
+        }
+      },
+      "title": "Pruebas clínicas de resistencia"
+    },
+    "running-a-strength-test": {
+      "sections": {
+        "0": {
+          "text": "# Realización de una prueba de resistencia\n\n## Introduction\n[n]\nUna prueba de resistencia es una evaluación que determina la capacidad de un material o componente para soportar una carga o tensión durante un período de tiempo determinado.\n\n## Equipment\n[n]\n*   Equipo de prueba de resistencia\n*   Muestras a probar\n*   Software de adquisición de datos\n\n## Procedure\n[n]\n1.  Preparar las muestras de acuerdo con las especificaciones.\n2.  Configurar el equipo de prueba de resistencia.\n3.  Colocar las muestras en el equipo de prueba.\n4.  Iniciar la prueba y registrar los datos.\n5.  Analizar los datos y determinar la resistencia de las muestras.\n\n## Results\n[n]\nLos resultados de la prueba de resistencia se expresan típicamente en términos de la carga máxima que la muestra puede soportar antes de fallar.\n\n## Conclusion\n[n]\nUna prueba de resistencia es una herramienta valiosa para evaluar la calidad y el rendimiento de los materiales y componentes.",
+          "src": "007f41fb90"
+        },
+        "1": {
+          "text": "## Preparación\n\nUna prueba clínica muestra **¿Cómo realizar la prueba?** con una descripción. Toque **Ver video de demostración** para ver el ejercicio y **Iniciar prueba** cuando esté listo. Mantenga la pelota quieta en esta pantalla: la aplicación mide su presión en reposo para que la fuerza comience desde cero.\n\nUna prueba antes de un partido se inicia automáticamente después de una breve espera.\n\n![Pantalla de preparación de la prueba, que muestra la descripción de la prueba, un botón para ver un video de demostración y un botón para iniciar la prueba.](img:test-preparation.jpg)\n*Lea cómo realizar la prueba y luego comience.*",
+          "src": "a4bc7592ca"
+        },
+        "2": {
+          "text": "## Las rondas\n\n1. Un conteo regresivo de 3 segundos inicia la prueba.\n2. **¡PRESIONA!** - apriete con la mayor fuerza posible mientras el temporizador está en funcionamiento. La barra muestra su fuerza y una marca indica su máximo esfuerzo hasta el momento.\n3. **¡DESCANSA!** - relájese. Nada se registra durante el período de descanso.\n\nUna prueba clínica utiliza el tiempo de presión, el tiempo de descanso y el número de rondas (de 1 a 3) que el entrenador ha configurado. Una prueba antes de un juego siempre consta de una ronda de 10 segundos.\n\n![Una prueba en progreso que muestra el número de la ronda, un banner de \"PRESIÓN\" y la barra de fuerza.](img:test-pressing.jpg)\n*Apriete mientras se muestra \"PRESIÓN\".*",
+          "src": "710b953749"
+        },
+        "3": {
+          "text": "## Prueba completada\n\nSe muestra la fuerza máxima obtenida en todas las rondas. Toque **Guardar resultados** para guardar el resultado, o **Repetir prueba** para descartarlo e intentar de nuevo.\n\n![Ventana de \"Prueba completada\" con los botones \"Guardar resultados\" y \"Repetir prueba\".](img:test-completed.jpg)\n*Guarde el resultado o repita la prueba.*",
+          "src": "c68e93334c"
+        }
+      },
+      "title": "Realizando una prueba de resistencia"
+    },
+    "strength-test-results": {
+      "sections": {
+        "0": {
+          "text": "# Resultados de la prueba de fuerza\n\nDespués de guardar, la pantalla de resultados muestra su fuerza máxima y promedio, y cómo se compara con sus pruebas anteriores para la misma prueba y lado.\n\nLa fuerza se muestra en kilogramos o libras, calculada a partir de la presión y el tamaño de la pelota utilizada. Sus resultados se almacenan en el dispositivo y pueden consultarse nuevamente en la pestaña \"Resultados de la prueba\" del [entrenador](help:trainer-test-results).\n\n![La pantalla de resultados de la prueba de fuerza, que muestra la fuerza máxima y promedio.](img:test-result.jpg)\n*El resultado de una prueba guardada.*",
+          "src": "1d104706ec"
+        }
+      },
+      "title": "Resultados de las pruebas de resistencia"
+    },
+    "sensor-panel": {
+      "sections": {
+        "0": {
+          "text": "# El panel de sensores\n\nDespués de la conexión, un pequeño icono de \"Sensor\" aparece en la esquina superior derecha de cada pantalla. El punto indica el estado: verde (conectado), ámbar (batería baja o reconectando), rojo (desconectado). Tóquelo para abrir el panel.\n\n![El panel de sensores expandido, que muestra el nombre de la pelota, el tamaño, la batería, la presión, la rotación, los controles de sonido y los botones de \"Cambiar pelota\", \"Acerca de\", \"Ayuda\" y \"Modo entrenador\".](img:sensor-panel.jpg)\n*El panel de sensores, que se abre desde el icono en la esquina superior derecha.*",
+          "src": "8a203d2923"
+        },
+        "1": {
+          "text": "## Lo que muestra el panel\n\n- El nombre de la pelota, su ID, su **Tamaño de la pelota** y el nivel **Batería**.\n- La barra de presión en tiempo real, y **Rotación de la pelota** con **Restablecer cero** para restablecer el valor a cero.\n- **Efectos de sonido** y **Música**, cada uno con **ACTIVADO** o **DESACTIVADO**.",
+          "src": "d57b1aee72"
+        },
+        "2": {
+          "text": "## Botones\n\n- **Cambiar pelota** Desconecta y busca otra pelota.\n- Cuando dos pelotas están conectadas, **Cambiar pelota** primero pregunta qué pelota se debe reemplazar. Consulte [Usando dos pelotas](help:using-two-balls).\n- **Conectar una segunda pelota** aparece solo cuando una pelota está conectada. Consulte [Usando dos pelotas](help:using-two-balls).\n- **Acerca de** muestra la versión de la aplicación, la licencia de la pelota, su ID y el tamaño de la pelota que la aplicación está utilizando para sus cálculos. Si no se conoce el tamaño de la pelota, utiliza 19 cm y lo marca como *asumido*; establezca el tamaño real cuando conecte la pelota. **Eliminar datos de usuario** Desvincula la dirección de correo electrónico de su cuenta de la pelota.\n- **Ayuda** abre este manual.\n- **Modo entrenador** abre el [panel de entrenamiento](help:trainer-panel).\n\nToque en cualquier lugar fuera del panel para cerrarlo.\n\nCuando dos pelotas están conectadas, la representación de la pelota se divide en dos mitades, una para cada pelota, y el panel tiene un interruptor **1** / **2** en la parte superior para mostrar cualquiera de las pelotas. Consulte [Usando dos pelotas](help:using-two-balls).",
+          "src": "2d988270d7"
+        },
+        "3": {
+          "text": "## Batería y conexión\n\n- Cuando la batería alcanza el 25% o menos, el indicador se vuelve de color ámbar.\n- Si la batería alcanza el 10% o menos, aparece **Batería crítica**. Elija **Ir a inicio de sesión** o **Lo cargaré**.\n- Si la conexión se interrumpe, la aplicación intenta restablecerla tres veces. Si esto falla, le pregunta si desea ir a la pantalla de conexión o intentar de nuevo.\n- Cuando la aplicación se minimiza, la conexión se desconecta después de unos segundos y se restablece cuando vuelve a la aplicación.",
+          "src": "d3744d110c"
+        }
+      },
+      "title": "El panel de sensores"
+    },
+    "trainer-panel": {
+      "sections": {
+        "0": {
+          "text": "# El panel del instructor\n\nEl panel del instructor es para la persona que dirige la sesión. Se abre con **Modo entrenador** en el [panel de sensores](help:sensor-panel). No requiere contraseña. El panel se abre en formato horizontal y muestra al usuario actualmente conectado.\n\nTiene cinco pestañas:\n\n- **Ajustes** - [configuración del juego y de las pruebas](help:trainer-settings), exportación de datos y privacidad.\n- **Resultados del juego** - [historial de juegos](help:trainer-game-results).\n- **Resultados de las pruebas** - [historial de pruebas](help:trainer-test-results).\n- **Informe de progreso** - un [resumen del tratamiento de un usuario](help:progress-report).\n- **Usuarios** - [agregar, editar y eliminar usuarios](help:managing-users).\n\nToque **Salir del modo entrenador** o el botón de cerrar para salir.",
+          "src": "51ce97dba2"
+        }
+      },
+      "title": "El panel de control del entrenador"
+    },
+    "trainer-settings": {
+      "sections": {
+        "0": {
+          "text": "# Configuración del entrenador\n\nLa configuración se guarda por usuario y por juego. Un nuevo usuario comienza con la configuración predefinida \"Fácil\" para cada juego.\n\n![Panel del entrenador en la pestaña de configuración, que muestra la selección del juego y las configuraciones predefinidas de dificultad.](img:trainer-settings.jpg)\n*Elija un juego y luego configurelo.*",
+          "src": "dff5c6ca63"
+        },
+        "1": {
+          "text": "## Niveles de dificultad predefinidos\n\n**Dificultad predefinida** ofrece los niveles **Fácil**, **Medio**, **Difícil** y **Sprint**. Un nivel predefinido solo establece un punto de partida: puede modificar cualquier parámetro posteriormente.",
+          "src": "c56f4f4794"
+        },
+        "2": {
+          "text": "## Deslizadores\n\nLos deslizadores que aparecen dependen del juego. Algunos comunes son:\n\n- **Duración de sesión** - De 1 a 5 minutos.\n- **Umbral de presión** - La proporción de la máxima fuerza de presión que el usuario necesita aplicar para realizar una acción.\n- **Rango de inclinación** - La cantidad de grados de inclinación que proporcionan movimiento completo. Un valor más bajo indica mayor sensibilidad.\n\nOtros deslizadores controlan tamaños, velocidades y límites de tiempo para juegos individuales, como **Tamaño del monstruo**, **Tamaño de botella**, **Tamaño de moneda** y **Tamaño del dardo**.\n\nLos juegos de dos bolas también tienen **Modo de fuerza**: **Bruta** compara a los jugadores según la fuerza real que aplican, **Normalizada** ajusta a cada jugador según su propia prueba de fuerza. El modo \"Raw\" es el predeterminado. Consulte [Usando dos bolas](help:using-two-balls).\n\n[Tug of War](help:tug-of-war) tiene sus propios deslizadores: **Duración del tirón** (de 20 a 120 segundos), **Duración del descanso** (de 5 a 30 segundos) y **Rondas para ganar** (de 1 a 10). No tiene duración de sesión ni umbral de presión. En el modo de fuerza \"Raw\", también tiene **Mapeo de fuerza bruta** (1×, 3×, 5×, 7× o 10×, predeterminado 5×): un valor más alto hace que tanto los medidores de fuerza como la cuerda reaccionen más a la misma presión. No tiene ningún efecto en el modo \"Normalizado\".\n\nArrastre el punto para cambiar un deslizador. Tocar la barra no la mueve, por lo que un toque accidental no puede cambiar un valor mientras se desplaza.",
+          "src": "3173357d1e"
+        },
+        "3": {
+          "text": "## Guardado\n\nToque **Guardar ajustes del juego**. El botón mostrará **✓ Guardado** hasta que cambie algo nuevamente. La sección **Prueba de fuerza** tiene su propio tiempo de ejecución, tiempo de descanso y número de rondas, que se guardan con **Guardar ajustes de prueba**.",
+          "src": "b54114b611"
+        },
+        "4": {
+          "text": "## Privacidad y exportación\n\nLa misma pestaña contiene las opciones para [recopilación de datos de uso e informes de fallos](help:privacy-and-usage-data) y [exportación de datos](help:exporting-data).",
+          "src": "a699c4dbec"
+        }
+      },
+      "title": "Configuración del entrenador"
+    },
+    "trainer-game-results": {
+      "sections": {
+        "0": {
+          "text": "# Resultados de los juegos\n\nMuestra una lista de todos los juegos que el usuario seleccionado ha jugado, ordenados de los más recientes a los más antiguos, con la puntuación, la duración, la parte del cuerpo utilizada, el lado y la pelota utilizada.\n\nEn un juego con dos pelotas, cada jugador tiene su propia fila, identificada como *Jugador 1* o *Jugador 2*. Consulte [Uso de dos pelotas](help:using-two-balls).\n\nLos filtros reducen la lista gradualmente: juego, región, parte del cuerpo, lado y pelota. Un filtro solo aparece cuando hay más de un valor para elegir. **Mejor puntuación** es la mejor puntuación del usuario y **Mejor de la clínica** es la mejor puntuación de todos los usuarios para ese juego.\n\n![La pestaña de Resultados de los Juegos muestra los juegos jugados con la puntuación y la duración.](img:trainer-game-results.jpg)\n*La lista de juegos jugados.*",
+          "src": "df83977eb6"
+        }
+      },
+      "title": "Resultados de los partidos"
+    },
+    "trainer-test-results": {
+      "sections": {
+        "0": {
+          "text": "# Resultados de las pruebas\n\nMuestra todas las pruebas de resistencia, ordenadas de la más reciente a la más antigua, con la fuerza máxima y la fuerza promedio, el tamaño de la pelota y la presión inicial. Abra una fila para ver qué pelota se utilizó.\n\nLos filtros reducen la lista: **Categoría** (**Antes del juego** o **Clínico**), región, nombre de la prueba, lado y pelota. Las pruebas registradas con diferentes pelotas conservan sus propios valores de fuerza, por lo que un resultado se mantiene correcto incluso si se conecta otra pelota posteriormente.\n\n![La pestaña de Resultados de las pruebas, que muestra las pruebas de resistencia con la fuerza máxima y la fuerza promedio.](img:trainer-test-results.jpg)\n*La lista de pruebas de resistencia.*",
+          "src": "f7385a5fb6"
+        }
+      },
+      "title": "Resultados de las pruebas"
+    },
+    "progress-report": {
+      "sections": {
+        "0": {
+          "text": "# Informe de progreso\n\nUn resumen del historial completo de tratamiento de un usuario, desde la primera sesión hasta el día de hoy. No hay filtros.\n\nMuestra información del paciente (nombre, identificación, fecha de inicio y duración total del tratamiento), los primeros, los últimos y los mejores resultados para cada prueba clínica y cada parte del cuerpo. También incluye gráficos cuando hay al menos dos resultados, gráficos del rendimiento en los juegos y estadísticas de las sesiones.\n\nUn usuario que ha jugado a [Bilateral Training](help:bilateral-training) también obtiene una sección **Entrenamiento bilateral** con el porcentaje de simetría más reciente (100% significa que ambos lados rindieron por igual) y, para el modo de seguimiento, el error de seguimiento, cada uno con un gráfico cuando hay dos resultados. Un usuario sin historial ve un mensaje vacío.\n\n![La pestaña del informe de progreso con la información del paciente y los resultados.](img:trainer-progress.jpg)\n*Resumen del tratamiento de un usuario.*",
+          "src": "51be54c919"
+        }
+      },
+      "title": "Informe de progreso"
+    },
+    "managing-users": {
+      "sections": {
+        "0": {
+          "text": "# Gestión de usuarios\n\nLa pestaña **Usuarios** muestra a todos los usuarios del dispositivo. Puede editar el ID y el nombre de un usuario, o eliminar un usuario. Eliminar un usuario elimina todas sus sesiones y datos de prueba, por lo que la aplicación le pedirá que confirme primero.\n\nLos nuevos usuarios se añaden en la pantalla de inicio de sesión. Consulte [inicio de sesión y usuarios](help:signing-in).\n\n![La pestaña \"Usuarios\" que muestra a los usuarios del dispositivo.](img:trainer-users.jpg)\n*Los usuarios de este dispositivo.*",
+          "src": "cc48f671b9"
+        }
+      },
+      "title": "Administración de usuarios"
+    },
+    "exporting-data": {
+      "sections": {
+        "0": {
+          "text": "# Exportación de datos\n\nEn la parte inferior de la pestaña **Ajustes**, **Exportar datos** guarda cada sesión registrada de cada usuario en un único archivo CSV llamado *PLAYWORK Data* con la fecha. Toque **Exportar a Excel**.\n\nEl archivo se abre en Excel o herramientas similares. Tiene una fila por sesión, con información sobre el usuario, la fecha, el tipo de sesión, la parte del cuerpo, el lado, el tamaño de la pelota, la fuerza, la puntuación y la duración. Las columnas que no aplican se dejan vacías.\n\nPara los juegos con dos pelotas, las dos últimas columnas, *ID de partido* y *Jugador*, relacionan a los dos jugadores de un mismo partido: ambas filas comparten el mismo ID de partido. Consulte [Uso de dos pelotas](help:using-two-balls).\n\nEn un teléfono o tableta, el archivo se guarda en la carpeta \"Documentos\". En un navegador, se descarga.",
+          "src": "ae7aefd36a"
+        }
+      },
+      "title": "Exportación de datos"
+    },
+    "privacy-and-usage-data": {
+      "sections": {
+        "0": {
+          "text": "# Privacidad y datos de uso\n\nPlaywork funciona completamente sin conexión y mantiene tus datos en el dispositivo. Dos funciones opcionales pueden enviar información.\n\n- **Telemetría de uso** envía información anónima sobre qué pantallas y botones se utilizan. Nunca incluye nombres, identificadores ni mediciones.\n- **Informe de fallos** envía informes de errores automáticos.\n\nLa primera vez que abres la aplicación, te preguntará una vez si deseas **Activar** habilitarlas o elegir **Ahora no**. No se recopila nada a menos que lo habilites. El entrenador puede cambiar cualquiera de estas opciones más adelante en la pestaña **Ajustes**.",
+          "src": "9897eb87dd"
+        }
+      },
+      "title": "Datos de privacidad y uso"
+    },
+    "sound-and-music": {
+      "sections": {
+        "0": {
+          "text": "# Sonido y música\n\nLos juegos reproducen efectos de sonido y música de fondo. Active o desactive **Efectos de sonido** y **Música** en el [panel de sensores](help:sensor-panel). Su elección se guarda.",
+          "src": "61db902d42"
+        }
+      },
+      "title": "Sonido y música"
+    },
+    "two-ball-panels": {
+      "sections": {
+        "0": {
+          "text": "# Sensores de Dos Bolas\n\nUn juego para dos jugadores que requiere dos bolas conectadas. La pantalla muestra dos paneles uno al lado del otro, la *Bola 1* a la izquierda y la *Bola 2* a la derecha. Cada panel muestra información en tiempo real sobre la bola: su presión de compresión y su rotación en los ejes X, Y y Z.\n\n- En la pantalla de \"Listo\", toque **Elegir jugador 2** y elija a otro usuario o al invitado antes de comenzar.\n- Apriete e incline cada bola para ver cómo se mueve su panel.\n- La puntuación de cada jugador es su máxima presión de compresión. Ambas puntuaciones se guardan juntas como un partido.\n- Si alguna de las bolas se desconecta, el juego se pausa y se indica cuál bola se perdió. Se reanuda solo cuando ambas están conectadas nuevamente.\n\nPara conectar la segunda bola, abra el panel del sensor y toque **Conectar una segunda pelota**. Consulte [Panel del sensor](help:sensor-panel).",
+          "src": "6860767a20"
+        }
+      },
+      "title": "Sensores de doble bola",
+      "titleSrc": "20d82ad54b"
+    },
+    "using-two-balls": {
+      "sections": {
+        "0": {
+          "text": "# Usando dos bolas\n\nLos juegos para dos jugadores necesitan dos bolas conectadas. También puede conectar una segunda bola de forma independiente para ver ambas a la vez.",
+          "src": "bb21470394"
+        },
+        "1": {
+          "text": "## Conectar una segunda esfera\n\n1. Conecte la primera esfera como de costumbre.\n2. Abra el panel de sensores y toque **Conectar una segunda pelota**. Un juego con dos esferas abre la misma ventana automáticamente cuando falta la segunda esfera.\n3. Seleccione la segunda esfera de la lista. La esfera que ya ha conectado no se muestra. En la web, toque **🔵 Conectar sensor** y selecciónela en la ventana del navegador.\n4. La segunda esfera se verifica con su propia licencia, al igual que la primera. Si se rechaza, verá el motivo y podrá intentar con otra esfera.\n\nUn teléfono que no puede mantener dos conexiones simultáneamente mostrará un mensaje y seguirá funcionando con una sola esfera.\n\nEn un navegador, la ventana le pedirá que seleccione la segunda esfera en el selector de navegadores. Si selecciona la esfera que ya está conectada como Esfera 1, se le pedirá que seleccione una diferente.",
+          "src": "5e5234cdfd"
+        },
+        "2": {
+          "text": "## La píldora con dos esferas\n\nLa píldora muestra una esfera dividida en dos mitades, una para cada esfera. La mitad de la esfera que se muestra tiene un anillo alrededor. En la parte superior del panel, toque **1** o **2** para cambiar la visualización del panel entre las esferas.",
+          "src": "740933889b"
+        },
+        "3": {
+          "text": "## Reemplazar una pelota\n\nCuando dos pelotas están conectadas, **Cambiar pelota** pregunta cuál pelota se debe reemplazar. Solo la pelota que se selecciona se desconecta; la otra permanece conectada. Un juego en curso se pausa.",
+          "src": "5957cac862"
+        },
+        "4": {
+          "text": "## Desconectar la segunda bola\n\nAbra el panel y toque **Desconectar la segunda pelota**. La segunda bola se desconecta y vuelve a jugar con una sola bola. Salir de un juego con dos bolas no lo desconecta; permanece conectado hasta que realice esta acción o cierre la aplicación.",
+          "src": "eb0ce0cb48"
+        },
+        "5": {
+          "text": "## Si una pelota se desconecta durante un juego\n\nEl juego se pausa y muestra qué pelota se ha perdido. Intenta reconectarse automáticamente varias veces. Si esto falla, toque **Reintentar conexión** o abandone el juego. El juego nunca continúa con solo una pelota.\n\nConsulte también [Sensores de dos pelotas](help:two-ball-panels), [Tiro de guerra](help:tug-of-war) y [El panel de sensores](help:sensor-panel).",
+          "src": "b0da39e8dc"
+        }
+      },
+      "title": "Utilizando dos pelotas",
+      "titleSrc": "fbe8913111"
+    },
+    "tug-of-war": {
+      "sections": {
+        "0": {
+          "text": "# Tira y Afloja\n\nUn juego para dos jugadores que requiere dos dispositivos conectados. Un indicador en una cuerda se encuentra en el centro de la pantalla. Quien apriete con más fuerza, tira del indicador hacia su propia línea.\n\n- En la pantalla de inicio, toque **Elegir jugador 2** y elija a otro usuario o al invitado antes de comenzar.\n- Cada ronda comienza con una cuenta regresiva de 3-2-1. El indicador se mueve suavemente: cuanto mayor sea la diferencia entre los dos apretones, más rápido se mueve. Los apretones iguales lo dejan inmóvil.\n- Una ronda termina cuando el indicador alcanza la línea de un jugador, o cuando el tiempo de tirón se agota. Si el tiempo se agota, el jugador a quien el indicador esté más cerca gana la ronda.\n- Después de cada ronda, hay un descanso, y luego comienza la siguiente ronda. El primer jugador en ganar el número de rondas establecido, gana el partido.\n- Cada lado de la cuerda muestra el nombre de ese jugador, y la puntuación de la ronda y del partido se muestra debajo de la barra superior. Un gran banner con la inscripción **¡APRIETA!!!** y una cuenta regresiva se muestra mientras tiras, y un banner con la inscripción **DESCANSO** y una cuenta regresiva se muestra entre las rondas.\n- Un entrenador puede cambiar el tiempo de tirón, el tiempo de descanso, el número de rondas necesarias y, en el modo de fuerza bruta, la intensidad con la que el apretón mueve la cuerda (**Mapeo de fuerza bruta**) en **Ajustes**. Consulte [Configuración del entrenador](help:trainer-settings).\n- Si alguno de los dispositivos se desconecta, el juego se pausa y muestra el nombre del dispositivo que se perdió. Se reanuda solo cuando ambos dispositivos están conectados nuevamente.\n\nPara conectar el segundo dispositivo, abra el panel del sensor y toque **Conectar una segunda pelota**. Consulte [Panel del sensor](help:sensor-panel).",
+          "src": "d78b0c8fcd"
+        }
+      },
+      "title": "Tiro de cuerda",
+      "titleSrc": "5228a636fd"
+    },
+    "bilateral-training": {
+      "sections": {
+        "0": {
+          "text": "# Entrenamiento Bilateral\n\nUn juego para un solo jugador que requiere dos bolas conectadas, una para cada lado del cuerpo. Ambos lados trabajan juntos en uno de los cuatro modos.\n\n- En la pantalla de inicio, asigne cada bola a una parte del cuerpo. El juego solo comienza cuando ambas bolas están conectadas y asignadas.\n- Elija un modo: **Grabar y copiar** (un lado realiza una secuencia, el otro la copia), **Espejo** (ambos lados coinciden con un objetivo), **Alternar** (los lados se turnan) o **Seguimiento** (un lado sigue la fuerza en tiempo real del otro).\n- La pantalla se divide en dos, una mitad por cada bola. Cada mitad muestra la parte del cuerpo correspondiente y solo reacciona a su propia bola.\n- Cada modo tiene dos ejercicios; el segundo es más difícil que el primero.\n- Si el umbral de presión se establece en 0 en **Ajustes**, todos los modos utilizan solo la inclinación y no se requiere presión. Consulte [Configuración del entrenador](help:trainer-settings).\n- Si alguna de las bolas se desconecta, el juego se pausa y muestra cuál bola se perdió.\n\nPara conectar la segunda bola, abra el panel del sensor y toque **Conectar una segunda pelota**. Consulte [Panel del sensor](help:sensor-panel).",
+          "src": "77ed284cb2"
+        }
+      },
+      "title": "Entrenamiento bilateral",
+      "titleSrc": "5cf353787d"
+    },
+    "team-rocket": {
+      "sections": {
+        "0": {
+          "text": "# Equipo Cohete\n\nUn juego cooperativo para dos jugadores que requiere dos dispositivos conectados. Juntos, controlan un cohete que debe atravesar un túnel lleno de espacios.\n\n- En la pantalla de inicio, toque **Elegir jugador 2** y elija a otro usuario o al modo invitado antes de comenzar.\n- El cohete se mueve solo a través del túnel. Aprieten **juntos** para hacerlo más pequeño y que pase por los espacios estrechos, y suelten **juntos** para recoger las monedas en las partes más anchas.\n- El cohete se hace más pequeño cuando el promedio de ambas presiones supera el umbral establecido. Si las dos presiones son muy diferentes, el cohete se inclina hacia el jugador con menos fuerza.\n- La barra **Sincronía** en la parte inferior muestra qué tan sincronizadas están las dos presiones. Mientras estén sincronizados (dentro del 20% el uno del otro y ambos ejerciendo al menos un poco de presión), su puntuación se duplica. Si están desincronizados, simplemente obtienen la puntuación normal: nada se detiene.\n- Si el cohete es demasiado grande para un espacio estrecho, se ralentiza hasta que lo hagan más pequeño.\n- Hay una puntuación compartida y un nivel compartido. Un nuevo nivel comienza después de obtener suficientes puntos y al menos 30 segundos, y el túnel se vuelve más rápido.\n- El resultado se guarda en los registros de ambos jugadores como una partida enlazada.\n- Un entrenador puede cambiar el umbral de presión, el tiempo de reposo y de presión, y el modo de fuerza en **Ajustes**. Consulte [Configuración del entrenador](help:trainer-settings).\n- Si alguno de los dispositivos se desconecta, el juego se pausa y muestra cuál es el dispositivo que se perdió. Se reanuda solo cuando ambos están conectados de nuevo.\n\nPara conectar el segundo dispositivo, abra el panel del sensor y toque **Conectar una segunda pelota**. Consulte [Panel del sensor](help:sensor-panel).",
+          "src": "83c3a1a1c1"
+        }
+      },
+      "title": "Equipo Rocket",
+      "titleSrc": "92a3e20f8c"
+    },
+    "space-chase": {
+      "sections": {
+        "0": {
+          "text": "# Space Chase\n\nUn juego de persecución espacial que entrena dos cosas a la vez, manteniéndolas separadas: la firmeza con la que aprietas y la estabilidad con la que sostienes la pelota. Tu nave espacial vuela de izquierda a derecha a través de un campo de asteroides mientras una nave enemiga la sigue.\n\n- Elige la parte del cuerpo y el lado, como en cualquier otro juego. El juego necesita una prueba de fuerza al principio, como otros juegos de presión, pero omite la opción de \"Mesa/Pared\" y \"Establecer Cero\" porque no utiliza la inclinación.\n- La presión controla la velocidad. El indicador de \"Fuerza Objetivo\" punteado en la barra de presión es tu objetivo. Si alcanzas o superas ese nivel, tu motor funciona a máxima potencia y la nave avanza. Si estás por debajo, el motor se debilita y el enemigo se acerca más rápido. Presionar con más fuerza que el indicador no da ninguna recompensa adicional.\n- La estabilidad controla la altura. Una línea guía muestra la trayectoria que debes seguir. Cuanto menos estable sea la pelota, más se desviará la nave por encima o por debajo de la línea, y esa desviación es lo que te hace chocar contra los asteroides. Mantén la pelota quieta para permanecer en la línea. Ambas naves se muestran grandes para que sean fáciles de seguir.\n- Las estrellas doradas se encuentran a lo largo de la línea guía, dos a la vez, delante de ti. Vuela tu nave directamente sobre una de ellas para recogerla y obtener +100 puntos y un sonido. Una estrella que no alcanzas simplemente pasa; nunca se mueve hacia ti.\n- El enemigo nunca dispara. Chocar contra un asteroide o el enemigo muestra un \"ERROR\", una breve vibración y una pérdida de puntos, y el juego continúa. Una breve pausa después de cada impacto evita que una larga secuencia de impactos te haga perder puntos repetidamente.\n- Etapas y descanso. El juego se juega en etapas. Cada etapa es un período de sujeción isométrica de una duración determinada, seguido de un descanso. Durante el descanso, el enemigo se detiene, no se ganan ni se pierden puntos, y puedes soltar la pelota. La pantalla se atenúa con un signo **DESCANSO** parpadeante y una cuenta regresiva, y luego el juego se reanuda automáticamente. No hay descanso después de la última etapa, y los resultados aparecen cuando termina.\n- **Modo de fuerza variable**. Cuando tu entrenador enciende el dispositivo, el indicador de \"Fuerza Objetivo\" se mueve hacia arriba y hacia abajo alrededor del nivel habitual durante cada etapa, por lo que debes seguirlo. El enemigo y tus puntos siempre siguen la posición actual del indicador.\n- **Puntuación** tiene cuatro partes: puntos por el tiempo que permaneces en o por encima del indicador, puntos perdidos por cada colisión, un bono por cada etapa que completas y +100 por cada estrella dorada que recolectas.\n- Los **resultados** muestran tu puntuación total y tres porcentajes: Resistencia (porcentaje del tiempo de la etapa que pasas en o por encima del indicador), Estabilidad (porcentaje del tiempo de la etapa que la pelota permaneció estable) y Rendimiento Estabilizado (el promedio de los dos). El informe de progreso muestra el Rendimiento Estabilizado para cada sesión bajo **Rendimiento en juegos físicos**.\n- Un entrenador puede cambiar la fuerza objetivo, la sensibilidad de la estabilidad, el modo de fuerza variable y su rango, el número de etapas, el tiempo de sujeción y el tiempo de descanso en **Ajustes**, o utilizar las configuraciones preestablecidas de Fácil, Medio, Difícil y Sprint. Consulta [Configuración del entrenador](help:trainer-settings).",
+          "src": "6472d9ca02"
+        }
+      },
+      "title": "Carrera espacial",
+      "titleSrc": "c7994f0625"
+    }
+  }
+}

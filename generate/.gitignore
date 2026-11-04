@@ -1,0 +1,5 @@
+# Model weights, generated images, and ComfyUI's own runtime state — large,
+# machine-local, and not something to ever commit.
+run/
+basedir/
+data/

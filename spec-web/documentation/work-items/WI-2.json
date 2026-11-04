@@ -1,0 +1,418 @@
+{
+  "id": "WI-2",
+  "domain": "app",
+  "status": "in-qa",
+  "title": "Space Chase v2",
+  "createdBy": "Tomer",
+  "createdAt": "2026-11-03T14:20:14.374Z",
+  "changes": [
+    {
+      "doc": "spec/games",
+      "title": "Games, rotation HUD, sensor mode",
+      "by": [
+        "Tomer"
+      ],
+      "hunks": [
+        {
+          "aStart": 403,
+          "bStart": 403,
+          "lines": [
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "- **Force → horizontal speed, via the existing Target Force marker.** This game does **not** introduce a separate kg-denominated \"Force Threshold\" — it reuses `GameConfig.squeezeThreshold` and the shared pressure-bar's dashed Target Force marker (S-176/S-197) exactly as every other game does, and for this game only its Settings-tab slider runs the full 0–100% (QA rework; every other game keeps 0–80%). The Stability Threshold slider is 0–100% too. At or above threshold the ship's engine runs at full power and the ship pulls ahead; below threshold the engine weakens and the enemy closes the gap. Any reading at or above threshold counts the same — there is no reward for squeezing harder than the marker, matching every other game's at-or-above semantics. Force never affects vertical movement."
+            },
+            {
+              "t": "-",
+              "s": "- **Acceleration → vertical deviation (\"ball stability\").** The ship normally tracks a single visible **Intended Flight Path** line; growing instability deflects it vertically away from that line (more instability, more deviation; recovering stability returns it toward the line), and sustained deviation is what risks an asteroid collision — stability itself is never scored directly (see *Scoring* below). A **Stability Threshold** slider (0–100, default 50, independent of Force Threshold) sets how sensitive that deflection is: 0 disables it outright (the ship stays on the line regardless of instability), 100 makes small accelerometer movements produce a strong deviation. **Open:** the actual accelerometer→stability signal path (baseline capture, filtering, the 0–100 sensitivity curve) is decided during implementation against a real PLAYBALL, the same caveat Wobble Island's own sway measure carried — do not invent thresholds ahead of that. Acceleration never affects horizontal speed."
+            },
+            {
+              "t": "+",
+              "s": "- **Acceleration → vertical deviation (\"ball stability\").** The ship normally tracks a single visible **Intended Flight Path** line; growing instability deflects it vertically away from that line (more instability, more deviation; recovering stability returns it toward the line), and sustained deviation is what risks an asteroid collision — stability itself is never scored directly (see *Scoring* below). Double the current sensor-to-movement sensitivity: **the same measured physical instability must produce 2× the current vertical deviation**, across the existing response range. Keep the existing **Stability Threshold** setting and mechanism unchanged (0–100, independent of Force Threshold); set its default to **50% of the new maximum sensitivity** (numerically 50 if the existing 0–100 scale is retained). Thus 0 still disables the instability-driven deviation and 100 still represents the maximum, now-doubled response. Do not change the accelerometer input, baseline/filtering approach, or the meaning/range of the setting beyond the required 2× sensitivity increase. Acceleration never affects horizontal speed."
+            },
+            {
+              "t": " ",
+              "s": "- **Intended Flight Path:** exactly one guide line is ever drawn ahead of the ship, in every background environment, never obscured by HUD. There is no second line and no separate \"actual path\" line — the ship's own on-screen position *is* the actual path; the guide line is a visual reference only and never itself drives movement."
+            },
+            {
+              "t": "-",
+              "s": "- **Asteroids and the enemy are the two hazards.** Asteroids are present in every stage and every background, arranged so the Intended Flight Path threads a safe gap between them — deviating from the line is what creates collision risk. The enemy ship trails the player and closes in only while Force is below threshold (see above); it never fires anything, it only catches up. Either collision triggers a short impact animation + brief screen shake + a distinct sound (asteroid vs. enemy use two different cues) + a FAULT indicator + a floating `−N` points bubble, then play continues — neither ends the game, and a short fault-cooldown prevents one sustained overlap from deducting repeatedly. **Open:** the exact cooldown duration and the point deduction amount(s) are tuned during implementation, then recorded here."
+            },
+            {
+              "t": "-",
+              "s": "- **Stages, not a flat session timer.** Like Tug of War, Space Chase does not use the generic Session Duration slider — gameplay runs in a fixed number of **stages** (1–10, default 5), each a fixed **Isometric Hold Duration** (20–180 s, default 20 s) followed by a **Rest Duration** (5–30 s, default 10 s; no rest after the final stage). A stage's timer runs regardless of whether Force is at or above threshold — only time spent at-or-above counts toward the stage's force-related score (see *Scoring*). During rest the enemy stops chasing, no points are earned or deducted, and the patient is free to release the ball; the Results Screen shows once the final stage ends."
+            },
+            {
+              "t": "+",
+              "s": "- **Spaceship size:** scale both the player and enemy spaceship visuals to **2× their current size**, including each ship’s engine flame and exhaust trail. Preserve the exact existing artwork/designs, colors, aspect ratios and proportions; scale the existing sprites and attached effects rather than replacing or redesigning them. Keep gameplay positions, movement logic and collision behavior otherwise unchanged; update the relevant visual hit areas only as needed to remain aligned with the enlarged ship graphics."
+            },
+            {
+              "t": "+",
+              "s": "- **Golden Stars:** add gold star collectibles along the intended flight path. Maintain **exactly two stars visible ahead of the player ship** during active gameplay; spawn a replacement whenever a star is collected or leaves the screen. A star is collected only when the player spaceship actually passes directly over its world position (use the real ship/star positions, not proximity attraction, path alignment alone, or an assumed pickup). If the ship deviates from the path and misses a star, the star continues scrolling and exits beyond the opposite edge without being collected; it must not follow or snap toward the ship. Each collected star awards **+100 points**, displays a floating `+100` reward bubble at the collection location, and plays a collection sound. Prefer reusing an existing suitable reward sound from Car Ride (coin collection) or Asteroid; create a new sound only if neither existing cue is suitable. Stars are collectibles, not hazards, and do not alter the existing asteroid/enemy collision rules."
+            },
+            {
+              "t": "+",
+              "s": "- **Asteroids and the enemy are the two hazards.** Asteroids are present in every stage and every background, arranged so the Intended Flight Path threads a safe gap between them — deviating from the line is what creates collision risk. The enemy ship trails the player and closes in only while Force is below threshold (see above); it never fires anything, it only catches up. **When Force is below the required threshold, increase the enemy ship’s current chasing speed by 1.5×**; do not change its chasing behavior or speed when Force is at or above threshold. Either collision triggers a short impact animation + brief screen shake + a distinct sound (asteroid vs. enemy use two different cues) + a FAULT indicator + a floating `−N` points bubble, then play continues — neither ends the game, and a short fault-cooldown prevents one sustained overlap from deducting repeatedly. **Open:** the exact cooldown duration and the point deduction amount(s) are tuned during implementation, then recorded here."
+            },
+            {
+              "t": "+",
+              "s": "- **Stages, not a flat session timer.** Like Tug of War, Space Chase does not use the generic Session Duration slider — gameplay runs in a fixed number of **stages** (1–10, default 5), each a fixed **Isometric Hold Duration** (20–180 s, default 20 s) followed by a **Rest Duration** (5–30 s, default 10 s; no rest after the final stage). A stage's timer runs regardless of whether Force is at or above threshold — only time spent at-or-above counts toward the stage's force-related score (see *Scoring*). During rest the enemy stops chasing, no points are earned or deducted, and the patient is free to release the ball. **REST screen:** keep the live gameplay visible beneath a semi-transparent black overlay covering the entire screen; show a large, clearly legible, blinking **REST** label and the rest countdown timer together in the centre. When the countdown reaches zero, automatically remove the overlay and return to normal gameplay. The Results Screen shows once the final stage ends."
+            },
+            {
+              "t": " ",
+              "s": "- **Variable Force Mode (toggle, default OFF):** when on, the live Target Force marker fluctuates around the configured Force Threshold by a **Variable Force Range** (±10–50%, default ±20%) during each active stage — the configured threshold itself is the baseline the fluctuation is centered on, not a second stored setting. The marker and the enemy's behavior always track whatever the *current* fluctuated value is; scoring compares the live reading against that same current value. **Open:** the fluctuation's frequency/transition timing is tuned during implementation (smooth, predictable transitions, not abrupt jumps) and recorded here once built."
+            },
+            {
+              "t": " ",
+              "s": "- **Background environments are cosmetic only** — five visual groups spanning stages 1–2, 3–4, 5–6, 7–8 and 9–10 (dark-blue starfield → planets/nebulae → purple asteroid belt → deep space → distant turquoise/dark-blue galaxy), parallax-layered, changing nothing about mechanics, sensor behavior, difficulty or HUD. A session with fewer than 10 stages only shows the environments its stage range reaches."
+            },
+            {
+              "t": "-",
+              "s": "- **Scoring — exactly three components, no hidden bonuses:** (1) points for active-stage time spent at or above the current Target Force (zero while below); (2) a per-collision point deduction (asteroid or enemy, amount TBD per *Enemy Collision* above); (3) a fixed completion bonus per fully-finished stage, none for an incomplete one. The formula is identical across every difficulty preset. Stability never contributes to score directly, win or lose."
+            },
+            {
+              "t": "+",
+              "s": "- **Scoring — four explicit components, no hidden bonuses:** (1) points for active-stage time spent at or above the current Target Force (zero while below); (2) a per-collision point deduction (asteroid or enemy, amount TBD per *Enemy Collision* above); (3) a fixed completion bonus per fully-finished stage, none for an incomplete one; (4) **+100 points for each collected Golden Star** (see *Golden Stars* below). The formula is identical across every difficulty preset. Stability never contributes to score directly, win or lose."
+            },
+            {
+              "t": " ",
+              "s": "- **Results recorded (additive `GameResult` fields, this game only):** `isometricEndurancePct` (% of active stage time at or above the current Target Force, rest excluded), `isometricStabilityPct` (% of active stage time PLAYBALL stayed within the Stability Threshold's acceptable range, rest excluded — same real-sensor-data caveat as the stability mapping above), and `stabilizedPerformancePct` (the equal-weight average of the two — a summary tracking number, not a clinically validated scale). The Results Screen itself stays to the existing session-metadata convention (game name, date/time, body part, duration) plus Total Score and these three percentages; it does not grow therapist/patient-name, collision-count or stage-by-stage fields."
+            },
+            {
+              "t": " ",
+              "s": "- **Progress Report:** gets a new **Physical Games Performance** chart — *Stabilized Isometric Performance (%)*, 0–100% — placed at the very bottom of the Progress Report, after the existing Game Performance charts (`docs/spec/trainer.md` → *Progress Report*). This is the direct replacement for the per-game \"Balance\" section Wobble Island used to have there."
+            }
+          ]
+        },
+        {
+          "aStart": 415,
+          "bStart": 417,
+          "lines": [
+            {
+              "t": " ",
+              "s": "- **Visual direction:** calm, modern 2D space-arcade look — deep navy/soft blue/muted purple/turquoise palette, a friendly turquoise-and-blue player ship clearly distinguishable from a muted orange/red (not frightening) enemy, muted gray-blue/purple asteroids, smooth animation with no flashing/strobing/excessive particles. Every graphic and the four sound assets below are produced as several design variations for review and selection before integration — the first game built this way, rather than a single up-front mockup-and-approve gate."
+            },
+            {
+              "t": " ",
+              "s": "- **Art pipeline (built, review open):** the local SDXL pipeline (`tools/generate/`, ComfyUI in Docker on the host GPU) produces the candidates: `node tools/generate/spacechase-art.mjs --variants N [--only player,enemy,asteroid,background] [--seed S]` writes `data/spacechase/<group>/<asset>_v<N>.png` (player ship, enemy pursuit, five asteroid shapes, five space backgrounds), `spacechase-previews.mjs` makes thumbnails. The person picks one version per asset in spec-web → Assets → Images (`tools/spec-web/images-lib.mjs`, picks in `documentation/state/images-state.json`). The tab is laid out like Assets → Audio: one card per asset (catalog in `tools/spec-web/images-catalog.mjs`, with where the game uses it), per-candidate Keep/Reject (one Keep per asset is the pick) and notes, filters, and a **Generate new options** queue (`images-gen-queue.json`) that `node tools/generate-runner.mjs` consumes on the host, adding the new files as the next free versions with the asset's notes as prompt wording. Notes are rewritten into the prompt by the Claude CLI on the host (`tools/spec-web/images-rewrite.mjs`: Sonnet 5.5 at medium effort; in Docker spec-web asks the host-runner's `/prompt/rewrite`): complaints become positive descriptors and the unwanted things go to the negative prompt, and whatever a note plainly says to leave out (\"no wings\") is forced into the negative list. When the CLI is unreachable a rule-based split (`tools/generate/spacechase-prompts.mjs`) is used and the foldout says so and the page shows the resulting prompt in a foldout under each asset's explanation; \"multi-select\" (a small switch in the card header) allows keeping several versions, of which the latest kept is the one the game uses. The Images tab also writes `tools/generate/data/spacechase/selection.json` next to the candidates (per asset: status `unselected`/`selected`/`integrated`/`completed`, the selected versions, the game file they go to, the notes) for the agent that integrates the art; `spacechase-promote.mjs` writes the in-use versions into `public/images/spacechase` and marks them integrated, and only then the card's **Complete** button is enabled; completing clears the asset from the tab (filter *Completed* shows it again, with *Reopen*). Choosing a different version after integration reopens the asset, then `spacechase-promote.mjs` writes `public/images/spacechase/{ship,enemy,asteroid_1..5,bg_1..5}.webp` (the picked ship candidates are multi-ship sheets, so the promote script cuts the chosen ship out first: the second ship of the player sheet and the third of the enemy sheet) (sprites background-removed, backgrounds resized) and regenerates the asset manifest. The engine loads whichever of those files exist (`draw.ts`) and falls back to vector drawing for the rest, so no engine change is needed after a pick: there is no separate full-power or closing-in ship art: both ships are one sprite each and the engine flame is drawn in code as a child at the ship's rear (`setFlame` in `draw.ts`), growing with speed on the player's ship and as the enemy closes in on the enemy's, asteroids cycle `asteroid_1..5`, `bg_<group>` is a seamless mirrored parallax drift under the stars. Effects (flame, sparks, FAULT, UI) stay drawn in code. SDXL does not reliably give a single side-view ship, so ships may need further rounds with feedback."
+            },
+            {
+              "t": "-",
+              "s": "- **Sound:** four new cues only — asteroid-collision/FAULT, enemy-collision/FAULT (distinct from each other), stage-completion, and a rest-period/countdown cue — no engine sound, no separate generic FAULT sound, and deliberately **no background music track** for this game. See `docs/spec/sound-music.md` → *Effect trigger points*; the exact `SoundEffectName` keys and the `assetManifest.test.ts` \"every registry game has a music file\" exception for the no-music case are settled during implementation."
+            },
+            {
+              "t": "+",
+              "s": "- **Sound effects:** retain the four existing cues — asteroid-collision/FAULT, enemy-collision/FAULT (distinct from each other), stage-completion, and a rest-period/countdown cue — with no engine sound and no separate generic FAULT sound. For Golden Stars, prefer reusing an existing suitable reward cue from Car Ride (coin collection) or Asteroid; add a new effect only if neither is suitable. See `docs/spec/sound-music.md` → *Effect trigger points* for effect integration and the exact `SoundEffectName` keys."
+            },
+            {
+              "t": "+",
+              "s": "- **Background music (selection required before integration):** generate several distinct background-music options suitable for Space Chase and present them for review and selection. **Do not finalize, integrate, or choose a default track until the user has selected an option.** This replaces the earlier no-background-music decision. Keep the music separate from the four sound effects above."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "**Wobble Island (S-260) is retired**, replaced by Space Chase above — its acceleration-only balance gameplay, `sway.ts` measure, Sway Limit slider, `stabilityRmsG` scoring and manual article are superseded, not kept alongside the new game."
+            }
+          ]
+        }
+      ],
+      "added": 8,
+      "removed": 5
+    }
+  ],
+  "analysis": {
+    "summary": "Tomer's edit is a round of gameplay/visual tuning on top of the already-shipped Space Chase game (S-302/303/304, all done): double the acceleration→deviation sensitivity, double both ships' visual size (and their hit areas), add a Golden Star collectible (+100 pts, reusing an existing collection sound), make the enemy chase 1.5x faster while Force is below threshold, replace the small REST banner with a full-screen dimmed REST overlay, and reverse the earlier 'no background music' decision so Space Chase gets a generated/reviewed music track like every other game. Every numeric change is resolvable to a concrete absolute value from the current code (src/games/spacechase/{constants.ts,stability.ts,engine.ts}), so none of it needs a person's input beyond what's already answered in the text itself. The edit also quietly drops a real caveat (stability baseline/filtering is unverified on hardware) and the surrounding section still carries two now-stale 'Open' notes (fault cooldown/points, Variable Force timing) that implementation already settled — both get cleaned up in the same pass since this section is being rewritten anyway.",
+    "impact": [
+      {
+        "file": "docs/spec/games.md",
+        "sections": "Space Chase — Acceleration → vertical deviation",
+        "why": "resolve 'double the sensitivity' to the absolute formula: current sensitivity(pct)=pct/100 (max 1.0, default pct=50 → 0.5); new sensitivity(pct)=(pct/100)×2 (max 2.0, default pct=50 → 1.0, i.e. the old max). Slider stays 0-100, same default 50. Keep (reworded) the existing caveat that the baseline/filtering itself is still unverified on a real PLAYBALL — doubling the gain is a pure formula change and does not close that gap."
+      },
+      {
+        "file": "src/games/spacechase/stability.ts",
+        "sections": "sensitivity()",
+        "why": "the function that implements the above; currently returns pct/100, must return (pct/100)*2"
+      },
+      {
+        "file": "docs/spec/games.md",
+        "sections": "Space Chase — Spaceship size (new bullet)",
+        "why": "resolve '2x current size' to the absolute constant: engine.ts passes radius u*0.8 into makeShip()/makeEnemy() (u = min(screen W,H)*0.07); doubling to u*1.6 scales body, flame and the collision radius together since shipR is reused for both drawing and checkCollisions()/hazards.ts clearance math"
+      },
+      {
+        "file": "src/games/spacechase/engine.ts",
+        "sections": "mount(), layout(), checkCollisions()",
+        "why": "the shipR=u*0.8 constant feeds draw size, the enemy gap, and the collision circle radius (shipR*0.8); must become u*1.6 for the 2x size"
+      },
+      {
+        "file": "docs/spec/games.md",
+        "sections": "Space Chase — Asteroids and the enemy are the two hazards",
+        "why": "resolve '1.5x the enemy's current chasing speed' to the absolute constant: ENEMY_CLOSE_PER_S (constants.ts) is currently 0.06 (enemy-distance units/s while below threshold); 1.5x → 0.09. ENEMY_OPEN_PER_S (0.1, at/above threshold) is explicitly unchanged."
+      },
+      {
+        "file": "docs/spec/games.md",
+        "sections": "Space Chase — Scoring",
+        "why": "already correctly rewritten by the person to 4 components; no further change needed beyond what's in the diff"
+      },
+      {
+        "file": "docs/spec/games.md",
+        "sections": "Space Chase — Golden Stars (new bullet)",
+        "why": "new feature; needs a spec home next to the other per-mechanic bullets, in the section's existing voice (short declarative rules, like the Asteroids/Enemy bullet)"
+      },
+      {
+        "file": "docs/spec/sound-music.md",
+        "sections": "Effect trigger points table",
+        "why": "add a Golden Star row; the person's text explicitly reuses an existing cue — Car Ride's coin-collection and Asteroid's coin-collection are both already the shared `pickup` SoundEffectName per this table's own first row, so Golden Star collection is `playEffect('pickup')`, no new SoundEffectName key needed"
+      },
+      {
+        "file": "docs/spec/sound-music.md",
+        "sections": "'Space Chase has no background music track, by design' paragraph",
+        "why": "directly contradicted by the new Background music bullet, which the person's text says explicitly replaces this decision; rewrite this paragraph to describe the new generate-and-review plan instead of asserting no-music"
+      },
+      {
+        "file": "docs/spec/sound-music.md",
+        "sections": "Background music — one real bundled loop per game (S-59) / -v2 pipeline promotion",
+        "why": "sibling sweep: this is exactly the generate-N-variants/review/promote workflow already run for carride/memorycards/asteroid/darthit/matchinggame (same Audio tab, same generate-sound.mjs pipeline) — Space Chase's new music request should follow the identical process, just not yet promoted to a live file until a person picks one"
+      },
+      {
+        "file": "src/assets/assetManifest.test.ts",
+        "sections": "NO_MUSIC = ['spacechase']",
+        "why": "this is the invariant the old no-music decision created; it must stay in place (candidates can be generated and reviewed in the Audio tab with no live file yet) until a person actually picks a track and it's promoted to public/audio/music/spacechase.mp3 — removing it prematurely would just point at a non-existent file. Note this explicitly so develop doesn't remove it before a real pick exists."
+      },
+      {
+        "file": "docs/spec/games.md",
+        "sections": "Space Chase — Visual direction",
+        "why": "the sentence 'Every graphic and the four sound assets below are produced as several design variations for review and selection' is now inaccurate on two counts: the sound assets are the four effect cues (already built, no longer awaiting review) and there is now a fifth asset class (background music) that does need that review/selection treatment — reword to separate 'the four effect cues (built)' from 'the background music track (new, review pending)'"
+      },
+      {
+        "file": "docs/spec/trainer.md",
+        "sections": "Settings Tab table — Stability Threshold row",
+        "why": "sibling sweep: the row describes the slider as 'sensitivity of the ship's vertical deviation to accelerometer instability'; still accurate after doubling (slider range/default unchanged, 0-100/50) but could note the response is now 2x steeper so a trainer re-reading this table understands presets feel different than before"
+      },
+      {
+        "file": "docs/manual/en/space-chase.md",
+        "sections": "Score bullet ('three parts only'), Steadiness bullet, ship-size/enemy-speed description",
+        "why": "will read wrong once built: Score has 4 components now (Golden Star bonus), ship/enemy are now 2x bigger, enemy closes faster when below threshold, and REST is a full-screen overlay not a small banner — flagged for the develop-phase manual rewrite, not touched now"
+      }
+    ],
+    "conflicts": [
+      "docs/spec/games.md's old Acceleration bullet carried '**Open:** the actual accelerometer→stability signal path (baseline capture, filtering, the 0–100 sensitivity curve) is decided during implementation against a real PLAYBALL... do not invent thresholds ahead of that'. The person's new bullet drops this caveat entirely while saying 'do not change the... baseline/filtering approach' — but src/games/spacechase/stability.ts:7-8 still says 'UNVERIFIED on a real PLAYBALL: the constants are tuned against mock data only', i.e. the underlying signal path was never actually verified on hardware; only ",
+      "docs/spec/games.md's Asteroids/Enemy bullet still carries '**Open:** the exact cooldown duration and the point deduction amount(s) are tuned during implementation, then recorded here' — but S-303 (done) already implemented and recorded these: FAULT_COOLDOWN_S=1.5s, ASTEROID_FAULT_POINTS=5, ENEMY_FAULT_POINTS=10 (src/games/spacechase/constants.ts). This 'Open' note is stale and should be resolved to those values while this bullet is being touched for the 1.5x enemy-speed addition anyway.",
+      "docs/spec/games.md's Variable Force Mode bullet still carries '**Open:** the fluctuation's frequency/transition timing is tuned during implementation... recorded here once built' — but S-303 (done) already implemented it: a smooth sine with VARIABLE_FORCE_PERIOD_S=10s (src/games/spacechase/constants.ts liveThreshold()). Also stale; not touched by this work item's diff but sits in the same section and is cheap to fix in the same pass."
+    ],
+    "codeGaps": [
+      "No Golden Star mechanics exist anywhere in src/games/spacechase/ (no constants, no spawn/collect logic in hazards.ts or engine.ts, no draw helper in draw.ts, no HUD popup wiring beyond the existing generic popup() the fault code already uses) — all new, for the develop phase.",
+      "The REST display today (hud.ts SpaceChaseHud.update()) is a small pulsing pill banner at H*0.2, not a full-screen dimmed overlay; the new REST screen (full-screen semi-transparent black over live gameplay, large blinking REST label + countdown centered) needs new drawing in hud.ts/engine.ts, not just a style tweak.",
+      "src/games/spacechase/stability.ts's sensitivity() and engine.ts's shipR constant (u*0.8) are one-line changes once the absolute values above are confirmed; no structural change needed for those two.",
+      "ENEMY_CLOSE_PER_S is a flat constant in constants.ts, not conditioned on anything beyond the existing above/below branch already in stepEnemyDistance() — the 1.5x change is just editing that constant, no new branching needed."
+    ],
+    "moves": [],
+    "nonChanges": [
+      {
+        "file": "docs/spec/games.md",
+        "sections": "Space Chase — Sound effects (the four retained cues: asteroid-collision/FAULT, enemy-collision/FAULT, stage-completion, rest-start; no engine sound, no generic FAULT sound)",
+        "evidence": "S-303 (done): src/audio/types.ts lines 18-21 declare exactly these four SoundEffectName keys (space_asteroid_fault, space_enemy_fault, space_stage_complete, space_rest_start), and src/games/spacechase/engine.ts's fault()/tick() already call playEffect() with them — the person's text here only restates what's built, the heading rename ('Sound:' → 'Sound effects:') is cosmetic."
+      }
+    ],
+    "at": "2026-11-03T14:26:54.115Z"
+  },
+  "questions": [
+    {
+      "n": 1,
+      "blocking": false,
+      "text": "Golden Star visual art: should it be vector-drawn in code (matching the asteroid/ship Graphics fallback style, with an optional texture-path hook like draw.ts already does for ship/enemy/asteroid/bg) with no new art-generation run, or does it need its own SDXL-generated candidates like the ship/enemy/asteroid/background art did? Default if unanswered: vector-drawn only (a simple gold star shape in PALETTE-matching colors), with the same optional texture hook pattern as the other sprites so raster art can be added later without an engine change.",
+      "answer": "Use the default approach: vector-drawn Golden Stars only, matching the existing Space Chase visual style.",
+      "answeredBy": "Tomer",
+      "answeredAt": "2026-11-03T14:44:29.832Z"
+    },
+    {
+      "n": 2,
+      "blocking": false,
+      "text": "REST overlay exact look: the spec specifies a full-screen semi-transparent black overlay with a large blinking REST label + countdown, but not the overlay's opacity or the blink rate. Default if unanswered: black at 60% opacity (matching CountdownOverlay's existing bg-black/60 full-screen precedent) and a 2x/second blink — both recorded in games.md once built, same as the game's other 'tuned during implementation' items (fault cooldown, Variable Force timing).",
+      "answer": "Agreed. Use 60% black overlay opacity and a blink rate of 2 times per second. Record both values in games.md.",
+      "answeredBy": "Tomer",
+      "answeredAt": "2026-11-03T14:47:45.853Z"
+    }
+  ],
+  "stubIds": [
+    "S-306",
+    "S-307"
+  ],
+  "commits": [
+    {
+      "sha": "386f563ed6f7a368c4377775622c044242c9b40e",
+      "kind": "spec",
+      "subject": "rewrite Space Chase v2",
+      "at": "2026-11-03T14:52:52.181Z"
+    },
+    {
+      "sha": "abe5e08031d9ec7782192782f7412ca4de73d3b1",
+      "kind": "registry",
+      "subject": "registry(WI-2): register the tickets",
+      "at": "2026-11-03T15:01:40.537Z"
+    },
+    {
+      "sha": "ac70660d63508b894c726bd431f4cc029653ea13",
+      "kind": "feature",
+      "subject": "feat(WI-2): Space Chase v2 tuning, Golden Stars, REST overlay (S-306)",
+      "at": "2026-11-03T15:05:48.964Z"
+    },
+    {
+      "sha": "20afce7a7bbc402373418a58dc2d3cd6a8f15da2",
+      "kind": "fix",
+      "subject": "fix(WI-2): manual bold label must be a UI string (S-306)",
+      "at": "2026-11-04T06:44:47.848Z"
+    },
+    {
+      "sha": "95f470391506da45bd79087e3be103479095ec36",
+      "kind": "feature",
+      "subject": "feat(WI-2): Space Chase background music promoted (S-307)",
+      "at": "2026-11-04T06:44:49.030Z"
+    },
+    {
+      "sha": "0e3eaef1fa0276f52f2aa5025a93073270e30e64",
+      "kind": "registry",
+      "subject": "chore(WI-2): stub statuses and QA report",
+      "at": "2026-11-04T06:45:13.780Z"
+    }
+  ],
+  "runs": {
+    "analyze": "run-20261103T142014-32d7",
+    "respec": "run-20261103T144814-06c8",
+    "develop": "run-20261104T063909-ef16"
+  },
+  "qaReport": "Review the new art in spec-web, Assets -> Audio: Space Chase music, the person's pick spacechase_v2 is promoted. Tests: npm run verify 587 pass; e2e spacechase + game-select pass. Build: build:web-dev ok. Not verified: feel of 2x stability sensitivity / enemy speed on a real PLAYBALL, music listening in the app, REST overlay look on device.",
+  "log": [
+    {
+      "at": "2026-11-03T14:20:14.374Z",
+      "text": "Tomer completed 1 document change"
+    },
+    {
+      "at": "2026-11-03T14:20:15.063Z",
+      "text": "Claude started analyzing the spec against these changes"
+    },
+    {
+      "at": "2026-11-03T14:26:54.116Z",
+      "text": "Claude's analysis: 14 file(s) affected, 1 documentation-only, 2 question(s) (0 blocking)"
+    },
+    {
+      "at": "2026-11-03T14:42:47.633Z",
+      "text": "Tomer answered Q1"
+    },
+    {
+      "at": "2026-11-03T14:44:29.832Z",
+      "text": "Tomer answered Q1"
+    },
+    {
+      "at": "2026-11-03T14:47:45.853Z",
+      "text": "Tomer answered Q2"
+    },
+    {
+      "at": "2026-11-03T14:48:14.282Z",
+      "text": "Tomer started the spec rewrite"
+    },
+    {
+      "at": "2026-11-03T14:51:00.338Z",
+      "text": "games.md Space Chase: resolved doubled stability sensitivity, doubled ship size, 1.5x enemy speed, REST overlay look to absolute values/constants; closed stale Open notes (fault cooldown/points, Variable Force timing) with their already-implemented values; placed the new Golden Stars bullet between "
+    },
+    {
+      "at": "2026-11-03T14:51:33.366Z",
+      "text": "sound-music.md: rewrote the 'no background music' paragraph into the new generate-and-review plan, merged Golden Star into the shared pickup effect row, added the four Space Chase effect keys as their own row"
+    },
+    {
+      "at": "2026-11-03T14:51:33.488Z",
+      "text": "trainer.md Settings Tab table: noted the Stability Threshold slider's doubled response in its row"
+    },
+    {
+      "at": "2026-11-03T14:52:52.182Z",
+      "text": "commit 386f563 (spec): rewrite Space Chase v2"
+    },
+    {
+      "at": "2026-11-03T14:52:54.847Z",
+      "text": "The spec rewrite is finished and waiting for review"
+    },
+    {
+      "at": "2026-11-03T14:58:36.596Z",
+      "text": "ilia confirmed the rewritten spec"
+    },
+    {
+      "at": "2026-11-03T15:00:45.629Z",
+      "text": "Tomer started the work"
+    },
+    {
+      "at": "2026-11-03T15:01:31.314Z",
+      "text": "stubs: S-306, S-307"
+    },
+    {
+      "at": "2026-11-03T15:01:40.538Z",
+      "text": "commit abe5e08 (registry): registry(WI-2): register the tickets"
+    },
+    {
+      "at": "2026-11-03T15:05:48.965Z",
+      "text": "commit ac70660 (feature): feat(WI-2): Space Chase v2 tuning, Golden Stars, REST overlay (S-306)"
+    },
+    {
+      "at": "2026-11-03T15:31:22.455Z",
+      "text": "The development run cancelled."
+    },
+    {
+      "at": "2026-11-03T15:36:26.000Z",
+      "text": "Status set to waiting for a person (music pick); resume with the banner button"
+    },
+    {
+      "at": "2026-11-03T16:15:47.059Z",
+      "text": "Tomer resumed the run"
+    },
+    {
+      "at": "2026-11-03T16:16:24.034Z",
+      "text": "The run stopped to wait for a person: Space Chase music (S-307): spec-web -> Assets -> Audio -> 'Space Chase - background music'. No candidates exist yet and the card was completed with nothing kept"
+    },
+    {
+      "at": "2026-11-04T06:31:50.552Z",
+      "text": "ilia resumed the run"
+    },
+    {
+      "at": "2026-11-04T06:32:46.351Z",
+      "text": "The run stopped to wait for a person: WI-2 is waiting on the Space Chase background music. In spec-web open Assets -> Audio, find 'Space Chase - background music'. The card was marked Complete on 20"
+    },
+    {
+      "at": "2026-11-04T06:39:08.939Z",
+      "text": "ilia resumed the run"
+    },
+    {
+      "at": "2026-11-04T06:44:47.849Z",
+      "text": "commit 20afce7 (fix): fix(WI-2): manual bold label must be a UI string (S-306)"
+    },
+    {
+      "at": "2026-11-04T06:44:49.031Z",
+      "text": "commit 95f4703 (feature): feat(WI-2): Space Chase background music promoted (S-307)"
+    },
+    {
+      "at": "2026-11-04T06:45:13.781Z",
+      "text": "commit 0e3eaef (registry): chore(WI-2): stub statuses and QA report"
+    },
+    {
+      "at": "2026-11-04T06:45:13.923Z",
+      "text": "The work is finished, waiting for QA"
+    }
+  ],
+  "sentBack": null,
+  "lastError": null,
+  "runSummary": "- WI-2 resume: the Space Chase v2 work item is now in QA. S-306 (ships, stars, REST overlay) and S-307 (background music) are both `in-qa`.\n- Music: I used the track the person had already picked (`spacechase_v2`). It is promoted to `public/audio/music/spacechase.mp3`, the manifest is regenerated, and I removed the `NO_MUSIC` allowlist from `assetManifest.test.ts`. The spec in `docs/spec/sound-mus\n- Fix: the S-306 manual article had \"Golden Stars\" in bold, but it isn't a UI string, so `npm run verify` failed. I unbolded it.\n- Checked: `npm run verify` passes (587 tests), Playwright `spacechase` and `game-select` specs pass, and `build:web-dev` succeeds. `spec check` is clean.\n- Commits: a fix commit, the S-307 music commit, a chore commit with the stub statuses and QA report, and a final chore commit for the work item record. None were pushed.\n- Not committed: the other modified files (`tools/spec`, `tools/spec-web`, the skill file, `docs/.history`) belong to someone else's changes, so I left them alone.\n- Needs a person: not verified on real hardware were the 2× stability sensitivity, the 1.5× enemy speed, how the music sounds in the app, and the REST overlay on a device. Someone should try it at `/web-build/` and confirm the work item.",
+  "rewriteStartedAt": "2026-11-03T14:48:14.282Z",
+  "rewrittenBy": "Tomer",
+  "specReviewAt": "2026-11-03T14:52:54.846Z",
+  "specApprovedAt": "2026-11-03T14:58:36.596Z",
+  "specApprovedBy": "ilia",
+  "specFeedback": null,
+  "workStartedAt": "2026-11-03T15:00:45.628Z",
+  "workedBy": "Tomer",
+  "failedPhase": null,
+  "waitingHuman": null,
+  "integratedAt": "2026-11-04T06:45:13.922Z"
+}

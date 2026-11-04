@@ -1,0 +1,8 @@
+# 5 new SoundEffectName cues added for Asteroid ship shrink/expand, Shoot the
+# Bottle cannon power-up/fire, and Car Ride's dedicated crash sound.
+# Format: key|description fed to {{VAR}}|clip length in seconds
+ship_shrink|quick retro synth downward sweep, shrinking whoosh, analog pitch drop|1.0
+ship_expand|quick retro synth upward sweep, expanding whoosh, analog pitch rise|1.0
+cannon_powerup|rising retro synth charge-up hum, building energy whine, analog power surge|1.5
+cannon_fire|punchy retro synth laser cannon blast, sci-fi shot, analog boom|1.2
+car_crash|retro synth crash impact, harsh analog distortion hit, blocked collision thud|1.2

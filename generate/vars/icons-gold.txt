@@ -1,0 +1,7 @@
+# Gold-bg/green-outline group — 2nd, 4th test in each region's list
+# (matches OtherTestStep.tsx's isAccent = i % 2 === 1 alternation)
+# Format: key|description|reference image (in basedir/input/anatomy-ref/)
+abductors|hips and both upper legs only, front view, one leg lifting out to the side, hip abduction motion, the outer thigh filled with a bright green gradient color, rest of the legs is outline only with no fill|legs_front.png
+calf|one lower leg and foot only, side view, heel rising up onto tiptoe, calf raise motion, the calf muscle filled with a bright green gradient color, rest of the leg is outline only with no fill|legs_back.png
+bicep|one upper arm and elbow only, arm bending upward, bicep curl motion, the front of the upper arm filled with a bright green gradient color, rest of the arm is outline only with no fill|torso_front.png
+pec|chest and shoulders only, both arms pushing forward together, chest press motion, the chest muscle filled with a bright green gradient color, rest of the body is outline only with no fill|torso_front.png

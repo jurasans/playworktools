@@ -1,0 +1,72 @@
+{
+  "updatedAt": "2026-09-30T12:07:39.709Z",
+  "scale": 5,
+  "features": [
+    {
+      "id": "game_asteroid",
+      "label": "Asteroid (game)",
+      "removable": true,
+      "required": false
+    },
+    {
+      "id": "game_rolltheball",
+      "label": "Roll the Ball (game)",
+      "removable": true,
+      "required": false
+    },
+    {
+      "id": "game_shootthebottle",
+      "label": "Shoot the Bottle (game)",
+      "removable": true,
+      "required": false
+    },
+    {
+      "id": "game_carride",
+      "label": "Car Ride (game)",
+      "removable": true,
+      "required": false
+    },
+    {
+      "id": "game_memorycards",
+      "label": "Memory Cards (game)",
+      "removable": true,
+      "required": false
+    },
+    {
+      "id": "game_darthit",
+      "label": "Dart Hit (game)",
+      "removable": true,
+      "required": false
+    },
+    {
+      "id": "game_matchinggame",
+      "label": "Matching Game (game)",
+      "removable": true,
+      "required": false
+    },
+    {
+      "id": "tests",
+      "label": "Strength & Clinical Tests",
+      "removable": true,
+      "required": false
+    },
+    {
+      "id": "sensor",
+      "label": "Sensor Connectivity & Reliability",
+      "removable": true,
+      "required": false
+    },
+    {
+      "id": "trainer",
+      "label": "Trainer Panel / Settings",
+      "removable": true,
+      "required": false
+    },
+    {
+      "id": "overall",
+      "label": "Overall App Experience",
+      "removable": false,
+      "required": true
+    }
+  ]
+}
