@@ -35,16 +35,17 @@ def _rows(cursor):
     return columns, [dict(zip(columns, row)) for row in cursor.fetchall()]
 
 
-def search_sensors(conn, query="", field="id", limit=None, offset=None):
-    """Balls matching a partial text anywhere in the chosen field, sorted alphabetically by id."""
-    if field not in SENSOR_SEARCH:
+def search_sensors(conn, query="", field="any", limit=None, offset=None):
+    """Balls matching a partial text, upper/lower case ignored, in one field or (any) in id, license, device or customer."""
+    if field != "any" and field not in SENSOR_SEARCH:
         raise UserError(f"cannot search sensors by {field!r}")
     query, (limit, offset) = _check_query(query), _limit(limit, offset)
-    expression = SENSOR_SEARCH[field]
+    fields = list(SENSOR_SEARCH) if field == "any" else [field]
     where, params = "", []
     if query:
-        where = f"WHERE {expression} LIKE %s ESCAPE '\\'"
-        params.append(like_pattern(query, ignore_separators=field == "id"))
+        like = " ESCAPE '\\'"
+        where = "WHERE " + " OR ".join(f"{SENSOR_SEARCH[f]} LIKE %s{like}" for f in fields)
+        params = [like_pattern(query, ignore_separators=f == "id") for f in fields]
     cursor = conn.cursor()
     cursor.execute(f"SELECT COUNT(*) FROM sensors s {where}", params)
     total = cursor.fetchone()[0]

@@ -19,7 +19,7 @@ def _who(request):
 
 def _read(conn, op, request):
     if op == "search_sensors":
-        return search.search_sensors(conn, request.get("query", ""), request.get("field", "id"),
+        return search.search_sensors(conn, request.get("query", ""), request.get("field", "any"),
                                     request.get("limit"), request.get("offset"))
     if op == "list_licenses":
         return search.list_licenses(conn)

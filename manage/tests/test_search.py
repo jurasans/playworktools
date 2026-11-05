@@ -27,7 +27,7 @@ def test_wildcards_typed_by_a_person_are_literal(typed, expected):
 
 def test_partial_mac_matches_anywhere_in_the_id_and_sorts_alphabetically():
     conn = sensors_conn()
-    result = search.search_sensors(conn, "5a:84")
+    result = search.search_sensors(conn, "5a:84", field="id")
     assert result["total"] == 3 and result["rows"][0]["id"] == "AA:BB"
     count_sql, params = conn.executed[0]
     assert "LIKE %s ESCAPE" in count_sql and params == ["%5A84%"]
@@ -86,3 +86,15 @@ def test_licenses_are_listed_only_as_id_and_tier():
     conn = FakeConn([("FROM licenses", {"columns": ["id", "license_type"], "rows": [("L1", 2)]})])
     assert search.list_licenses(conn) == {"licenses": [{"id": "L1", "license_type": 2}]}
     assert "SELECT id, license_type FROM licenses" in conn.sql()[0]
+
+
+def test_default_search_looks_in_id_license_device_and_customer_ignoring_case():
+    conn = sensors_conn()
+    search.search_sensors(conn, "MyPlay")
+    sql, params = conn.executed[0]
+    assert sql.count("LIKE %s ESCAPE") == 4 and "UPPER(s.customer_id) LIKE" in sql and "UPPER(s.license_id) LIKE" in sql
+    assert params == ["%MYPLAY%"] * 4
+    # separators are only ignored for the ball id, so a customer name keeps its dashes
+    conn = sensors_conn()
+    search.search_sensors(conn, "ab-c")
+    assert conn.executed[0][1] == ["%ABC%", "%AB-C%", "%AB-C%", "%AB-C%"]

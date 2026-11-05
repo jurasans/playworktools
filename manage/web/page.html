@@ -74,7 +74,7 @@ label{display:block;margin:.4rem 0 .1rem;font-size:.85rem}
   <div id="err" class="err"></div>
   <div id="work" hidden>
     <div class="row tabs" id="tabs"></div>
-    <div class="card"><div class="row"><input id="q" placeholder="Search (2+ characters, empty lists all)" size="34"><button id="go">Search</button><span id="info" class="dim"></span><span style="flex:1"></span><button id="newballs">+ Create new balls</button></div></div>
+    <div class="card"><div class="row"><input id="q" placeholder="Search" size="54"><button id="go">Search</button><span id="info" class="dim"></span><span style="flex:1"></span><button id="newballs">+ Create new balls</button></div></div>
     <div class="card" id="results"></div>
     <div class="card"><b>Pending changes</b> <span id="count" class="dim"></span><div id="pending"></div><div class="row"><button id="review" disabled>Review &amp; apply…</button><button id="clear" class="ghost">Discard all</button></div></div>
   </div>
@@ -149,6 +149,7 @@ async function refresh() {
 }
 function drawTabs() {
   $('newballs').hidden = S.tab !== 'balls'
+  $('q').placeholder = S.tab === 'balls' ? 'Search ids, licenses, devices, customers (2+ characters, any case)' : 'Search customer names and invoice numbers (2+ characters, any case)'
   const t = $('tabs'); t.replaceChildren()
   for (const [id, label] of [['balls', 'Balls'], ['customers', 'Customers']]) t.append(el('button', { className: S.tab === id ? 'on' : '', on: { click: () => { S.tab = id; $('q').value = ''; drawTabs(); search() } } }, label))
   drawPending()
