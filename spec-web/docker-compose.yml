@@ -18,6 +18,9 @@ services:
       - SPEC_WEB_IN_DOCKER=1
       # Manual machine-translation assist (manual-mt.mjs): the Ollama container publishes 11434 on the host.
       - OLLAMA_URL=${OLLAMA_URL:-http://host.docker.internal:11434}
+      # /manage page (tools/manage): second password, and the host-runner token (24+ chars, same value the runner is started with).
+      - MANAGE_PASSWORD=${MANAGE_PASSWORD:-}
+      - HOST_RUNNER_TOKEN=${HOST_RUNNER_TOKEN:-}
     volumes:
       # Bind-mount the whole repo, not a copy — CLAUDE.md and tools/spec/spec.mjs
       # must be the real files so writes from the container land on disk and

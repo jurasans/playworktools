@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Playwork Manage</title>
+<style>
+:root{--ink:#14301a;--panel:#ffffffd9;--line:#8fbf7a;--accent:#2e7d32;--bad:#b71c1c;font:15px/1.4 system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);min-height:100vh;background:linear-gradient(#fffbe0,#e3f3d0 40%,#b9dfa0);}
+body.stage::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 85% 8%,#fff6b0 0,#ffe96666 18%,transparent 40%),linear-gradient(#ffffff55,#ffffff22)}
+body.prod{--ink:#fff;--panel:#4a0000e6;--line:#ff5252;--accent:#ffd600;--bad:#ffd600;background:#d50000;animation:flash 2.4s ease-in-out infinite}
+@keyframes flash{0%,100%{background:#d50000}50%{background:#ff3d00}}
+@media(prefers-reduced-motion:reduce){body.prod{animation:none}}
+/* Banner: a stripe, a boxed message, another stripe. Hazard stripes on prod, rainbow on stage. */
+.stripe{height:1.1rem;background:repeating-linear-gradient(45deg,#000 0 14px,#ffd600 14px 28px)}
+body.stage .stripe{background:linear-gradient(90deg,#ff6b6b,#ffb347,#fff176,#81e08a,#64b5f6,#b388ff,#ff8ad8)}
+.banner{text-align:center;font-size:1.3rem;font-weight:800;padding:.7rem 1rem;margin:.35rem auto;width:fit-content;max-width:calc(100% - 9rem);border:4px solid #000;border-radius:6px}
+body.prod .banner{background:#000;color:#ffd600;border-color:#ffd600;text-shadow:0 0 8px #ff1744}
+body.stage .banner{background:#fffdf0;color:#2e7d32;border:4px dashed #ff8ad8;border-radius:18px}
+/* Side decoration: one column of emoji down each edge */
+.side{position:fixed;top:0;bottom:0;width:3.4rem;display:flex;flex-direction:column;justify-content:space-around;align-items:center;font-size:2rem;pointer-events:none;z-index:1;overflow:hidden}
+.side.l{left:.3rem}.side.r{right:.3rem}
+.side span{display:block;animation:bob 3s ease-in-out infinite}
+.side span:nth-child(even){animation-delay:-1.5s}
+body.prod .side span{filter:drop-shadow(0 0 6px #000);animation-duration:1.6s}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-.5rem) rotate(6deg)}}
+@media(prefers-reduced-motion:reduce){.side span{animation:none}}
+@media(max-width:700px){.side{display:none}.banner{max-width:100%}}
+main{max-width:1200px;margin:0 auto;padding:1rem 4.2rem}
+@media(max-width:700px){main{padding:1rem}}
+.card{background:var(--panel);border:2px solid var(--line);border-radius:12px;padding:1rem;margin:1rem 0}
+h1{margin:.2rem 0}
+button,select,input{font:inherit;padding:.4rem .8rem;border-radius:8px;border:1px solid var(--line)}
+button{margin:.15rem .2rem}
+td button,.row button{margin:.15rem .25rem}
+button{cursor:pointer;background:var(--accent);color:#fff;border-color:transparent}
+body.prod button{color:#000}
+button.ghost{background:transparent;color:inherit;border-color:var(--line)}
+button:disabled{opacity:.5;cursor:not-allowed}
+table{border-collapse:collapse;width:100%}
+th,td{border-bottom:1px solid var(--line);padding:.35rem .4rem;text-align:left;vertical-align:top}
+.row{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center}
+.ballrow{display:flex;gap:.75rem;flex-wrap:nowrap;align-items:flex-start;padding:.4rem 0}
+.ballrow .cust{display:flex;flex-direction:column;gap:.15rem}
+.ballrow .newtag{font-size:.8rem;min-height:1.1rem;opacity:.8}
+.err{color:var(--bad);font-weight:700}
+.tabs button{background:transparent;color:inherit;border:1px solid var(--line)}
+.tabs button.on{background:var(--accent);color:#fff}
+body.prod .tabs button.on{color:#000}
+.dim{opacity:.75}
+.mask{position:fixed;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;padding:1rem;z-index:9}
+.dlg.wide{max-width:980px}
+.dlg{background:#fff;color:#111;border-radius:12px;max-width:640px;width:100%;padding:1rem;max-height:90vh;overflow:auto}
+body.prod .dlg{border:4px solid #d50000}
+.stale{color:#b71c1c;font-weight:700}
+/* Waiting for data: a rotating smiley on stage, a jolly roger on prod */
+.loading{display:flex;align-items:center;justify-content:center;gap:.8rem;padding:1.5rem;font-weight:700}
+.spin{display:inline-block;font-size:3rem;animation:turn 1.4s linear infinite}
+body.prod .spin{filter:drop-shadow(0 0 8px #ff1744)}
+@keyframes turn{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.spin{animation:none}}
+label{display:block;margin:.4rem 0 .1rem;font-size:.85rem}
+</style>
+</head>
+<body class="stage">
+<div class="side l" id="sideL"></div><div class="side r" id="sideR"></div>
+<div class="stripe"></div>
+<div class="banner" id="warn"></div>
+<div class="stripe"></div>
+<main>
+  <h1 id="title">Playwork Manage</h1>
+  <div class="card row" id="envbar"></div>
+  <div id="err" class="err"></div>
+  <div id="work" hidden>
+    <div class="row tabs" id="tabs"></div>
+    <div class="card"><div class="row"><input id="q" placeholder="Search (2+ characters, empty lists all)" size="34"><button id="go">Search</button><span id="info" class="dim"></span><span style="flex:1"></span><button id="newballs">+ Create new balls</button></div></div>
+    <div class="card" id="results"></div>
+    <div class="card"><b>Pending changes</b> <span id="count" class="dim"></span><div id="pending"></div><div class="row"><button id="review" disabled>Review &amp; apply…</button><button id="clear" class="ghost">Discard all</button></div></div>
+  </div>
+</main>
+<div id="layer"></div>
+<script>
+'use strict'
+const $ = (id) => document.getElementById(id)
+const S = { env: 'stage', tab: 'balls', pending: [], licenses: [], schema: [], tiers: { 1: 'MyPlayBall', 2: 'Basic', 3: 'Premium' }, st: null }
+const TIER_IDS = Object.keys(S.tiers)
+
+// DOM helper: text only ever goes in through textContent, never innerHTML.
+function el(tag, props, ...kids) {
+  const n = document.createElement(tag)
+  for (const [k, v] of Object.entries(props || {})) {
+    if (k === 'on') for (const [e, f] of Object.entries(v)) n.addEventListener(e, f)
+    else if (k in n) n[k] = v
+    else n.setAttribute(k, v)
+  }
+  for (const k of kids.flat(Infinity)) if (k != null) n.append(k.nodeType ? k : document.createTextNode(String(k)))
+  return n
+}
+async function api(path, body) {
+  const r = await fetch(path, body ? { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) } : {})
+  let j = {}
+  try { j = await r.json() } catch {}
+  if (r.status === 423) { S.st = { ...S.st, unlocked: false }; drawEnv() }
+  return j
+}
+const run = (op, extra) => api('/api/manage/run', { env: S.env, op, ...extra })
+const show = (msg) => { $('err').textContent = msg || '' }
+
+const DECOR = {
+  prod: ['💀', '☠️', '⚠️', '🦴', '☢️', '🚨', '☣️', '🔥', '🦴', '💀', '⛔', '☠️', '⚠️', '🦴'],
+  stage: ['😊', '🦄', '🍬', '🌈', '🍭', '🧁', '😄', '🦄', '🍩', '🌈', '🥰', '🍡', '🦄', '😍'],
+}
+const BANNER = { prod: '☢️ ⚠️ PRODUCTION — REAL CUSTOMERS — EVERY CHANGE IS LIVE ⚠️ ☢️', stage: '🌈 PREPROD — safe to play with, nothing here is real 🦄' }
+const loading = (label = 'loading…') => el('div', { className: 'loading' }, el('span', { className: 'spin' }, S.env === 'prod' ? '🏴‍☠️' : '😊'), label)
+function drawTheme() {
+  const kind = S.env === 'prod' ? 'prod' : 'stage'
+  document.body.className = kind
+  $('warn').textContent = BANNER[kind]
+  for (const id of ['sideL', 'sideR']) $(id).replaceChildren(...(id === 'sideL' ? DECOR[kind] : [...DECOR[kind]].reverse()).map((e) => el('span', {}, e)))
+  $('title').textContent = S.env === 'prod' ? '☠️ Playwork Manage — PROD ☠️' : '🌈 Playwork Manage — PREPROD ☀️'
+}
+function drawEnv() {
+  drawTheme()
+  const bar = $('envbar'); bar.replaceChildren()
+  for (const e of ['stage', 'prod']) bar.append(el('button', { className: S.env === e ? '' : 'ghost', on: { click: () => { S.env = e; S.pending = []; refresh() } } }, e === 'prod' ? '☢️ PROD' : '🌱 PREPROD'))
+  const st = S.st || {}
+  const open = st.unlocked && st.env === S.env
+  $('work').hidden = !open
+  if (!st.configured && st.configured !== undefined) bar.append(el('span', { className: 'err' }, 'MANAGE_PASSWORD is not set for spec-web.'))
+  else if (open) bar.append(el('span', { className: 'dim' }, 'Unlocked · locks after 15 idle minutes'), el('button', { className: 'ghost', on: { click: async () => { await api('/api/manage/lock', {}); refresh() } } }, 'Lock'))
+  else {
+    const pw = el('input', { type: 'password', placeholder: 'Manage password', autocomplete: 'off' })
+    const go = async () => { const r = await api('/api/manage/unlock', { env: S.env, password: pw.value }); pw.value = ''; if (r.error) show(r.error); else { show(''); await refresh() } }
+    pw.addEventListener('keydown', (e) => { if (e.key === 'Enter') go() })
+    bar.append(pw, el('button', { on: { click: go } }, 'Unlock ' + S.env))
+  }
+  if (open) drawTabs()
+}
+async function refresh() {
+  S.st = await api('/api/manage/state')
+  drawEnv()
+  if (S.st.unlocked && S.st.env === S.env) {
+    $('results').replaceChildren(loading('connecting…'))
+    const info = await run('list_licenses'); S.licenses = info.licenses || []
+    const sc = await run('customer_schema'); S.schema = sc.columns || []
+    search()
+  }
+}
+function drawTabs() {
+  $('newballs').hidden = S.tab !== 'balls'
+  const t = $('tabs'); t.replaceChildren()
+  for (const [id, label] of [['balls', 'Balls'], ['customers', 'Customers']]) t.append(el('button', { className: S.tab === id ? 'on' : '', on: { click: () => { S.tab = id; $('q').value = ''; drawTabs(); search() } } }, label))
+  drawPending()
+}
+
+const PAGE = 10
+async function search(page = 0) {
+  show('')
+  $('results').replaceChildren(loading())
+  const q = $('q').value.trim()
+  const r = await run(S.tab === 'balls' ? 'search_sensors' : 'search_customers', { query: q, limit: PAGE, offset: page * PAGE })
+  if (!r.ok) { show(r.error || 'search failed'); $('results').replaceChildren(); $('info').replaceChildren(); return }
+  const pages = Math.max(1, Math.ceil(r.total / PAGE))
+  if (page > 0 && !r.rows.length) return search(pages - 1)
+  const from = r.total ? page * PAGE + 1 : 0
+  $('info').replaceChildren(
+    el('button', { className: 'ghost', disabled: page === 0, on: { click: () => search(page - 1) } }, '‹ Prev'), ' ',
+    `${from}–${page * PAGE + r.rows.length} of ${r.total} · page ${page + 1}/${pages}`, ' ',
+    el('button', { className: 'ghost', disabled: page + 1 >= pages, on: { click: () => search(page + 1) } }, 'Next ›'))
+  S.tab === 'balls' ? drawBalls(r.rows) : drawCustomers(r.columns, r.rows)
+}
+$('go').addEventListener('click', () => search(0))
+$('q').addEventListener('keydown', (e) => { if (e.key === 'Enter') search(0) })
+
+// One pending change per target: a newer edit of the same thing replaces the older one.
+function keyOf(a) { return [a.type, a.license_id ?? a.sensor_id ?? a.id ?? a.values?.id].join('|') }
+function queue(a) { S.pending = S.pending.filter((p) => keyOf(p) !== keyOf(a)); S.pending.push(a); drawPending() }
+function describe(a) {
+  switch (a.type) {
+    case 'set_tier': return `License ${a.license_id}: tier ${a.expected} → ${a.new} (${S.tiers[a.new]})`
+    case 'set_license': return `Ball ${a.sensor_id}: license ${a.expected} → ${a.new}`
+    case 'clear_device': return `Ball ${a.sensor_id}: clear device binding (${a.expected})`
+    case 'set_customer': return `Ball ${a.sensor_id}: customer ${a.expected ?? '—'} → ${a.new ?? '—'}`
+    case 'create_sensor': return `Create ball ${a.sensor_id} on license ${a.license_id}${a.customer_id ? ', customer ' + a.customer_id : ''}`
+    case 'create_customer': return `Create customer ${a.values.id} (created_at: now)`
+    default: return `Customer ${a.id}: ` + Object.keys(a.new).map((k) => `${k}: ${a.expected[k] ?? '—'} → ${a.new[k] ?? '—'}`).join(', ')
+  }
+}
+function drawPending() {
+  const box = $('pending'); box.replaceChildren()
+  $('count').textContent = S.pending.length ? `(${S.pending.length})` : '(none)'
+  S.pending.forEach((a, i) => box.append(el('div', { className: 'row' }, el('span', {}, describe(a)), el('button', { className: 'ghost', on: { click: () => { S.pending.splice(i, 1); drawPending() } } }, 'remove'))))
+  $('review').disabled = !S.pending.length
+}
+$('clear').addEventListener('click', () => { S.pending = []; drawPending() })
+
+function drawBalls(rows) {
+  const head = ['Ball (MAC)', 'License id', 'Device', 'Customer']
+  const body = rows.map((r) => {
+    const lic = el('select', {}, ...S.licenses.map((l) => el('option', { value: l.id, selected: l.id === r.license_id }, l.id)))
+    lic.addEventListener('change', () => { if (lic.value !== r.license_id) queue({ type: 'set_license', sensor_id: r.id, expected: r.license_id, new: lic.value }) })
+    const dev = r.device_id ? el('span', {}, r.device_id.slice(0, 18), ' ', el('button', { className: 'ghost', on: { click: () => queue({ type: 'clear_device', sensor_id: r.id, expected: r.device_id }) } }, 'Clear')) : el('span', { className: 'dim' }, '—')
+    const cust = el('span', {}, r.customer_id ?? '—', ' ', el('button', { className: 'ghost', on: { click: () => pickCustomer(r) } }, 'Set…'))
+    return el('tr', {}, el('td', {}, r.id), el('td', {}, lic), el('td', {}, dev), el('td', {}, cust))
+  })
+  $('results').replaceChildren(el('table', {}, el('tr', {}, head.map((h) => el('th', {}, h))), body))
+}
+function drawCustomers(cols, rows) {
+  const top = el('div', { className: 'row' }, el('button', { on: { click: () => customerForm(null) } }, 'New customer'))
+  const t = el('table', {}, el('tr', {}, el('th', {}, ''), cols.map((c) => el('th', {}, label(c)))),
+    rows.map((r) => el('tr', {}, el('td', {}, el('button', { className: 'ghost', on: { click: () => customerForm(r) } }, 'Edit')), cols.map((c) => el('td', {}, r[c] ?? '')))))
+  $('results').replaceChildren(top, t)
+}
+
+function dialog(...kids) {
+  const layer = $('layer')
+  const close = () => layer.replaceChildren()
+  layer.replaceChildren(el('div', { className: 'mask' }, el('div', { className: 'dlg' }, kids)))
+  return close
+}
+async function pickCustomer(ball) {
+  const q = el('input', { placeholder: 'Search customers by name or invoice' })
+  const out = el('div', {})
+  let close
+  const find = async () => {
+    const r = await run('search_customers', { query: q.value.trim() })
+    out.replaceChildren()
+    if (!r.ok) return out.append(el('div', { className: 'err' }, r.error))
+    for (const c of r.rows.slice(0, 50)) out.append(el('div', {}, el('button', { className: 'ghost', on: { click: () => { queue({ type: 'set_customer', sensor_id: ball.id, expected: ball.customer_id ?? null, new: c.id }); close() } } }, c.id), ' ', el('span', { className: 'dim' }, c.invoice_no ?? '')))
+    if (!r.rows.length) out.append(el('div', {}, 'No customer found. ', el('button', { on: { click: () => { close(); customerForm(null, ball, q.value.trim()) } } }, 'Create new')))
+  }
+  q.addEventListener('input', () => { if (q.value.trim().length >= 2 || !q.value) find() })
+  close = dialog(el('h3', {}, `Customer for ${ball.id}`), q, out, el('div', { className: 'row' }, ball.customer_id ? el('button', { className: 'ghost', on: { click: () => { queue({ type: 'set_customer', sensor_id: ball.id, expected: ball.customer_id, new: null }); close() } } }, 'Remove customer') : null, el('button', { className: 'ghost', on: { click: () => close() } }, 'Cancel')))
+  find()
+}
+const label = (name) => (name === 'id' ? 'Customer NAME' : name)
+function customerForm(row, ball, prefill) {
+  const inputs = {}
+  // created_at is stamped with now() by the script on insert, so a new customer's form never asks for it.
+  const shown = S.schema.filter((c) => row || c.name !== 'created_at')
+  const fields = shown.map((c) => {
+    const edit = !(row && c.name === 'id')
+    inputs[c.name] = el('input', { value: row?.[c.name] ?? (c.name === 'id' ? prefill ?? '' : ''), disabled: !edit, size: 36, placeholder: c.type })
+    return el('div', {}, el('label', {}, c.name === 'id' ? 'Customer NAME' : `${c.name} (${c.type})`), inputs[c.name])
+  })
+  let close
+  const save = () => {
+    const val = (n) => (inputs[n].value.trim() === '' ? null : inputs[n].value.trim())
+    if (!row) {
+      const values = {}
+      for (const c of shown) if (val(c.name) !== null) values[c.name] = val(c.name)
+      if (!values.id) return alert('A customer needs a name.')
+      queue({ type: 'create_customer', values })
+      if (ball) queue({ type: 'set_customer', sensor_id: ball.id, expected: ball.customer_id ?? null, new: values.id })
+    } else {
+      const expected = {}, nw = {}
+      for (const c of S.schema) if (c.name !== 'id' && String(val(c.name) ?? '') !== String(row[c.name] ?? '')) { expected[c.name] = row[c.name] ?? null; nw[c.name] = val(c.name) }
+      if (!Object.keys(nw).length) return close()
+      queue({ type: 'update_customer', id: row.id, expected, new: nw })
+    }
+    close()
+  }
+  close = dialog(el('h3', {}, row ? `Edit customer ${row.id}` : 'New customer'), fields, el('div', { className: 'row' }, el('button', { on: { click: save } }, 'Add to pending changes'), el('button', { className: 'ghost', on: { click: () => close() } }, 'Cancel')))
+}
+
+// ── Create new balls: rows of (ball id, license, customer), or a pasted comma list that fills the rows ──
+const MAC_RE = /^([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}$/
+const lowestTierLicense = () => [...S.licenses].sort((a, b) => (a.license_type - b.license_type) || a.id.localeCompare(b.id))[0]?.id ?? ''
+function newBalls() {
+  const rows = [{ id: '', license: lowestTierLicense(), customer: null }]
+  const box = el('div', { style: 'max-height:31rem;overflow:auto' }) // ten rows fit; more rows scroll
+  const bulk = el('input', { placeholder: 'Comma delimited list of sensor ids (AA:BB:CC:DD:EE:FF, …)', size: 60 })
+  const msg = el('div', { className: 'err' })
+  const count = el('span', { className: 'dim' })
+  let close
+  const menu = el('div', { style: 'position:fixed;z-index:20;background:#fff;color:#111;border:1px solid #888;border-radius:8px;max-height:14rem;overflow:auto;display:none' })
+  const hideMenu = () => { menu.style.display = 'none' }
+
+  function customerCell(row, i) {
+    const input = el('input', { placeholder: 'Customer NAME (search or create)', size: 24, value: row.customer?.name ?? '' })
+    const badge = el('span', { className: 'newtag' }, row.customer?.isNew ? 'new customer' : '')
+    let timer
+    const open = async () => {
+      const text = input.value.trim()
+      if (!text) { row.customer = null; badge.textContent = ''; return hideMenu() }
+      row.customer = null; badge.textContent = ''
+      let found = []
+      if (text.length >= 2) { const r = await run('search_customers', { query: text, limit: 8 }); found = r.ok ? r.rows : [] }
+      const exact = found.some((c) => String(c.id).toLowerCase() === text.toLowerCase())
+      menu.replaceChildren(
+        ...found.map((c) => el('div', { style: 'padding:.3rem .6rem;cursor:pointer', on: { mousedown: (e) => { e.preventDefault(); pick({ name: c.id, isNew: false }) } } }, c.id, el('span', { className: 'dim' }, c.invoice_no ? `  ${c.invoice_no}` : ''))),
+        exact ? null : el('div', { style: 'padding:.3rem .6rem;cursor:pointer;font-weight:700', on: { mousedown: (e) => { e.preventDefault(); pick({ name: text, isNew: true }) } } }, `+ Create customer “${text}”`))
+      const r = input.getBoundingClientRect()
+      Object.assign(menu.style, { left: r.left + 'px', top: r.bottom + 'px', minWidth: r.width + 'px', display: 'block' })
+    }
+    const pick = (c) => { row.customer = c; input.value = c.name; badge.textContent = c.isNew ? 'new customer' : ''; hideMenu() }
+    input.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(open, 250) })
+    input.addEventListener('blur', () => setTimeout(hideMenu, 150))
+    return el('span', { className: 'cust' }, input, badge)
+  }
+  function drawRows() {
+    box.replaceChildren(...rows.map((row, i) => {
+      const id = el('input', { value: row.id, placeholder: 'Ball id AA:BB:CC:DD:EE:FF', size: 20 })
+      id.addEventListener('input', () => { row.id = id.value; id.style.borderColor = '' })
+      const lic = el('select', {}, ...S.licenses.map((l) => el('option', { value: l.id, selected: l.id === row.license }, l.id)))
+      lic.addEventListener('change', () => { row.license = lic.value })
+      const last = i === rows.length - 1
+      return el('div', { className: 'ballrow' }, id, lic, customerCell(row, i),
+        rows.length > 1 ? el('button', { className: 'ghost', title: 'Remove this row', on: { click: () => { rows.splice(i, 1); drawRows() } } }, '✕') : null,
+        last ? el('button', { title: 'Add another ball', on: { click: () => { rows.push({ id: '', license: lowestTierLicense(), customer: null }); drawRows(); box.scrollTop = box.scrollHeight } } }, '+') : null)
+    }))
+    count.textContent = `${rows.length} ball(s)`
+  }
+  const readList = () => {
+    const ids = bulk.value.split(/[,\n;]+/).map((x) => x.trim()).filter(Boolean)
+    if (!ids.length) return
+    if (rows.length === 1 && !rows[0].id.trim()) rows.length = 0
+    const have = new Set(rows.map((r) => r.id.trim().toUpperCase().replace(/-/g, ':')))
+    for (const id of ids) { const k = id.toUpperCase().replace(/-/g, ':'); if (!have.has(k)) { have.add(k); rows.push({ id, license: lowestTierLicense(), customer: null }) } }
+    bulk.value = ''; drawRows()
+  }
+  bulk.addEventListener('change', readList)
+  bulk.addEventListener('paste', () => setTimeout(readList, 0))
+  bulk.addEventListener('keydown', (e) => { if (e.key === 'Enter') readList() })
+
+  const submit = () => {
+    msg.textContent = ''
+    const bad = rows.filter((r) => !MAC_RE.test(r.id.trim()))
+    const keys = rows.map((r) => r.id.trim().toUpperCase().replace(/-/g, ':'))
+    const dup = keys.find((k, i) => keys.indexOf(k) !== i)
+    if (bad.length) return (msg.textContent = `Not a ball id (AA:BB:CC:DD:EE:FF): ${bad.slice(0, 3).map((r) => r.id || '(empty)').join(', ')}${bad.length > 3 ? ' …' : ''}`)
+    if (dup) return (msg.textContent = `${dup} is in the list twice`)
+    const fresh = [...new Set(rows.filter((r) => r.customer?.isNew).map((r) => r.customer.name))]
+    const acts = [...fresh.map((name) => ({ type: 'create_customer', values: { id: name } })),
+      ...rows.map((r, i) => ({ type: 'create_sensor', sensor_id: keys[i], license_id: r.license, customer_id: r.customer?.name ?? null }))]
+    for (const a of acts) S.pending = S.pending.filter((p) => keyOf(p) !== keyOf(a))
+    S.pending.push(...acts)
+    drawPending(); hideMenu(); close(); $('review').click()
+  }
+  drawRows()
+  close = dialog(el('h3', {}, 'Create new balls'), bulk, el('p', { className: 'dim' }, 'Pasting a list fills the rows below with the lowest tier license; change them per row.'),
+    box, msg, el('div', { className: 'row' }, count, el('span', { style: 'flex:1' }),
+      el('button', { on: { click: submit } }, 'Submit'), el('button', { className: 'ghost', on: { click: () => { hideMenu(); close() } } }, 'Cancel')), menu)
+  $('layer').querySelector('.dlg').classList.add('wide') // one line per ball: id, license, customer, buttons
+}
+$('newballs').addEventListener('click', newBalls)
+
+$('review').addEventListener('click', async () => {
+  const stopWaiting = dialog(loading('checking the changes…'))
+  const p = await run('preview', { actions: S.pending })
+  stopWaiting()
+  if (!p.ok) return show(p.error || 'preview failed')
+  const stale = p.lines.some((l) => l.stale)
+  const yes = el('button', { disabled: stale || S.env === 'prod' }, 'Yes, apply')
+  if (S.env === 'prod' && !stale) setTimeout(() => { yes.disabled = false }, 2000)
+  let close
+  yes.addEventListener('click', async () => {
+    yes.disabled = true
+    close()
+    const stopApplying = dialog(loading('applying…'))
+    const r = await run('apply', { actions: S.pending, token: p.token })
+    stopApplying()
+    if (!r.ok) show(`${r.kind === 'stale' ? 'A row changed since you loaded it. Nothing was applied: ' : 'Nothing was applied: '}${r.error}`)
+    else { show(r.audit_warning ? `Applied, but ${r.audit_warning}` : ''); S.pending = [] }
+    refresh()
+  })
+  close = dialog(
+    el('h3', {}, S.env === 'prod' ? '☢️ Apply these changes to PRODUCTION? ☢️' : 'Apply these changes to PREPROD?'),
+    p.lines.map((l) => el('div', { className: l.stale ? 'stale' : '' }, l.text, l.stale ? ' — changed since you loaded it' : '')),
+    el('p', { className: 'dim' }, 'All or nothing: if any row changed meanwhile, nothing is applied.'),
+    el('div', { className: 'row' }, yes, el('button', { className: 'ghost', on: { click: () => close() } }, 'No')))
+})
+
+setInterval(() => { if (S.st && S.st.unlocked) api('/api/manage/state').then((s) => { if (!s.unlocked) { S.st = s; drawEnv() } }) }, 30000)
+refresh()
+</script>
+</body>
+</html>

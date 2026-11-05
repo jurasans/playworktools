@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url'
 import { timingSafeEqual } from 'node:crypto'
 import { validRunId, startWorker } from '../spec-web/runs-lib.mjs'
 import { rewriteWithClaude } from '../spec-web/images-rewrite.mjs'
+import { runManage, keepManage } from '../manage/web/run-python.mjs'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(HERE, '..', '..')
@@ -87,6 +88,36 @@ const server = createServer((req, res) => {
     child.on('error', () => { imagesRunning = false })
     child.on('exit', () => { imagesRunning = false })
     return json(200, { ok: true, started: true })
+  }
+
+  // Prod/stage license manage scripts (tools/manage). Never on the built-in default token: it can write to the database.
+  if (req.url === '/manage/run' && req.method === 'POST') {
+    if (!process.env.HOST_RUNNER_TOKEN || process.env.HOST_RUNNER_TOKEN.length < 24) return json(403, { error: 'set a HOST_RUNNER_TOKEN of 24+ characters to use /manage/run' })
+    if (!tokenOk(req.headers['x-runner-token'])) return json(401, { error: 'bad or missing token' })
+    let body = ''
+    req.on('data', (d) => { body += d; if (body.length > 131072) req.destroy() })
+    req.on('end', async () => {
+      let request
+      try { request = JSON.parse(body) } catch { return json(400, { error: 'bad json' }) }
+      json(200, await runManage(request))
+    })
+    return
+  }
+
+  // Closes the manage worker's database connections for every environment not listed (all of them when empty).
+  if (req.url === '/manage/keep' && req.method === 'POST') {
+    if (!process.env.HOST_RUNNER_TOKEN || process.env.HOST_RUNNER_TOKEN.length < 24) return json(403, { error: 'set a HOST_RUNNER_TOKEN of 24+ characters' })
+    if (!tokenOk(req.headers['x-runner-token'])) return json(401, { error: 'bad or missing token' })
+    let body = ''
+    req.on('data', (d) => { body += d; if (body.length > 1024) req.destroy() })
+    req.on('end', async () => {
+      let envs
+      try { envs = JSON.parse(body).envs } catch { return json(400, { error: 'bad json' }) }
+      if (!Array.isArray(envs)) return json(400, { error: 'envs must be a list' })
+      await keepManage(envs.filter((e) => typeof e === 'string'))
+      json(200, { ok: true })
+    })
+    return
   }
 
   json(404, { error: 'not found' })

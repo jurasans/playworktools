@@ -761,6 +761,7 @@
     <button data-tab="assets">Assets</button>
     <button data-tab="product">Product</button>
     <button data-tab="downloads">Downloads</button>
+    <button data-tab="manage" title="Licenses, balls and customers (second password)">Manage</button>
   </nav>
   <div class="grow"></div>
   <div class="pill" id="counts">…</div>
@@ -1118,6 +1119,11 @@
   <!-- DOWNLOADS — Spec / Build as sub-tabs. Default is Build (see SUBTABS
        below); under the Backend domain switch, Build has no meaning (no
        APK for the backend) so it falls back to Spec. -->
+  <!-- MANAGE — the page itself (tools/manage/web/page.html) is served from /manage/page and keeps its own distinct styling; it loads on first open. -->
+  <section class="panel" id="p-manage">
+    <iframe id="manageFrame" title="Manage" style="flex:1;border:0;width:100%;height:100%" data-src="/manage/page"></iframe>
+  </section>
+
   <section class="panel" id="p-downloads">
     <div style="flex:1;min-height:0;display:flex;flex-direction:column">
       <div class="subnav">
@@ -1276,6 +1282,7 @@ function tabForPath(pathname) {
   if (pathname.startsWith('/assets')) return 'assets'
   if (pathname.startsWith('/product')) return 'product'
   if (pathname.startsWith('/downloads')) return 'downloads'
+  if (pathname === '/manage') return 'manage'
   if (pathname === '/art' || pathname === '/audio' || pathname === '/localization') return 'assets'
   if (pathname === '/suggestions' || pathname === '/feedback-editor' || pathname === '/gdpr') return 'product'
   return 'spec'
@@ -1331,6 +1338,7 @@ function showTab(tab, { push = false, search = '', sub = null } = {}) {
   }
   if (cfg) activateSub(tab, resolvedSub, false) // URL already pushed above (or deliberately not), so no second push
   if (tab === 'tests') ensureTestsLoaded()
+  if (tab === 'manage') { const f = document.getElementById('manageFrame'); if (!f.src) f.src = f.dataset.src }
   if (tab === 'work' && typeof loadWork === 'function') loadWork()
 }
 

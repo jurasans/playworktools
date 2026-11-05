@@ -56,6 +56,7 @@ import { previewPrompt } from './audio-prompt.mjs'
 import { rewriteNotes } from './images-rewrite.mjs'
 import { listGenQueue, moveGenJob } from './gen-queue.mjs'
 import { composePrompt, splitNotes } from '../../tools/generate/spacechase-prompts.mjs'
+import { createManage } from '../manage/web/routes.mjs'
 import { listImages, resolveImageId, readImageState, updateImageState, setDecision, setMulti, setComplete, assetMeta, notesFor, writeSelectionManifest, readImageQueue, updateImageQueue, newImageJobId, IMG_MIME } from './images-lib.mjs'
 import {
   readTemplate as readFeedbackTemplate, writeTemplate as writeFeedbackTemplate,
@@ -161,6 +162,7 @@ const TEST_RUN_FILE = resolve(ROOT, 'tools', 'spec-web', 'documentation', 'state
 const RUN_FULL_SUITE_SCRIPT = resolve(ROOT, 'tools', 'spec', 'run-full-suite.mjs')
 const AGENT_RUN_SCRIPT = resolve(ROOT, 'tools', 'spec', 'agent-run.mjs')
 const IN_DOCKER = process.env.SPEC_WEB_IN_DOCKER === '1'
+const manage = createManage()
 const HOST_RUNNER_URL = process.env.HOST_RUNNER_URL || 'http://host.docker.internal:8899'
 const HOST_RUNNER_TOKEN = process.env.HOST_RUNNER_TOKEN || 'YANI_TOMER_ILIA_RUNNER'
 // A `running:true` lock older than this is treated as abandoned.
@@ -1180,6 +1182,7 @@ const STATIC = {
   '/stubs': ['public/index.html', 'text/html; charset=utf-8'],
   '/tests': ['public/index.html', 'text/html; charset=utf-8'],
   '/work': ['public/index.html', 'text/html; charset=utf-8'],
+  '/manage': ['public/index.html', 'text/html; charset=utf-8'],
   '/assets': ['public/index.html', 'text/html; charset=utf-8'],
   '/assets/audio': ['public/index.html', 'text/html; charset=utf-8'],
   '/assets/images': ['public/index.html', 'text/html; charset=utf-8'],
@@ -1372,6 +1375,12 @@ const server = createServer(async (req, res) => {
     res.writeHead(302, { location: WEBAPP_BASE })
     res.end()
     return
+  }
+
+  // Manage tool (prod licenses/balls/customers): admin only, plus its own second password (tools/manage).
+  if (path === '/manage/page' || path.startsWith('/api/manage/')) {
+    if (session.role !== 'admin') return json(res, 403, { error: 'admin only' })
+    if (await manage(req, res, url, { key: sessionCookie(req) || 'local', actor: 'spec-web admin' })) return
   }
 
   // The dev web build (behind the same login gate as everything else here).
