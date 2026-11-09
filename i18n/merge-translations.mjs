@@ -14,7 +14,7 @@ import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { mergeTranslations } from './csv-merge.mjs'
 
-const LANGS = ['en', 'he', 'zh', 'zt', 'ja', 'es', 'fr', 'pl', 'lv']
+const LANGS = ['en', 'he', 'zh', 'zt', 'ja', 'es', 'fr', 'pl', 'lv', 'uk']
 const CSV = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', 'src', 'locales', 'strings.csv')
 
 const args = process.argv.slice(2)

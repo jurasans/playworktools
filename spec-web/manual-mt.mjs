@@ -23,6 +23,7 @@ export const OLLAMA_URL = (process.env.OLLAMA_URL || 'http://localhost:11434').r
 const LANGS = {
   he: ['Hebrew', 'he'], zh: ['Chinese (Simplified)', 'zh-Hans'], zt: ['Chinese (Traditional, Taiwan)', 'zh-Hant-TW'],
   ja: ['Japanese', 'ja'], es: ['Spanish', 'es'], fr: ['French', 'fr'], pl: ['Polish', 'pl'], lv: ['Latvian', 'lv'],
+  uk: ['Ukrainian', 'uk'],
 }
 
 export async function ollamaStatus() {
