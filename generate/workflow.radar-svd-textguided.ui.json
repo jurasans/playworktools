@@ -1,0 +1,248 @@
+{
+  "last_node_id": 14,
+  "last_link_id": 19,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "ImageOnlyCheckpointLoader",
+      "pos": [40, 100],
+      "size": [315, 98],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        { "name": "MODEL", "type": "MODEL", "links": [1], "slot_index": 0 },
+        { "name": "CLIP_VISION", "type": "CLIP_VISION", "links": [2], "slot_index": 1 },
+        { "name": "VAE", "type": "VAE", "links": [3, 9], "slot_index": 2 }
+      ],
+      "properties": { "Node name for S&R": "ImageOnlyCheckpointLoader" },
+      "widgets_values": ["svd_xt.safetensors"]
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": [40, 240],
+      "size": [315, 314],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        { "name": "IMAGE", "type": "IMAGE", "links": [4], "slot_index": 0 },
+        { "name": "MASK", "type": "MASK", "links": null, "slot_index": 1 }
+      ],
+      "properties": { "Node name for S&R": "LoadImage" },
+      "widgets_values": ["radar-jets.png", "image"]
+    },
+    {
+      "id": 3,
+      "type": "SVD_img2vid_Conditioning",
+      "pos": [400, 100],
+      "size": [315, 218],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        { "name": "clip_vision", "type": "CLIP_VISION", "link": 2 },
+        { "name": "init_image", "type": "IMAGE", "link": 4 },
+        { "name": "vae", "type": "VAE", "link": 3 }
+      ],
+      "outputs": [
+        { "name": "positive", "type": "CONDITIONING", "links": [5], "slot_index": 0 },
+        { "name": "negative", "type": "CONDITIONING", "links": [6], "slot_index": 1 },
+        { "name": "latent", "type": "LATENT", "links": [7], "slot_index": 2 }
+      ],
+      "properties": { "Node name for S&R": "SVD_img2vid_Conditioning" },
+      "widgets_values": [1024, 576, 25, 25, 10, 0.0]
+    },
+    {
+      "id": 10,
+      "type": "CheckpointLoaderSimple",
+      "pos": [400, 360],
+      "size": [315, 98],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "title": "Text CLIP Provider (SDXL)",
+      "inputs": [],
+      "outputs": [
+        { "name": "MODEL", "type": "MODEL", "links": null, "slot_index": 0 },
+        { "name": "CLIP", "type": "CLIP", "links": [14, 15], "slot_index": 1 },
+        { "name": "VAE", "type": "VAE", "links": null, "slot_index": 2 }
+      ],
+      "properties": { "Node name for S&R": "CheckpointLoaderSimple" },
+      "widgets_values": ["sd_xl_base_1.0.safetensors"]
+    },
+    {
+      "id": 5,
+      "type": "CLIPTextEncode",
+      "pos": [760, 80],
+      "size": [440, 150],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "title": "🟢 POSITIVE PROMPT",
+      "color": "#235323",
+      "bgcolor": "#336633",
+      "inputs": [
+        { "name": "clip", "type": "CLIP", "link": 14 }
+      ],
+      "outputs": [
+        { "name": "CONDITIONING", "type": "CONDITIONING", "links": [16], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "CLIPTextEncode" },
+      "widgets_values": [
+        "top-down 2D tactical military air defense radar screen, orthographic C4I air situation display, military command monitor showing the Middle East map with glowing cyan flight tracks, tactical fighter jet silhouettes and UAV drones moving smoothly forward along 2D vector flight paths and patrol corridors, realistic radar blips advancing on the flat 2D plane, sweeping radar line refresh, crisp glowing cyan navigation routes, static dark background map, authentic military surveillance display"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "CLIPTextEncode",
+      "pos": [760, 260],
+      "size": [440, 150],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "title": "🔴 NEGATIVE PROMPT",
+      "color": "#532323",
+      "bgcolor": "#663333",
+      "inputs": [
+        { "name": "clip", "type": "CLIP", "link": 15 }
+      ],
+      "outputs": [
+        { "name": "CONDITIONING", "type": "CONDITIONING", "links": [17], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "CLIPTextEncode" },
+      "widgets_values": [
+        "3D perspective, camera pan, camera tilt, camera roll, pitch, yaw, rotation, isometric view, photorealistic ground terrain 3D extrusion, mountain elevation, rolling clouds, camera shake, motion blur, morphing borders, changing coastlines, distorted text, flickering background, fire, explosions, wreckage, cartoon, anime, low resolution, artifacts"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "ConditioningCombine",
+      "pos": [1240, 80],
+      "size": [210, 46],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "title": "Merge SVD + Text Positive",
+      "inputs": [
+        { "name": "conditioning_1", "type": "CONDITIONING", "link": 5 },
+        { "name": "conditioning_2", "type": "CONDITIONING", "link": 16 }
+      ],
+      "outputs": [
+        { "name": "CONDITIONING", "type": "CONDITIONING", "links": [18], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "ConditioningCombine" },
+      "widgets_values": []
+    },
+    {
+      "id": 12,
+      "type": "ConditioningCombine",
+      "pos": [1240, 180],
+      "size": [210, 46],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "title": "Merge SVD + Text Negative",
+      "inputs": [
+        { "name": "conditioning_1", "type": "CONDITIONING", "link": 6 },
+        { "name": "conditioning_2", "type": "CONDITIONING", "link": 17 }
+      ],
+      "outputs": [
+        { "name": "CONDITIONING", "type": "CONDITIONING", "links": [19], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "ConditioningCombine" },
+      "widgets_values": []
+    },
+    {
+      "id": 4,
+      "type": "KSampler",
+      "pos": [1490, 80],
+      "size": [315, 474],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        { "name": "model", "type": "MODEL", "link": 1 },
+        { "name": "positive", "type": "CONDITIONING", "link": 18 },
+        { "name": "negative", "type": "CONDITIONING", "link": 19 },
+        { "name": "latent_image", "type": "LATENT", "link": 7 }
+      ],
+      "outputs": [
+        { "name": "LATENT", "type": "LATENT", "links": [8], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "KSampler" },
+      "widgets_values": [42, "randomize", 25, 2.5, "euler", "karras", 1.0]
+    },
+    {
+      "id": 7,
+      "type": "VAEDecode",
+      "pos": [1840, 80],
+      "size": [210, 46],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        { "name": "samples", "type": "LATENT", "link": 8 },
+        { "name": "vae", "type": "VAE", "link": 9 }
+      ],
+      "outputs": [
+        { "name": "IMAGE", "type": "IMAGE", "links": [10], "slot_index": 0 }
+      ],
+      "properties": { "Node name for S&R": "VAEDecode" },
+      "widgets_values": []
+    },
+    {
+      "id": 8,
+      "type": "SaveAnimatedWEBP",
+      "pos": [2080, 80],
+      "size": [330, 440],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "title": "Loopable Video Output",
+      "inputs": [
+        { "name": "images", "type": "IMAGE", "link": 10 }
+      ],
+      "outputs": [],
+      "properties": { "Node name for S&R": "SaveAnimatedWEBP" },
+      "widgets_values": ["radar_svd_textguided_loop", 10, false, 90, "default"]
+    }
+  ],
+  "links": [
+    [1, 1, 0, 4, 0, "MODEL"],
+    [2, 1, 1, 3, 0, "CLIP_VISION"],
+    [3, 1, 2, 3, 2, "VAE"],
+    [4, 2, 0, 3, 1, "IMAGE"],
+    [5, 3, 0, 11, 0, "CONDITIONING"],
+    [6, 3, 1, 12, 0, "CONDITIONING"],
+    [7, 3, 2, 4, 3, "LATENT"],
+    [8, 4, 0, 7, 0, "LATENT"],
+    [9, 1, 2, 7, 1, "VAE"],
+    [10, 7, 0, 8, 0, "IMAGE"],
+    [14, 10, 1, 5, 0, "CLIP"],
+    [15, 10, 1, 6, 0, "CLIP"],
+    [16, 5, 0, 11, 1, "CONDITIONING"],
+    [17, 6, 0, 12, 1, "CONDITIONING"],
+    [18, 11, 0, 4, 1, "CONDITIONING"],
+    [19, 12, 0, 4, 2, "CONDITIONING"]
+  ],
+  "groups": [
+    {
+      "title": "Hybrid Image-to-Video Animation with Text Prompts (SVD + CLIP Prompts)",
+      "bounding": [20, 20, 2420, 600],
+      "color": "#1b3a4b",
+      "font_size": 24
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.75,
+      "offset": [20, 50]
+    }
+  },
+  "version": 0.4
+}

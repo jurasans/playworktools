@@ -1,0 +1,1 @@
+3D perspective, camera pan, camera tilt, camera roll, pitch, yaw, rotation, isometric view, photorealistic ground terrain 3D extrusion, mountain elevation, rolling clouds, camera shake, motion blur, morphing borders, changing coastlines, distorted text, flickering background, fire, explosions, wreckage, cartoon, anime, low resolution, artifacts
