@@ -1,7 +1,7 @@
 {
   "id": "WI-2",
   "domain": "app",
-  "status": "in-qa",
+  "status": "done",
   "title": "Space Chase v2",
   "createdBy": "Tomer",
   "createdAt": "2026-11-03T14:20:14.374Z",
@@ -399,6 +399,10 @@
     {
       "at": "2026-11-04T06:45:13.923Z",
       "text": "The work is finished, waiting for QA"
+    },
+    {
+      "at": "2026-11-08T11:46:01.369Z",
+      "text": "Tomer confirmed it done"
     }
   ],
   "sentBack": null,
@@ -414,5 +418,7 @@
   "workedBy": "Tomer",
   "failedPhase": null,
   "waitingHuman": null,
-  "integratedAt": "2026-11-04T06:45:13.922Z"
+  "integratedAt": "2026-11-04T06:45:13.922Z",
+  "doneBy": "Tomer",
+  "doneAt": "2026-11-08T11:46:01.369Z"
 }

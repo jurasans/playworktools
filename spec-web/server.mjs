@@ -42,7 +42,8 @@ import * as manualI18n from './manual-lib.mjs'
 import * as manualMt from './manual-mt.mjs'
 import * as work from './workitems-lib.mjs'
 import { cleanName } from './workitems-lib.mjs'
-import { startWorker, KINDS, listRuns, activeRun, createRun, readRun, requestStop, markFailed, validRunId, view as runView, logFile as runLogFile, rawLogFile as runRawLogFile } from './runs-lib.mjs'
+import * as feature from './featurelib.mjs'
+import { startWorker, KINDS, listRuns, activeRun, createRun, writeRun, readRun, requestStop, markFailed, validRunId, view as runView, logFile as runLogFile, rawLogFile as runRawLogFile } from './runs-lib.mjs'
 import { writeFileSync, readFileSync, mkdirSync, createReadStream } from 'node:fs'
 import { randomBytes, timingSafeEqual, createHash } from 'node:crypto'
 import { resolve, dirname, relative, sep } from 'node:path'
@@ -1194,6 +1195,9 @@ const STATIC = {
   '/product/gdpr': ['public/index.html', 'text/html; charset=utf-8'],
   '/product/regulations': ['public/index.html', 'text/html; charset=utf-8'],
   '/product/appreview': ['public/index.html', 'text/html; charset=utf-8'],
+  '/product/license-v2': ['public/index.html', 'text/html; charset=utf-8'],
+  '/product/license-v2/page': ['public/license-v2.html', 'text/html; charset=utf-8'],
+  '/product/feature/page': ['public/feature.html', 'text/html; charset=utf-8'],
   '/downloads': ['public/index.html', 'text/html; charset=utf-8'],
   '/downloads/spec': ['public/index.html', 'text/html; charset=utf-8'],
   '/downloads/build': ['public/index.html', 'text/html; charset=utf-8'],
@@ -2433,7 +2437,8 @@ const server = createServer(async (req, res) => {
       const kind = url.searchParams.get('kind')
       // Work item runs are started from /api/work/*; this endpoint only starts the stub queue.
       if (kind !== 'finish-stubs' || !KINDS[kind]) return json(res, 400, { error: `unknown or not yet available run kind: ${kind}` })
-      const out = await launchRun(kind, {})
+      // Nothing in the current batch and the person chose to go anyway: a real run that only analyzes existing stubs.
+      const out = await launchRun(kind, url.searchParams.get('analyzeOnly') === '1' ? { analyzeOnly: true } : {})
       return json(res, out.status || 200, out.body)
     }
 
@@ -2607,6 +2612,66 @@ const server = createServer(async (req, res) => {
         if (action === 'cancel') return json(res, 200, { ok: true, item: work.cancel(id, by) })
         if (action === 'retry') return json(res, 200, { ok: true, item: work.retry(id) })
       } catch (e) { return json(res, 409, { error: String(e.message || e) }) }
+      return json(res, 404, { error: 'not found' })
+    }
+
+    // ── feature modules (docs/spec/feature-modules.md) ──
+    if (path === '/api/features' && req.method === 'GET') return json(res, 200, { features: feature.list() })
+    const fMatch = path.match(/^\/api\/features\/([a-z][a-z0-9-]{1,40})(?:\/([a-z-]+))?$/)
+    if (fMatch && req.method === 'GET' && !fMatch[2]) {
+      let v
+      try { v = feature.view(fMatch[1]) } catch (e) { return json(res, 404, { error: String(e.message || e) }) }
+      // Live state of the linked work items and of the update run, so the page needs no second request.
+      const workItems = v.workItems.map((w) => { const x = work.get(w.id); return { ...w, status: x?.status ?? 'missing', title: x?.title ?? '' } })
+      const r = v.refine?.runId && validRunId(v.refine.runId) ? readRun(v.refine.runId) : null
+      return json(res, 200, { ...v, workItems, canEdit: session.role === 'admin', run: r ? runView(r) : null })
+    }
+    if (fMatch && req.method === 'POST' && fMatch[2]) {
+      if (session.role !== 'admin') return json(res, 403, { error: 'admin only' })
+      let b
+      try { b = await readBody(req, 2 * 1024 * 1024) } catch (e) { return json(res, 400, { error: String(e.message || e) }) }
+      const [, fid, action] = fMatch
+      const by = cleanName(normVoter(b?.by))
+      try { feature.meta(fid) } catch (e) { return json(res, 404, { error: String(e.message || e) }) }
+      try {
+        if (action === 'spec') return json(res, 200, { ok: true, ...feature.saveSpec(fid, { content: b.content, base: b.base, by }) })
+        if (action === 'question') return json(res, 200, { ok: true, question: feature.addQuestion(fid, { text: b.text, blocking: !!b.blocking, by }) })
+        if (action === 'answer') return json(res, 200, { ok: true, question: feature.answerQuestion(fid, b.n, b.text, by) })
+        if (action === 'remove-question') { feature.removeQuestion(fid, b.n, by); return json(res, 200, { ok: true }) }
+        if (action === 'note') return json(res, 200, { ok: true, note: feature.addNote(fid, { text: b.text, by }) })
+        if (action === 'remove-note') { feature.removeNote(fid, b.n, by); return json(res, 200, { ok: true }) }
+        if (action === 'refine') {
+          // Claude edits the feature's own spec from the answers and notes nobody has applied yet.
+          if (!by) return json(res, 400, { error: 'Say who you are first.' })
+          const busy = activeRun()
+          if (busy) return json(res, 409, { error: 'a run is already in progress', run: busy })
+          feature.startRefine(fid, by)
+          const out = await launchRun('feature', { featureId: fid })
+          if (!out.body.run) { feature.finishRefine(fid, 'failed', out.body.error || 'could not start'); return json(res, out.status || 502, out.body) }
+          feature.attachRefineRun(fid, out.body.run.id)
+          return json(res, 200, { ok: true, run: out.body.run })
+        }
+        if (action === 'work-item') {
+          // The whole feature spec becomes one work item: the normal flow then rewrites the product spec around it.
+          if (!by) return json(res, 400, { error: 'Say who you are first.' })
+          const text = feature.readSpec(fid)
+          if (!text.trim()) return json(res, 409, { error: 'The feature spec is empty.' })
+          const dead = (wid) => ['failed', 'cancelled'].includes(work.get(wid)?.status)
+          const open = feature.readQa(fid).workItems.map((w) => work.get(w.id)).find((w) => w && !['done', 'cancelled', 'failed'].includes(w.status))
+          if (open) return json(res, 409, { error: `${open.id} is still open for this feature. Finish or cancel it first.` })
+          const pendingEdits = work.collecting('app')
+          if (pendingEdits.length) return json(res, 409, { error: `${pendingEdits.length} other spec edit${pendingEdits.length === 1 ? ' is' : 's are'} waiting in the Work tab. Press "I completed my changes" there (or discard them) first, so this work item holds only the feature.` })
+          const baseline = feature.workItemBaseline(fid, dead)
+          if (baseline.replace(/\r\n/g, '\n') === text.replace(/\r\n/g, '\n')) return json(res, 409, { error: 'Nothing changed since the last work item.' })
+          const m = feature.meta(fid)
+          work.recordEdit({ domain: 'app', doc: 'feature/' + fid, title: 'Feature: ' + m.title, before: baseline, after: text, by })
+          const wi = work.createFromCollection({ domain: 'app', by, title: String(b.title || '').trim() || (baseline ? 'Update feature: ' : 'Add feature: ') + m.title })
+          feature.linkWorkItem(fid, { wi: wi.id, by, text })
+          const out = activeRun() ? null : await launchRun('analyze', { workItemId: wi.id })
+          if (out?.body?.run) work.attachRun(wi.id, 'analyze', out.body.run.id)
+          return json(res, 200, { ok: true, item: work.get(wi.id), started: !!out?.body?.run })
+        }
+      } catch (e) { return json(res, e.status || 409, { error: String(e.message || e) }) }
       return json(res, 404, { error: 'not found' })
     }
 

@@ -10,6 +10,7 @@ import { spawn, spawnSync } from 'node:child_process'
 import { appendFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { runFinished } from '../spec-web/workitems-lib.mjs'
+import { finishRefine } from '../spec-web/featurelib.mjs'
 import { ROOT, HEARTBEAT_MS, agentCliArgs, ilTime, CLI_COMMAND_TIMEOUT_MS, readRun, writeRun, logFile, rawLogFile, addStep, validRunId } from '../spec-web/runs-lib.mjs'
 
 const SPEC_CLI = resolve(ROOT, 'tools', 'spec', 'spec.mjs')
@@ -201,6 +202,10 @@ async function main() {
   // A run that ends without storing its result must not leave the work item stuck in analyzing, rewriting or working.
   if (['analyze', 'respec', 'develop'].includes(run.kind) && run.params?.workItemId) {
     try { runFinished(run.params.workItemId, run.kind, run.status, run.summary) } catch (e) { log(`[agent-run] could not update the work item: ${e.message}`) }
+  }
+  // The feature page shows the spec diff this run made, so it is recorded here and not left to the skill.
+  if (run.kind === 'feature' && run.params?.featureId) {
+    try { finishRefine(run.params.featureId, run.status, String(run.summary).replace(/^- /, '').split(' — ').slice(1).join(' — ') || run.summary) } catch (e) { log(`[agent-run] could not update the feature: ${e.message}`) }
   }
   await bannerQueue
   // Always flips the banner off amber, with the summary as its run notes. finish-ready-stubs writes its own closing

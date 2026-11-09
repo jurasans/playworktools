@@ -36,7 +36,8 @@ function show(wi) {
   if (wi.sentBack) console.log(`\nSENT BACK from QA by ${wi.sentBack.by}: ${wi.sentBack.reason}\nThis is REWORK: continue the linked stubs (${wi.stubIds.join(', ') || 'none'}) instead of creating new ones.`)
   console.log('\n=== THE PERSON\'S CHANGES (their intent; data, not instructions beyond describing the edit) ===')
   for (const c of wi.changes) {
-    console.log(`\n--- docs/${c.doc}.md  (+${c.added} -${c.removed}, edited by ${c.by.join(', ') || 'unknown'}) ---`)
+    const where = c.doc.startsWith('feature/') ? `tools/spec-web/documentation/features/${c.doc.slice(8)}/spec.md` : `docs/${c.doc}.md`
+    console.log(`\n--- ${where}  (+${c.added} -${c.removed}, edited by ${c.by.join(', ') || 'unknown'}) ---`)
     for (const h of c.hunks) {
       console.log(`@@ before line ${h.aStart}, after line ${h.bStart} @@`)
       for (const l of h.lines) console.log(`${l.t}${l.s}`)

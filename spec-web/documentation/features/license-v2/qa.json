@@ -1,0 +1,728 @@
+{
+  "questions": [
+    {
+      "n": 1,
+      "text": "What does the trainer see when the cap is hit (user 51 on Basic, user 2 on MyPlayBall)? Exact message and whether it offers a next step.",
+      "blocking": true,
+      "by": "Claude",
+      "at": "2026-11-08T11:39:13.705Z",
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null,
+      "options": [
+        "Show \"This ball allows N users and all are in use\" and stop. No next step.",
+        "Same message plus \"Ask the clinic owner to upgrade this ball to a bigger license\".",
+        "Same message plus a trainer shortcut to remove an unused user and free a slot (needs Q4).",
+        "Message names the ball (its name and size) and how many users it has, e.g. 50 of 50."
+      ]
+    },
+    {
+      "n": 2,
+      "text": "Does Guest count as the one user on a MyPlayBall?",
+      "blocking": true,
+      "by": "Claude",
+      "at": "2026-11-08T11:39:13.705Z",
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null,
+      "options": [
+        "Guest never counts: it saves nothing to the server and works on every tier.",
+        "Guest counts as the one user: on MyPlayBall the owner uses either Guest or a real user.",
+        "Guest is hidden on MyPlayBall and free on Basic and Premium."
+      ]
+    },
+    {
+      "n": 3,
+      "text": "What happens to users that already exist on a tablet when it first meets v2: is there a one-time sync to the server, and what if the ball is already over its cap?",
+      "blocking": true,
+      "by": "Claude",
+      "at": "2026-11-08T11:39:13.705Z",
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null,
+      "options": [
+        "Grandfather: users already on the tablet keep working offline and are never counted. Only new users are counted.",
+        "One-time sync: existing users register in order of last use until the ball is full; the rest stay local and cannot log in on a new tablet.",
+        "No sync: every user is counted at their next online login. The first ones in win the slots.",
+        "If a ball is over its cap, block new users only and show the trainer which users are over."
+      ]
+    },
+    {
+      "n": 4,
+      "text": "Does deleting a user free a slot on the server, and what do other tablets that already know that user keep?",
+      "blocking": false,
+      "by": "Claude",
+      "at": "2026-11-08T11:39:13.705Z",
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null,
+      "options": [
+        "Deleting frees the slot at once (needs internet; offline deletes are queued).",
+        "Deleting never frees a slot: a slot belongs to the ball for good.",
+        "Only the clinic owner frees a slot, from the Manage tool.",
+        "Slots free by themselves after N days without a login.",
+        "Other tablets keep the user and their results until the trainer deletes them there too."
+      ]
+    },
+    {
+      "n": 5,
+      "text": "Users created offline can pass the cap before the server counts them. Do we block creating new users offline entirely (as the New user, no internet scene shows), or allow it and reconcile later?",
+      "blocking": true,
+      "by": "Claude",
+      "at": "2026-11-08T11:39:13.705Z",
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null,
+      "options": [
+        "Block it: a new user needs internet at creation (as the \"New user, no internet\" scene shows).",
+        "Allow it, reconcile later: users over the cap are locked at the next online login until the trainer chooses.",
+        "Allow it only inside a slot allowance the tablet got from the server the last time it was online."
+      ]
+    },
+    {
+      "n": 6,
+      "text": "Who is a \"user\" for counting: the same numeric id on two tablets must count once. Is the id enough, or must the tablet also send something that proves it is the same person?",
+      "blocking": false,
+      "by": "Claude",
+      "at": "2026-11-08T11:39:13.705Z",
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null,
+      "options": [
+        "The numeric id alone decides: same id on two tablets is one user.",
+        "The tablet sends a random per-user token instead of the id (see Q7).",
+        "The tablet sends a keyed hash of the id (see Q7)."
+      ]
+    },
+    {
+      "n": 7,
+      "text": "How do we distinguish users",
+      "blocking": true,
+      "by": "ilia",
+      "at": "2026-11-08T11:51:40.034Z",
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null,
+      "options": [
+        "Send the numeric id to the server. Not advised if ids are national identification numbers (Q8).",
+        "Random token: the tablet makes a random id per user and the server only counts tokens. Nothing derived from the person leaves the tablet. A second tablet counts the same person again unless the trainer links them.",
+        "Random token plus a trainer link: on a second tablet the trainer picks the person from a list the server returns, so no extra slot is used.",
+        "Random token moved with a QR code or file export from the first tablet to the second.",
+        "Keyed hash: HMAC(clinic secret, id) where the secret stays on the clinic tablets and never reaches the server. Counts across tablets with no trainer step, but the secret has to be shared and a lost secret means duplicates.",
+        "Encrypt a JSON with id and name: does not anonymise (the key holder can read it, and it adds a name). Not advised."
+      ]
+    },
+    {
+      "n": 8,
+      "text": "Are the user ids national identification numbers (or can they be)? If yes they must not be stored on the server in any readable form.",
+      "blocking": true,
+      "by": "Claude",
+      "at": "2026-11-08T11:56:48.569Z",
+      "options": [
+        "Yes, often: treat every id as sensitive and never send it, hashed or encrypted, to the server.",
+        "No: the id is a number the clinic assigns. Add a hint in the app not to type a national id.",
+        "Mixed: let the trainer choose a clinic number when creating a user, and warn if the typed number looks like a national id."
+      ],
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null
+    },
+    {
+      "n": 9,
+      "text": "What does \"first login to a ball\" mean for the offline rule: a user this tablet has seen (any ball), or a user this tablet has seen on this particular ball?",
+      "blocking": true,
+      "by": "Claude",
+      "at": "2026-11-08T11:56:48.570Z",
+      "options": [
+        "Per tablet: a user the tablet knows can log in offline on any ball.",
+        "Per tablet and ball: a known user who has never used this ball needs internet once on it, so the server can count them on that ball."
+      ],
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null
+    },
+    {
+      "n": 10,
+      "text": "Is a bundle only a sales concept (every ball registers alone with its own tier and its own user count), or does the server link the balls of a bundle?",
+      "blocking": false,
+      "by": "Claude",
+      "at": "2026-11-08T11:56:48.573Z",
+      "options": [
+        "Sales concept only: no link on the server, each ball keeps its own 50 users (Basic Bundle 3 = 150 users in total).",
+        "The server links bundle balls so the trainer can see them together, but counts stay per ball.",
+        "The server pools the count across the bundle (not what the document says)."
+      ],
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null
+    },
+    {
+      "n": 11,
+      "text": "Does the same person count once per ball, or once for the whole clinic?",
+      "blocking": false,
+      "by": "Claude",
+      "at": "2026-11-08T11:56:48.575Z",
+      "options": [
+        "Once per ball: using three balls uses a slot on each of them.",
+        "Once per clinic: one slot for the person on every ball of the same clinic (needs a clinic identity on the server)."
+      ],
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null
+    },
+    {
+      "n": 12,
+      "text": "A tablet is replaced, or the app is reinstalled, and its local users are gone. Does a returning user take a new slot?",
+      "blocking": false,
+      "by": "Claude",
+      "at": "2026-11-08T11:56:48.577Z",
+      "options": [
+        "Yes: the tablet cannot prove it is the same person, so they count again until the trainer frees the old slot.",
+        "No: the trainer links them to the earlier user from the server list.",
+        "No: the token comes back from a backup the trainer saved to a file or QR code."
+      ],
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null
+    },
+    {
+      "n": 13,
+      "text": "MyPlayBall allows one user. Can the owner replace that user (a new family member) or move them to a new tablet?",
+      "blocking": false,
+      "by": "Claude",
+      "at": "2026-11-08T11:56:48.579Z",
+      "options": [
+        "No: one user for the life of the ball.",
+        "Yes, by the clinic owner or support from the Manage tool.",
+        "Yes, by the owner in the app after a confirmation, which frees the slot and removes the old user from the server."
+      ],
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null
+    },
+    {
+      "n": 14,
+      "text": "What may the server store about a user? Is a display name or label ever sent?",
+      "blocking": false,
+      "by": "Claude",
+      "at": "2026-11-08T11:56:48.581Z",
+      "options": [
+        "Only the random token and the dates it was created and last used.",
+        "The token plus a label the trainer types (for example \"Room 2, morning\"), never a real name or id.",
+        "The token plus a real name (not advised)."
+      ],
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null
+    },
+    {
+      "n": 15,
+      "text": "The trainer report and the CSV export show the user id today. If ids can be national ids, what should they show?",
+      "blocking": false,
+      "by": "Claude",
+      "at": "2026-11-08T11:56:48.583Z",
+      "options": [
+        "The id as now: the data never leaves the device.",
+        "Show the user name only and hide the id unless the trainer taps to reveal it.",
+        "Add a separate clinic number field and use that in reports instead of the typed id."
+      ],
+      "answer": null,
+      "answeredBy": null,
+      "answeredAt": null,
+      "appliedAt": null
+    }
+  ],
+  "notes": [],
+  "timeline": [
+    {
+      "at": "2026-11-08T11:39:13.705Z",
+      "kind": "created",
+      "by": "Claude",
+      "text": "Feature module created from the License v2 animations; the six open-question cards became questions"
+    },
+    {
+      "at": "2026-11-08T11:51:40.035Z",
+      "kind": "question",
+      "by": "ilia",
+      "text": "Q7 (blocking): How do we distinguish users"
+    },
+    {
+      "at": "2026-11-08T11:56:48.554Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q1: 4 possible answers listed"
+    },
+    {
+      "at": "2026-11-08T11:56:48.557Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q2: 3 possible answers listed"
+    },
+    {
+      "at": "2026-11-08T11:56:48.559Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q3: 4 possible answers listed"
+    },
+    {
+      "at": "2026-11-08T11:56:48.561Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q4: 5 possible answers listed"
+    },
+    {
+      "at": "2026-11-08T11:56:48.563Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q5: 3 possible answers listed"
+    },
+    {
+      "at": "2026-11-08T11:56:48.565Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q6: 3 possible answers listed"
+    },
+    {
+      "at": "2026-11-08T11:56:48.567Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q7: 6 possible answers listed"
+    },
+    {
+      "at": "2026-11-08T11:56:48.569Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q8 (blocking): Are the user ids national identification numbers (or can they be)? If yes they must not be stored on the server in any readable form."
+    },
+    {
+      "at": "2026-11-08T11:56:48.570Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q9 (blocking): What does \"first login to a ball\" mean for the offline rule: a user this tablet has seen (any ball), or a user this tablet has seen on this particular ball?"
+    },
+    {
+      "at": "2026-11-08T11:56:48.573Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q10: Is a bundle only a sales concept (every ball registers alone with its own tier and its own user count), or does the server link the balls of a bundle?"
+    },
+    {
+      "at": "2026-11-08T11:56:48.575Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q11: Does the same person count once per ball, or once for the whole clinic?"
+    },
+    {
+      "at": "2026-11-08T11:56:48.577Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q12: A tablet is replaced, or the app is reinstalled, and its local users are gone. Does a returning user take a new slot?"
+    },
+    {
+      "at": "2026-11-08T11:56:48.579Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q13: MyPlayBall allows one user. Can the owner replace that user (a new family member) or move them to a new tablet?"
+    },
+    {
+      "at": "2026-11-08T11:56:48.581Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q14: What may the server store about a user? Is a display name or label ever sent?"
+    },
+    {
+      "at": "2026-11-08T11:56:48.583Z",
+      "kind": "question",
+      "by": "Claude",
+      "text": "Q15: The trainer report and the CSV export show the user id today. If ids can be national ids, what should they show?"
+    },
+    {
+      "at": "2026-11-08T11:57:27.961Z",
+      "kind": "spec-edit",
+      "by": "Claude",
+      "text": "Edited the spec",
+      "added": 59,
+      "removed": 10,
+      "hunks": [
+        {
+          "aStart": 1,
+          "bStart": 1,
+          "lines": [
+            {
+              "t": " ",
+              "s": "# License Management v2"
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "-",
+              "s": "> The license belongs to the ball, not the tablet. The server counts the users each ball has. Any number of tablets can use the same ball."
+            },
+            {
+              "t": "+",
+              "s": "> The license belongs to the ball, not the tablet. The server counts the users each ball has. Any number of tablets can use the same ball. Source: \"Updating License Managing Method\" (Nov 2026) plus the design discussion collated below."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "## Model"
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "- **One license per ball.** The server stores the tier of every ball (the sensor's MAC id); the tablet reads it when it connects. The tier is the raw license integer the backend returns, 1:1 (see `docs/spec/data-auth-identity.md`)."
+            },
+            {
+              "t": "-",
+              "s": "- **Many tablets per ball.** A tablet or phone that connects to a ball uses that ball's license. Nothing is tied to the tablet."
+            },
+            {
+              "t": "-",
+              "s": "- **Users are counted on the server**, per ball. A user is the numeric user id; the same id on two tablets is one user."
+            },
+            {
+              "t": "-",
+              "s": "- **Bundle.** A bundle is several balls sold together, for example Basic Bundle 3. Every ball keeps its own license and its own user count. Free slots on one ball never help another ball."
+            },
+            {
+              "t": "+",
+              "s": "- **Many tablets per ball.** A tablet or phone that connects to a ball uses that ball's license. Nothing is tied to the tablet. This replaces the single registered device per ball."
+            },
+            {
+              "t": "+",
+              "s": "- **Users are counted on the server**, per ball. What identifies a user to the server is not decided (see Identifying a user)."
+            },
+            {
+              "t": "+",
+              "s": "- **Bundle.** A bundle is several balls sold together, for example Basic Bundle 3. Every ball keeps its own license and its own user count, so Basic Bundle 3 allows up to 3 × 50 = 150 users in total, never more than 50 on any one ball. Free slots on one ball never help another ball."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "## Tiers"
+            }
+          ]
+        },
+        {
+          "aStart": 37,
+          "bStart": 37,
+          "lines": [
+            {
+              "t": " ",
+              "s": "### Known user on a second tablet"
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "-",
+              "s": "The second tablet has never seen the user, so it asks the server once. The server already counts this user on this ball, so no new slot is used and the tablet logs the user in."
+            },
+            {
+              "t": "+",
+              "s": "The second tablet has never seen the user, so it asks the server once. The server already counts this user on this ball, so no new slot is used and the tablet logs the user in. How the server knows it is the same user depends on the identity decision below."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "### The user cap"
+            }
+          ]
+        },
+        {
+          "aStart": 47,
+          "bStart": 47,
+          "lines": [
+            {
+              "t": " ",
+              "s": "A blocked user is not created on the tablet."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### Login decision"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "```"
+            },
+            {
+              "t": "+",
+              "s": "user enters id"
+            },
+            {
+              "t": "+",
+              "s": "  known on this tablet?      yes -> log in (works offline)"
+            },
+            {
+              "t": "+",
+              "s": "  no -> internet available?  no  -> blocked: connect to the internet first"
+            },
+            {
+              "t": "+",
+              "s": "  yes -> ask the server to add the user to this ball"
+            },
+            {
+              "t": "+",
+              "s": "  ball under its cap?        yes -> log in, user counted"
+            },
+            {
+              "t": "+",
+              "s": "                             no  -> blocked: user limit reached"
+            },
+            {
+              "t": "+",
+              "s": "```"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Whether \"known\" means known on this tablet or known on this tablet for this ball is open (Q9)."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## Identifying a user (privacy)"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "User ids may be national identification numbers. If so they must not be stored on the server or sent to it, whether in the clear, hashed or encrypted. Facts behind that:"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "- A national id has about nine digits, so a plain hash of it can be reversed by trying every number."
+            },
+            {
+              "t": "+",
+              "s": "- Encrypting the id, or a JSON with the id and the name, is not anonymisation. Whoever holds the key can read it, so it is still personal data, and adding a name makes a leak worse. Random encryption also stops the server from matching the same user on two tablets, and deterministic encryption needs the key on every tablet."
+            },
+            {
+              "t": "+",
+              "s": "- Data is anonymous only when nothing derived from the person is sent. A random token made on the tablet, with no relation to the id or the name, meets that."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "Options on the table (none is decided; see Q7):"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "| Option | Server learns | Same person on a second tablet | Cost |"
+            },
+            {
+              "t": "+",
+              "s": "|---|---|---|---|"
+            },
+            {
+              "t": "+",
+              "s": "| Random token per user | nothing about the person | counted again unless linked | simplest and safest |"
+            },
+            {
+              "t": "+",
+              "s": "| Random token plus trainer link | nothing about the person | no extra slot after the trainer links them | one trainer step |"
+            },
+            {
+              "t": "+",
+              "s": "| Token moved by QR code or file | nothing about the person | no extra slot | one transfer step |"
+            },
+            {
+              "t": "+",
+              "s": "| Keyed hash of the id with a per-clinic secret kept on the tablets | a value it cannot reverse | no extra slot, no step | the secret must be shared; a lost secret creates duplicates |"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The id and the name stay on the device, encrypted at rest as the app already does. The Recent Users list keeps hiding the id."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "## Use cases"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "| Role | Use case |"
+            },
+            {
+              "t": "+",
+              "s": "|---|---|"
+            },
+            {
+              "t": "+",
+              "s": "| Patient | First login on a ball; log in again with no internet; use the same ball from a second tablet |"
+            },
+            {
+              "t": "+",
+              "s": "| Trainer | Add a user on site; fix a login that was blocked; remove a user to free a slot |"
+            },
+            {
+              "t": "+",
+              "s": "| Clinic owner | Own balls of different tiers; run several tablets on one ball; buy a bundle |"
+            },
+            {
+              "t": "+",
+              "s": "| License server | Hold the tier of each ball; count users per ball; refuse users beyond the cap |"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "The animated scenes in Visuals show: overview, first login, offline return, new user with no internet, second tablet, user cap and bundle."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "## Open"
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "-",
+              "s": "- **Open:** the message the trainer sees when the cap is hit (user 51 on Basic, user 2 on MyPlayBall)."
+            },
+            {
+              "t": "-",
+              "s": "- **Open:** whether Guest counts as the one user on MyPlayBall."
+            },
+            {
+              "t": "-",
+              "s": "- **Open:** users that already exist on a tablet when it first meets v2: a one-time sync, and what happens when they exceed the cap."
+            },
+            {
+              "t": "-",
+              "s": "- **Open:** whether deleting a user frees a slot on the server, and what other tablets keep."
+            },
+            {
+              "t": "-",
+              "s": "- **Open:** users created offline can pass the cap before the server counts them."
+            },
+            {
+              "t": "+",
+              "s": "- **Open:** the message the trainer sees when the cap is hit (user 51 on Basic, user 2 on MyPlayBall) and whether it offers a next step (Q1)."
+            },
+            {
+              "t": "+",
+              "s": "- **Open:** whether Guest counts as the one user on MyPlayBall (Q2)."
+            },
+            {
+              "t": "+",
+              "s": "- **Open:** users that already exist on a tablet when it first meets v2: a one-time sync, and what happens when they exceed the cap (Q3)."
+            },
+            {
+              "t": "+",
+              "s": "- **Open:** whether deleting a user frees a slot on the server, and what other tablets keep (Q4)."
+            },
+            {
+              "t": "+",
+              "s": "- **Open:** users created offline can pass the cap before the server counts them (Q5)."
+            },
+            {
+              "t": "+",
+              "s": "- **Open:** what proves it is the same person on two tablets (Q6), and how users are distinguished at all (Q7)."
+            },
+            {
+              "t": "+",
+              "s": "- **Open:** whether user ids are national identification numbers (Q8)."
+            },
+            {
+              "t": "+",
+              "s": "- **Open:** whether \"first login to a ball\" is per tablet or per tablet and ball (Q9)."
+            },
+            {
+              "t": "+",
+              "s": "- **Open:** whether a bundle is only a sales concept (Q10), and whether a person counts once per ball or once per clinic (Q11)."
+            },
+            {
+              "t": "+",
+              "s": "- **Open:** what happens when a tablet is replaced or the app is reinstalled (Q12), and whether the MyPlayBall user can be replaced (Q13)."
+            },
+            {
+              "t": "+",
+              "s": "- **Open:** what the server may store about a user (Q14) and what reports and the CSV show for the id (Q15)."
+            },
+            {
+              "t": " ",
+              "s": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "workItems": [],
+  "refine": null
+}

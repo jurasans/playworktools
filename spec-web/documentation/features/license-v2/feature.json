@@ -1,0 +1,16 @@
+{
+  "title": "License Management v2",
+  "subtitle": "One license per ball · many tablets · users counted on the server",
+  "visuals": {
+    "src": "/product/license-v2/page",
+    "scenes": [
+      { "id": "overview", "title": "Overview", "hint": "Server, balls and tablets" },
+      { "id": "first", "title": "First login", "hint": "New user, internet on" },
+      { "id": "offline", "title": "Offline return", "hint": "Known user, no internet" },
+      { "id": "nonet", "title": "New user, no internet", "hint": "Blocked until online" },
+      { "id": "second", "title": "Second tablet", "hint": "Known user, no extra slot" },
+      { "id": "cap", "title": "User cap", "hint": "MyPlayBall, Basic, Premium" },
+      { "id": "bundle", "title": "Bundle", "hint": "Balls are not pooled" }
+    ]
+  }
+}

@@ -21,7 +21,8 @@ const MAX_STEPS = 300
 // Each kind is a skill started headlessly. Work item ids are validated by format before they reach a prompt.
 const WI = (x) => (/^WI-\d+$/.test(x.workItemId) ? x.workItemId : (() => { throw new Error('bad work item id') })())
 export const KINDS = {
-  'finish-stubs': { label: 'finish-ready-stubs', prompt: () => '/finish-ready-stubs' },
+  // analyzeOnly: nothing is enabled, so the skill only analyzes existing stubs (no development, tests or builds).
+  'finish-stubs': { label: 'finish-ready-stubs', prompt: (x) => (x.analyzeOnly ? '/finish-ready-stubs\nMode: analyze-only' : '/finish-ready-stubs') },
   analyze: { label: 'analyze work item', prompt: (x) => `/spec-work-item
 Mode: analyze
 Work item: ${WI(x)}` },
@@ -37,6 +38,10 @@ Work item: ${WI(x)}` },
   develop: { label: 'work on work item', prompt: (x) => `/spec-work-item
 Mode: develop
 ${x.resume ? 'Resume: yes\n' : ''}Work item: ${WI(x)}` },
+  // Feature module (docs/spec/feature-modules.md): Claude edits one feature's own spec from its answered questions and notes.
+  feature: { label: 'update feature spec', prompt: (x) => `/feature-spec
+Mode: refine
+Feature: ${/^[a-z][a-z0-9-]{1,40}$/.test(x.featureId) ? x.featureId : (() => { throw new Error('bad feature id') })()}` },
 }
 
 const ID_RE = /^run-\d{8}T\d{6}-[a-f0-9]{4}$/
