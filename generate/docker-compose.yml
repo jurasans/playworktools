@@ -21,11 +21,13 @@ services:
     ports:
       - "8188:8188"
     volumes:
-      - ./run:/comfy/mnt
-      - ./basedir:/basedir
+      - ../../../playwork-tools-backup/generate/run:/comfy/mnt
+      - ../../../playwork-tools-backup/generate/basedir:/basedir
+      - ./basedir/input:/basedir/input
     environment:
       - WANTED_UID=1000
       - WANTED_GID=1000
+      - FORCE_CHOWN=yes
       - BASE_DIRECTORY=/basedir
       - SECURITY_LEVEL=normal
     deploy:
