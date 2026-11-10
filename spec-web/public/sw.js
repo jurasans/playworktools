@@ -11,7 +11,7 @@ self.addEventListener('push', (event) => {
     const focused = pages.filter((c) => c.visibilityState === 'visible' && c.focused)
     if (focused.length) { focused.forEach((c) => c.postMessage({ type: 'pw-toast', title: m.title, body: m.body, tab: m.tab })); return }
     await self.registration.showNotification(m.title || 'Spec-web', {
-      body: m.body || '', tag: m.tag || m.title, icon: '/favicon.png', renotify: true, data: { tab: m.tab || '', domain: m.domain || '' },
+      body: m.body || '', tag: m.tag || m.title, icon: '/favicon.png', renotify: true, requireInteraction: !!m.sticky, data: { tab: m.tab || '', domain: m.domain || '' },
     })
   })())
 })

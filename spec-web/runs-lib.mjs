@@ -113,6 +113,16 @@ export function listRuns() {
     .map((f) => readRun(f.slice(0, -5))).filter(Boolean)
 }
 
+/** Newest run of `kind`, reading at most `scan` newest files (the push watcher asks every few seconds). */
+export function latestRun(kind, scan = 15) {
+  if (!existsSync(RUNS_DIR)) return null
+  for (const f of readdirSync(RUNS_DIR).filter((x) => x.endsWith('.json')).sort().reverse().slice(0, scan)) {
+    const run = readRun(f.slice(0, -5))
+    if (run?.kind === kind) return view(run)
+  }
+  return null
+}
+
 // "queued"/"running" with no heartbeat for STALLED_MS means the worker died without writing a final state.
 export function effectiveStatus(run, now = Date.now()) {
   if (!run) return null

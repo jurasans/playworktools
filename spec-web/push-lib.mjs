@@ -11,6 +11,12 @@ export const NOTIFY_LABEL = { collected: 'collected', analyzing: 'being analyzed
   'spec-review': 'spec ready for review', approved: 'confirmed, ready to start', working: 'work started', 'in-qa': 'in QA, waiting for you', failed: 'stopped with a failure', done: 'done', cancelled: 'cancelled' }
 export const NOTIFY_STUB = { deferred: 'back to deferred', delay: 'delayed', enabled: 'enabled, queued for work', 'in-progress': 'being worked on', 'in-qa': 'in QA, waiting for you', done: 'done' }
 
+// Cards that stay on screen until dismissed: the ones that need a person (answer, review, QA, a failure) or report a finished run.
+// Phase updates (analyzing, working, enabled...) only pop up and go.
+const STICKY_WI = new Set(['questions', 'ready', 'spec-review', 'in-qa', 'failed'])
+const STICKY_STUB = new Set(['in-qa'])
+const BATCH_AFTER = 3
+
 /** Turns two /api/watch snapshots into notification events. Same rules as the page's own toasts (public/index.html). */
 export function diffSnapshots(prev, cur) {
   const events = []
@@ -18,16 +24,36 @@ export function diffSnapshots(prev, cur) {
   const before = index(prev), after = index(cur)
   const oldNightly = prev.nightly || {}, nightly = cur.nightly || {}
   if (nightly.finishedAt && nightly.finishedAt !== oldNightly.finishedAt && oldNightly.finishedAt !== undefined) {
-    events.push({ title: 'Nightly run finished', body: nightly.summary || '', tab: 'tests', tag: 'nightly' })
+    const failed = /^Failed/.test(nightly.summary || '')
+    events.push({ title: failed ? 'Nightly run failed' : 'Nightly run succeeded', body: nightly.summary || '', tab: 'tests', tag: 'nightly', sticky: true, global: true })
+  }
+  const run = cur.lastRun, was = prev.lastRun
+  const finished = (r) => r && ['done', 'failed', 'cancelled', 'stalled'].includes(r.status)
+  if (finished(run) && prev.lastRun !== undefined && (!was || was.id !== run.id || !finished(was))) {
+    const ok = run.status === 'done'
+    events.push({ title: ok ? 'START WORKING run succeeded' : 'START WORKING run ' + (run.status === 'failed' ? 'failed' : run.status), body: run.summary || '', tab: 'stubs', tag: 'run', sticky: true, global: true })
   }
   for (const [id, x] of after) {
     const old = before.get(id), isWi = /^WI-/.test(id), tab = isWi ? 'work' : 'stubs'
     if (!old) events.push({ title: isWi ? id + ' was created' : 'New stub ' + id, body: x.title, tab, tag: id })
-    else if (isWi && x.waiting && !old.waiting) events.push({ title: id + ' needs you', body: 'The run stopped to wait for a human step. Open the banner and press Resume when done.', tab, tag: id })
-    else if (old.status !== x.status) events.push({ title: id + ' is ' + ((isWi ? NOTIFY_LABEL : NOTIFY_STUB)[x.status] || x.status), body: x.title, tab, tag: id })
-    else if (x.ready && !old.ready) events.push({ title: id + ' is ready to enable', body: x.title, tab: 'stubs', tag: id })
+    else if (isWi && x.waiting && !old.waiting) events.push({ title: id + ' needs you', body: 'The run stopped to wait for a human step. Open the banner and press Resume when done.', tab, tag: id, sticky: true })
+    else if (old.status !== x.status) events.push({ title: id + ' is ' + ((isWi ? NOTIFY_LABEL : NOTIFY_STUB)[x.status] || x.status), body: x.title, tab, tag: id, sticky: (isWi ? STICKY_WI : STICKY_STUB).has(x.status) })
+    else if (x.ready && !old.ready) events.push({ title: id + ' is ready to enable', body: x.title, tab: 'stubs', tag: id, sticky: true })
   }
   return events
+}
+
+/** Many changes in one check (a big run) become one card: it stays if any of them needs attention, and lists those first. */
+export function batchEvents(events, after = BATCH_AFTER) {
+  if (events.length <= after) return events
+  const needs = events.filter((e) => e.sticky), rest = events.filter((e) => !e.sticky)
+  const lines = [...needs, ...rest].slice(0, 3).map((e) => e.title)
+  const more = events.length - lines.length
+  return [{
+    title: events.length + ' updates in spec-web' + (needs.length ? ' (' + needs.length + ' need you)' : ''),
+    body: lines.join('\n') + (more > 0 ? '\n+' + more + ' more' : ''),
+    tab: (needs[0] || events[0]).tab, tag: 'batch', sticky: needs.length > 0, domain: events[0].domain,
+  }]
 }
 
 /** Encrypts `payload` for one subscription (RFC 8291, single record). */

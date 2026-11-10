@@ -43,8 +43,8 @@ import * as manualMt from './manual-mt.mjs'
 import * as work from './workitems-lib.mjs'
 import { cleanName } from './workitems-lib.mjs'
 import * as feature from './featurelib.mjs'
-import { startWorker, KINDS, listRuns, activeRun, createRun, writeRun, readRun, requestStop, markFailed, validRunId, view as runView, logFile as runLogFile, rawLogFile as runRawLogFile } from './runs-lib.mjs'
-import { createPush, diffSnapshots } from './push-lib.mjs'
+import { startWorker, KINDS, latestRun, listRuns, activeRun, createRun, writeRun, readRun, requestStop, markFailed, validRunId, view as runView, logFile as runLogFile, rawLogFile as runRawLogFile } from './runs-lib.mjs'
+import { createPush, diffSnapshots, batchEvents } from './push-lib.mjs'
 import { writeFileSync, readFileSync, mkdirSync, createReadStream } from 'node:fs'
 import { randomBytes, timingSafeEqual, createHash } from 'node:crypto'
 import { resolve, dirname, relative, sep } from 'node:path'
@@ -1245,6 +1245,8 @@ async function watchSnapshot(domain) {
     work: work.list(domain).map((w) => ({ id: w.id, title: w.title, status: w.status, waiting: !!w.waitingHuman })),
     stubs: stubs.map((s) => ({ id: s.id, title: s.title, status: s.status, ready: s.status === 'deferred' && !blocked.has(s.id) })),
     nightly,
+    // START WORKING runs are global (one at a time), so the push watcher reports them from one registry only.
+    lastRun: (() => { const r = latestRun('finish-stubs'); return r ? { id: r.id, status: r.status, summary: String((Array.isArray(r.summary) ? r.summary[0] : r.summary) || '').split('\n')[0].replace(/^-\s*/, '').slice(0, 140) } : null })(),
   }
 }
 
@@ -2780,14 +2782,16 @@ async function serveWebApp(req, res, path) {
 const PUSH_PREV = {}
 setInterval(async () => {
   if (!push.count()) { for (const k of Object.keys(PUSH_PREV)) delete PUSH_PREV[k]; return }
+  const events = []
   for (const domain of ['app', 'backend']) {
     try {
       const cur = await watchSnapshot(domain), prev = PUSH_PREV[domain]
       PUSH_PREV[domain] = cur
-      if (!prev) continue
-      for (const e of diffSnapshots(prev, cur)) await push.broadcast({ ...e, domain })
+      // Nightly and START WORKING runs are not per registry: take them from the first one only, or they arrive twice.
+      if (prev) events.push(...diffSnapshots(prev, cur).filter((e) => !e.global || domain === 'app').map((e) => ({ ...e, domain })))
     } catch { /* snapshot failed this round; the next one retries */ }
   }
+  for (const e of batchEvents(events)) await push.broadcast(e)
 }, 15000).unref()
 
 server.listen(PORT, HOST, () => {
