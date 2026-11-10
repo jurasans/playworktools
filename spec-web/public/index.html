@@ -5644,7 +5644,11 @@ function notifyPaint() {
   b.textContent = notifyOn() ? (PUSH_ON ? '🔔 Notify: on (push)' : notifyOs() ? '🔔 Notify: on' : '🔔 Notify: in page only') : '🔔 Notify: off'
   b.title = notifyOn() && !notifyOs() ? 'The browser is not allowing system notifications for this site (needs localhost or https, and Chrome site settings > Notifications > Allow). Messages show inside the page instead.' : 'Browser notifications when a work item or stub changes state'
 }
+const NOTIFY_SEEN = new Map()
 function notifyFire(title, body, tab) {
+  // The poll and a push can announce the same change within seconds; show it once.
+  const now = Date.now(); if (now - (NOTIFY_SEEN.get(title + body) || 0) < 30000) return
+  NOTIFY_SEEN.set(title + body, now)
   const go = () => { window.focus(); const t = document.querySelector('[data-tab="' + tab + '"]'); if (t) t.click() }
   // In-page toast first: it shows even when the OS or Chrome swallows the system notification (Focus assist, blocked site, http).
   const box = $('#notifyToasts') || document.body.appendChild(Object.assign(document.createElement('div'), { id: 'notifyToasts' }))
@@ -5678,7 +5682,7 @@ async function pushSync(enable) {
   } catch { return (PUSH_ON = false) }
 }
 const openTab = (tab) => { const t = tab && document.querySelector('[data-tab="' + tab + '"]'); if (t) t.click() }
-if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', (e) => { if (e.data?.type === 'pw-open-tab') openTab(e.data.tab) })
+if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', (e) => { if (e.data?.type === 'pw-open-tab') openTab(e.data.tab); else if (e.data?.type === 'pw-toast') notifyFire(e.data.title, e.data.body, e.data.tab) })
 addEventListener('focus', () => { document.title = document.title.replace(/^🔔 /, '') })
 async function notifyPoll() {
   if (!notifyOn()) { NOTIFY_PREV = null; return }

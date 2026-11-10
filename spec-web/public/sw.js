@@ -6,9 +6,10 @@ self.addEventListener('push', (event) => {
   let m = {}
   try { m = event.data ? event.data.json() : {} } catch { m = { title: 'Spec-web', body: event.data ? event.data.text() : '' } }
   event.waitUntil((async () => {
-    // A visible, focused page already shows its own toast; a second system card would only duplicate it.
+    // A focused page gets an in-page toast instead of a system card (it dedupes against its own poll's toast).
     const pages = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })
-    if (pages.some((c) => c.visibilityState === 'visible' && c.focused)) return
+    const focused = pages.filter((c) => c.visibilityState === 'visible' && c.focused)
+    if (focused.length) { focused.forEach((c) => c.postMessage({ type: 'pw-toast', title: m.title, body: m.body, tab: m.tab })); return }
     await self.registration.showNotification(m.title || 'Spec-web', {
       body: m.body || '', tag: m.tag || m.title, icon: '/favicon.png', renotify: true, data: { tab: m.tab || '', domain: m.domain || '' },
     })
