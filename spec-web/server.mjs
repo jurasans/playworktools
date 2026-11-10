@@ -44,6 +44,7 @@ import * as work from './workitems-lib.mjs'
 import { cleanName } from './workitems-lib.mjs'
 import * as feature from './featurelib.mjs'
 import { startWorker, KINDS, listRuns, activeRun, createRun, writeRun, readRun, requestStop, markFailed, validRunId, view as runView, logFile as runLogFile, rawLogFile as runRawLogFile } from './runs-lib.mjs'
+import { createPush, diffSnapshots } from './push-lib.mjs'
 import { writeFileSync, readFileSync, mkdirSync, createReadStream } from 'node:fs'
 import { randomBytes, timingSafeEqual, createHash } from 'node:crypto'
 import { resolve, dirname, relative, sep } from 'node:path'
@@ -172,6 +173,8 @@ const TEST_RUN_STALE_MS = 30 * 60 * 1000
 const SCREENSHOTS_DIR = resolve(ROOT, 'e2e-artifacts')
 const IMG_EXT = new Set(['.png', '.webp', '.jpg', '.jpeg'])
 // Nightly debug-APK build — written by tools/spec/nightly-run.mjs, read-only here.
+// Web Push: VAPID key and subscriptions live in state/push.json (gitignored with the rest of state/).
+const push = createPush({ file: resolve(ROOT, 'tools', 'spec-web', 'documentation', 'state', 'push.json'), subject: process.env.PUSH_SUBJECT || 'mailto:spec-web@example.com' })
 const DOWNLOADS_DIR = resolve(ROOT, 'tools', 'spec-web', 'documentation', 'state', 'downloads')
 // Playwright's own JSON reporter output — written by
 // tools/spec/record-test-run.mjs's e2e/screenshots runs, read-only here.
@@ -1178,6 +1181,7 @@ function readBody(req, limit = 1024 * 1024) {
 // they may be bookmarked — index.html's own tabForPath()/subForPath() decide
 // what each one resolves to.
 const STATIC = {
+  '/sw.js': ['public/sw.js', 'text/javascript; charset=utf-8'],
   '/': ['public/index.html', 'text/html; charset=utf-8'],
   '/index.html': ['public/index.html', 'text/html; charset=utf-8'],
   '/stubs': ['public/index.html', 'text/html; charset=utf-8'],
@@ -1219,6 +1223,29 @@ function downloadPwCookie(req) {
     if (k === 'dl_pw') return decodeURIComponent(v.join('='))
   }
   return null
+}
+
+// Cheap snapshot of every work item's and stub's state: polled by the page's toggle and diffed server-side for Web Push.
+async function watchSnapshot(domain) {
+  const [stubs, questions] = await Promise.all([specJson(['list', 'all'], domain).catch(() => []), specJson(['questions'], domain).catch(() => [])])
+  // Ready to enable = deferred with no unanswered blocking question (what `spec enable-ready` accepts).
+  const blocked = new Set(questions.filter((q) => q.blocking).map((q) => q.id))
+  // The nightly run truncates its log when it starts and ends it with a "done" line, so that line is the finish signal.
+  let nightly = { running: false, finishedAt: null, summary: '' }
+  try {
+    const f = resolve(DOWNLOADS_DIR, '..', 'nightly-log.txt')
+    const text = await readFile(f, 'utf8'), m = /\[nightly-run\] done — (\{.*\})\s*$/m.exec(text.slice(-4000))
+    if (m) {
+      let r = {}; try { r = JSON.parse(m[1]) } catch { /* summary stays empty */ }
+      const bad = Object.entries(r).filter(([, v]) => v === 'fail').map(([k]) => k)
+      nightly = { running: false, finishedAt: (await stat(f)).mtimeMs, summary: bad.length ? 'Failed: ' + bad.join(', ') : 'Everything passed' }
+    } else nightly.running = true
+  } catch { /* no nightly yet */ }
+  return {
+    work: work.list(domain).map((w) => ({ id: w.id, title: w.title, status: w.status, waiting: !!w.waitingHuman })),
+    stubs: stubs.map((s) => ({ id: s.id, title: s.title, status: s.status, ready: s.status === 'deferred' && !blocked.has(s.id) })),
+    nightly,
+  }
 }
 
 // Creates a run and hands it to a worker: the host-runner when this server is in Docker, else a detached local process.
@@ -2461,28 +2488,22 @@ const server = createServer(async (req, res) => {
 
     // ── work items (docs/spec/spec-work-items.md) ──
     // Cheap snapshot of every work item's and stub's state, polled by the page's browser-notification toggle.
+    if (path === '/api/push/key' && req.method === 'GET') {
+      if (session.role !== 'admin') return json(res, 403, { error: 'admin only' })
+      return json(res, 200, { key: push.publicKey() })
+    }
+    if ((path === '/api/push/subscribe' || path === '/api/push/unsubscribe') && req.method === 'POST') {
+      if (session.role !== 'admin') return json(res, 403, { error: 'admin only' })
+      let b; try { b = await readBody(req) } catch (e) { return json(res, 400, { error: String(e.message || e) }) }
+      try {
+        if (path.endsWith('/subscribe')) push.subscribe(b, req.headers['user-agent'])
+        else push.unsubscribe(String(b?.endpoint || ''))
+      } catch (e) { return json(res, 400, { error: String(e.message || e) }) }
+      return json(res, 200, { ok: true, subscriptions: push.count() })
+    }
     if (path === '/api/watch' && req.method === 'GET') {
       if (session.role !== 'admin') return json(res, 403, { error: 'admin only' })
-      const domain = domainOf(url.searchParams.get('domain'))
-      const [stubs, questions] = await Promise.all([specJson(['list', 'all'], domain).catch(() => []), specJson(['questions'], domain).catch(() => [])])
-      // Ready to enable = deferred with no unanswered blocking question (what `spec enable-ready` accepts).
-      const blocked = new Set(questions.filter((q) => q.blocking).map((q) => q.id))
-      // The nightly run truncates its log when it starts and ends it with a "done" line, so that line is the finish signal.
-      let nightly = { running: false, finishedAt: null, summary: '' }
-      try {
-        const f = resolve(DOWNLOADS_DIR, '..', 'nightly-log.txt')
-        const text = await readFile(f, 'utf8'), m = /\[nightly-run\] done — (\{.*\})\s*$/m.exec(text.slice(-4000))
-        if (m) {
-          let r = {}; try { r = JSON.parse(m[1]) } catch { /* summary stays empty */ }
-          const bad = Object.entries(r).filter(([, v]) => v === 'fail').map(([k]) => k)
-          nightly = { running: false, finishedAt: (await stat(f)).mtimeMs, summary: bad.length ? 'Failed: ' + bad.join(', ') : 'Everything passed' }
-        } else nightly.running = true
-      } catch { /* no nightly yet */ }
-      json(res, 200, {
-        work: work.list(domain).map((w) => ({ id: w.id, title: w.title, status: w.status, waiting: !!w.waitingHuman })),
-        stubs: stubs.map((s) => ({ id: s.id, title: s.title, status: s.status, ready: s.status === 'deferred' && !blocked.has(s.id) })),
-        nightly,
-      })
+      json(res, 200, await watchSnapshot(domainOf(url.searchParams.get('domain'))))
       return
     }
     if (path === '/api/work' && req.method === 'GET') {
@@ -2753,6 +2774,21 @@ async function serveWebApp(req, res, path) {
     createReadStream(file).pipe(res)
   } catch { res.writeHead(400); res.end('bad request') }
 }
+
+// Push watcher: diffs the same snapshot the page polls and pushes the changes, so cards arrive with every tab closed.
+// Only runs while someone is subscribed; the first snapshot per registry is the baseline, so subscribing never floods.
+const PUSH_PREV = {}
+setInterval(async () => {
+  if (!push.count()) { for (const k of Object.keys(PUSH_PREV)) delete PUSH_PREV[k]; return }
+  for (const domain of ['app', 'backend']) {
+    try {
+      const cur = await watchSnapshot(domain), prev = PUSH_PREV[domain]
+      PUSH_PREV[domain] = cur
+      if (!prev) continue
+      for (const e of diffSnapshots(prev, cur)) await push.broadcast({ ...e, domain })
+    } catch { /* snapshot failed this round; the next one retries */ }
+  }
+}, 15000).unref()
 
 server.listen(PORT, HOST, () => {
   const base = `http://${HOST === '0.0.0.0' ? '127.0.0.1' : HOST}:${PORT}`

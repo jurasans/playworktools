@@ -5635,13 +5635,13 @@ function jumpToStub(id, domain) {
 const NOTIFY_LABEL = { collected: 'collected', analyzing: 'being analyzed', questions: 'needs answers', ready: 'ready to rewrite', rewriting: 'spec being rewritten',
   'spec-review': 'spec ready for review', approved: 'confirmed, ready to start', working: 'work started', 'in-qa': 'in QA, waiting for you', failed: 'stopped with a failure', done: 'done', cancelled: 'cancelled' }
 const NOTIFY_STUB = { deferred: 'back to deferred', delay: 'delayed', enabled: 'enabled, queued for work', 'in-progress': 'being worked on', 'in-qa': 'in QA, waiting for you', done: 'done' }
-let NOTIFY_PREV = null, NOTIFY_DOMAIN = ''
+let NOTIFY_PREV = null, NOTIFY_DOMAIN = '', PUSH_ON = false
 const notifyOn = () => { try { return localStorage.getItem('pwNotify') === '1' } catch { return false } }
 const notifyOs = () => 'Notification' in window && Notification.permission === 'granted'
 function notifyPaint() {
   const b = $('#notifyBtn'); if (!b) return
   b.hidden = PW_ROLE !== 'admin'
-  b.textContent = notifyOn() ? (notifyOs() ? '🔔 Notify: on' : '🔔 Notify: in page only') : '🔔 Notify: off'
+  b.textContent = notifyOn() ? (PUSH_ON ? '🔔 Notify: on (push)' : notifyOs() ? '🔔 Notify: on' : '🔔 Notify: in page only') : '🔔 Notify: off'
   b.title = notifyOn() && !notifyOs() ? 'The browser is not allowing system notifications for this site (needs localhost or https, and Chrome site settings > Notifications > Allow). Messages show inside the page instead.' : 'Browser notifications when a work item or stub changes state'
 }
 function notifyFire(title, body, tab) {
@@ -5652,9 +5652,33 @@ function notifyFire(title, body, tab) {
   box.appendChild(t); setTimeout(() => t.remove(), 12000)
   if (!document.title.startsWith('🔔')) document.title = '🔔 ' + document.title
   try {
-    if (notifyOs()) { const n = new Notification(title, { body, tag: title, icon: '/favicon.png' }); n.onclick = () => { go(); n.close() } }
+    // With push on, the server sends the system card (even to a background tab), so the page must not add a second one.
+    if (notifyOs() && !PUSH_ON) { const n = new Notification(title, { body, tag: title, icon: '/favicon.png' }); n.onclick = () => { go(); n.close() } }
   } catch { /* system notifications unavailable */ }
 }
+// Web Push: a service worker + subscription lets the server show the system card with the tab closed (needs https or localhost).
+const jsonPost = (u, b) => fetch(u, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(b) })
+const keyBytes = (k) => Uint8Array.from(atob(k.replace(/-/g, '+').replace(/_/g, '/')), (c) => c.charCodeAt(0))
+async function pushSync(enable) {
+  try {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return (PUSH_ON = false)
+    const reg = await navigator.serviceWorker.register('/sw.js')
+    await navigator.serviceWorker.ready
+    let sub = await reg.pushManager.getSubscription()
+    if (!enable) {
+      if (sub) { await jsonPost('/api/push/unsubscribe', { endpoint: sub.endpoint }); await sub.unsubscribe() }
+      return (PUSH_ON = false)
+    }
+    if (!notifyOs()) return (PUSH_ON = false)
+    if (!sub) {
+      const { key } = await fetch('/api/push/key').then((r) => r.json())
+      sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(key) })
+    }
+    return (PUSH_ON = (await jsonPost('/api/push/subscribe', sub.toJSON())).ok)
+  } catch { return (PUSH_ON = false) }
+}
+const openTab = (tab) => { const t = tab && document.querySelector('[data-tab="' + tab + '"]'); if (t) t.click() }
+if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', (e) => { if (e.data?.type === 'pw-open-tab') openTab(e.data.tab) })
 addEventListener('focus', () => { document.title = document.title.replace(/^🔔 /, '') })
 async function notifyPoll() {
   if (!notifyOn()) { NOTIFY_PREV = null; return }
@@ -5681,13 +5705,16 @@ async function notifyPoll() {
   NOTIFY_PREV = cur; NOTIFY_DOMAIN = DOMAIN
 }
 $('#notifyBtn').onclick = async () => {
-  if (notifyOn()) { try { localStorage.setItem('pwNotify', '0') } catch {} NOTIFY_PREV = null; return notifyPaint() }
+  if (notifyOn()) { try { localStorage.setItem('pwNotify', '0') } catch {} NOTIFY_PREV = null; await pushSync(false); return notifyPaint() }
   if ('Notification' in window && Notification.permission === 'default') { try { await Notification.requestPermission() } catch {} }
   try { localStorage.setItem('pwNotify', '1') } catch {}
+  await pushSync(true)
   notifyPaint(); NOTIFY_PREV = null; notifyPoll()
   notifyFire('Notifications on', 'You will be told about work item and stub changes, new stubs, stubs ready to enable and the nightly run finishing.', 'work')
 }
 notifyPaint(); setInterval(notifyPoll, 6000); notifyPoll()
+if (notifyOn()) pushSync(true).then(notifyPaint)
+{ const t = new URLSearchParams(location.search).get('pwtab'); if (t) setTimeout(() => openTab(t), 600) }
 
 $('#signOutBtn').onclick = async () => {
   try { await fetch('/api/logout', { method: 'POST' }) } catch { /* signing out anyway */ }
