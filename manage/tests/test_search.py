@@ -98,3 +98,113 @@ def test_default_search_looks_in_id_license_device_and_customer_ignoring_case():
     conn = sensors_conn()
     search.search_sensors(conn, "ab-c")
     assert conn.executed[0][1] == ["%ABC%", "%AB-C%", "%AB-C%", "%AB-C%"]
+
+
+@pytest.mark.parametrize("version,tag", [(None, "v1"), (1, "v1"), (2, "v2"), (3, "v3"), ("3", "v3"), ("x", "v1")])
+def test_api_tag_comes_from_the_version_column(version, tag):
+    assert search.api_tag(version) == tag
+
+
+def test_every_ball_row_carries_its_api_tag():
+    conn = FakeConn([
+        ("COUNT(*)", {"rows": [(3,)], "columns": ["count"]}),
+        ("FROM sensors s", {"columns": ["id", "version"], "rows": [("A", None), ("B", 2), ("C", 3)]}),
+    ])
+    rows = search.search_sensors(conn, "")["rows"]
+    assert [r["api"] for r in rows] == ["v1", "v2", "v3"]
+
+
+@pytest.mark.parametrize("typed,fragment", [
+    ("v1", "s.version IS NULL OR s.version = 1"), ("V2", "s.version = 2"), (" v3 ", "s.version = 3"),
+])
+def test_typing_v1_v2_v3_also_matches_the_api_version(typed, fragment):
+    conn = sensors_conn()
+    search.search_sensors(conn, typed)
+    sql = conn.executed[0][0]
+    assert fragment in sql and " OR " in sql and "UPPER(s.customer_id) LIKE" in sql
+
+
+def test_other_text_adds_no_version_condition():
+    conn = sensors_conn()
+    search.search_sensors(conn, "v4")
+    assert "s.version" not in conn.executed[0][0]
+
+
+def test_version_field_searches_only_the_version_column():
+    conn = sensors_conn()
+    search.search_sensors(conn, "v3", field="version")
+    sql, params = conn.executed[0]
+    assert "s.version = 3" in sql and "LIKE" not in sql and params == []
+    with pytest.raises(UserError):
+        search.search_sensors(sensors_conn(), "banana", field="version")
+
+
+@pytest.mark.parametrize("key,expr", [
+    ("id", "UPPER(s.id)"), ("api", "COALESCE(s.version, 1)"), ("license_id", "UPPER(s.license_id)"),
+    ("device_id", "UPPER(s.device_id)"), ("customer_id", "UPPER(s.customer_id)"),
+])
+@pytest.mark.parametrize("direction,word", [("asc", "ASC"), ("desc", "DESC"), (None, "ASC")])
+def test_balls_sort_by_a_whitelisted_column_in_the_database(key, expr, direction, word):
+    conn = sensors_conn()
+    search.search_sensors(conn, "", sort=key, direction=direction)
+    assert f"ORDER BY {expr} {word} NULLS LAST, UPPER(s.id), s.id" in conn.sql()[1]
+
+
+def test_no_sort_keeps_the_default_order():
+    conn = sensors_conn()
+    search.search_sensors(conn, "")
+    assert "ORDER BY UPPER(s.id), s.id" in conn.sql()[1]
+
+
+@pytest.mark.parametrize("sort,direction", [("id; DROP TABLE sensors", "asc"), ("version", "asc"), ("id", "sideways")])
+def test_sort_column_and_direction_are_whitelisted_never_caller_text(sort, direction):
+    with pytest.raises(UserError):
+        search.search_sensors(sensors_conn(), "", sort=sort, direction=direction)
+
+
+def test_customers_sort_only_by_a_column_the_database_reports():
+    conn = FakeConn([
+        ("information_schema", {"columns": ["column_name", "data_type"], "rows": [("id", "text"), ("invoice_no", "text")]}),
+        ("COUNT(*)", {"rows": [(1,)], "columns": ["count"]}),
+        ("FROM customers", {"columns": ["id"], "rows": [("c1",)]}),
+    ])
+    search.search_customers(conn, "", sort="invoice_no", direction="desc")
+    assert 'ORDER BY "invoice_no" DESC NULLS LAST, UPPER(id), id' in conn.sql()[-1]
+    with pytest.raises(UserError):
+        search.search_customers(conn, "", sort='id"; DROP TABLE customers;--')
+
+
+@pytest.mark.parametrize("tier,override,used,expected", [
+    (1, None, (1, 1), (1, 0)), (2, None, (30, 2), (50, 20)), (2, None, None, (50, 50)),
+    (3, None, (500, 4), (None, None)), (3, 7, (2, 1), (7, 5)), (1, None, (2, 2), (1, -1)), (None, None, None, (None, None)),
+])
+def test_capacity_is_remaining_over_limit_with_the_tablet_count(tier, override, used, expected):
+    c = search.capacity(tier, override, used)
+    assert (c["limit"], c["remaining"]) == expected
+    assert c["devices"] == (used[1] if used else 0)
+
+
+def capacity_conn(usage, maxes):
+    return FakeConn([
+        ("FROM sensor_devices", usage),
+        ("FROM licenses WHERE id IN", maxes),
+        ("COUNT(*)", {"rows": [(1,)], "columns": ["count"]}),
+        ("FROM sensors s", {"columns": ["id", "license_id", "version", "license_type"], "rows": [("AA:BB", "L1", 3, 2)]}),
+    ])
+
+
+def test_rows_carry_remaining_limit_and_tablet_count():
+    conn = capacity_conn({"rows": [("AA:BB", 12, 2)], "columns": ["a", "b", "c"]}, {"rows": [("L1", None)], "columns": ["a", "b"]})
+    cap = search.search_sensors(conn, "")["rows"][0]["capacity"]
+    assert cap == {"limit": 50, "used": 12, "devices": 2, "remaining": 38}
+
+
+def test_a_max_users_override_beats_the_tier():
+    conn = capacity_conn({"rows": [], "columns": ["a", "b", "c"]}, {"rows": [("L1", 5)], "columns": ["a", "b"]})
+    assert search.search_sensors(conn, "")["rows"][0]["capacity"]["limit"] == 5
+
+
+def test_unreadable_usage_blanks_the_figure_instead_of_failing_the_search():
+    conn = capacity_conn(RuntimeError("permission denied for table sensor_devices"), {"rows": []})
+    result = search.search_sensors(conn, "")
+    assert result["rows"][0]["capacity"] is None and conn.rollbacks == 1

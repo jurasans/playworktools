@@ -28,7 +28,7 @@ Without Docker (`node tools/spec-web/server.mjs`) spec-web starts the scripts it
 ## Behaviour
 
 - Passwords: unlock per browser session and per environment, 15 minutes idle, 5 wrong tries lock out for 15 minutes. Switching environment locks again.
-- Search: partial MAC from anywhere (case, `:` and `-` ignored), sorted, at most 200 rows, 2+ characters (empty lists all). Customers by id and `invoice_no`.
+- Search: partial MAC from anywhere (case, `:` and `-` ignored), sorted, at most 200 rows, 2+ characters (empty lists all). Customers by id and `invoice_no`. Type `v1`, `v2` or `v3` to list balls by API version (`sensors.version`; empty counts as v1); each row shows its tag. Click a column heading to sort by it (click again to reverse); sorting is done in the database, so it holds across pages.
 - Connection: one worker process keeps one DB connection per unlocked environment and closes it when the page locks, switches environment or goes idle.
 - Create new balls: the page's dialog adds balls (MAC id, license, optional customer; a comma list fills rows) in one transaction, 200 at most. Needs `INSERT (id, license_id, customer_id)` on sensors, which `setup_role` grants.
 - Writes: move a ball to another license, clear a ball's device, set a ball's customer, create/edit customers (not `id`). A preview is required before an apply, every change carries the value the person saw (stale rows are refused), and a batch is all-or-nothing.

@@ -20,11 +20,13 @@ def _who(request):
 def _read(conn, op, request):
     if op == "search_sensors":
         return search.search_sensors(conn, request.get("query", ""), request.get("field", "any"),
-                                    request.get("limit"), request.get("offset"))
+                                    request.get("limit"), request.get("offset"),
+                                    request.get("sort"), request.get("dir"))
     if op == "list_licenses":
         return search.list_licenses(conn)
     if op == "search_customers":
-        return search.search_customers(conn, request.get("query", ""), request.get("limit"), request.get("offset"))
+        return search.search_customers(conn, request.get("query", ""), request.get("limit"), request.get("offset"),
+                                       request.get("sort"), request.get("dir"))
     if op == "customer_schema":
         return {"columns": [{"name": n, "type": t} for n, t in search.customer_schema(conn)]}
     schema = search.customer_schema(conn)

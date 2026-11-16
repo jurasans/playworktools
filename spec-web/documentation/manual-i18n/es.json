@@ -61,8 +61,8 @@
           "src": "7a8b2c5791"
         },
         "3": {
-          "text": "## Agregar un usuario\n\n1. Toque **Nuevo usuario**.\n2. Introduzca un ID numérico y un nombre.\n3. Toque **Crear e iniciar sesión**.\n\nVerá **El ID ya está en uso** si ese ID ya existe. El número de usuarios depende de la licencia del dispositivo: 1 usuario, 50 usuarios o ilimitado. Si se alcanza el límite, la aplicación le informará.\n\nPuede cerrar la ventana pulsando el botón de cierre o tocando fuera de ella. Consulte también [idioma y unidades](help:language-and-units).",
-          "src": "2321392aab"
+          "text": "## Agregar un usuario\n\n1. Toque **Nuevo usuario**.\n2. Introduzca un ID numérico y un nombre.\n3. Toque **Crear e iniciar sesión**.\n\nVerá **El ID ya está en uso** si ese ID ya existe. El número de usuarios depende de la licencia del dispositivo: 1 usuario, 50 usuarios o ilimitado. El límite cuenta a cada usuario en cada tableta que utilice el dispositivo.\n\nEn un dispositivo con licencia para 1 o 50 usuarios, agregar un usuario requiere una conexión a Internet, ya que la aplicación verifica el límite con el servidor de licencias. Sin conexión, el usuario no se agregará y la aplicación lo indicará; conéctese e inténtelo de nuevo. Si se alcanza el límite, el usuario no se agregará y la aplicación le pedirá que se ponga en contacto con el servicio de atención al cliente; los usuarios existentes seguirán funcionando. Con un dispositivo con licencia ilimitada, agregar un usuario no requiere conexión a Internet. Iniciar sesión como usuario existente y el botón \"Invitado\" siempre funcionan sin conexión.\n\nPuede cerrar la ventana tocando el botón de cierre o tocando fuera de ella. Consulte también [idioma y unidades](help:language-and-units).",
+          "src": "35b74f1c06"
         }
       },
       "title": "Inicio de sesión y usuarios"
@@ -87,8 +87,8 @@
     "home-screen": {
       "sections": {
         "0": {
-          "text": "# La pantalla de inicio\n\nDespués de iniciar sesión, verá dos tarjetas grandes.\n\n- **Juegos terapéuticos** - Juegue a juegos que controla apretando y moviendo la pelota. Consulte [cómo elegir un juego](help:choosing-a-game).\n- **Pruebas** - Mida su fuerza. Consulte [pruebas clínicas de fuerza](help:clinical-strength-tests).\n\n**Cerrar sesión** le permite volver a la pantalla de inicio para que otra persona pueda iniciar sesión.\n\n![La pantalla de inicio con las tarjetas \"Juegos de terapia\" y \"Pruebas\".](img:home.jpg)\n*Elija juegos o pruebas de fuerza.*",
-          "src": "cf1536c9ed"
+          "text": "# La pantalla de inicio\n\nDespués de iniciar sesión, verá dos tarjetas grandes.\n\n- **Juegos terapéuticos** - Juegue a juegos que controla apretando y moviendo la pelota. Consulte [cómo elegir un juego](help:choosing-a-game).\n- **Pruebas** - Mida su fuerza. Consulte [pruebas clínicas de fuerza](help:clinical-strength-tests).\n\n**Cerrar sesión** permite volver a la pantalla de inicio para que otra persona pueda iniciar sesión.\n\nSi hay una versión más reciente de la aplicación disponible, un botón **Actualizar app** aparecerá encima de las dos tarjetas. Tóquelo para actualizarla inmediatamente; no es necesario buscar la aplicación en la tienda por su cuenta.\n\n![La pantalla de inicio con las tarjetas \"Juegos de terapia\" y \"Pruebas\".](img:home.jpg)\n*Elija juegos o pruebas de fuerza.*",
+          "src": "9890a474dc"
         }
       },
       "title": "La pantalla de inicio"
@@ -478,6 +478,16 @@
       },
       "title": "Carrera espacial",
       "titleSrc": "c7994f0625"
+    },
+    "mirror-match": {
+      "sections": {
+        "0": {
+          "text": "# Juego de Reflejos\n\nUn juego de una sola bola para la rehabilitación motora. Su mano más fuerte muestra una secuencia corta de apretones e inclinaciones, y luego su otra mano la imita.\n\n- La ronda comienza con su mano más fuerte sosteniendo la pelota. Comienza una cuenta regresiva, y luego muestra la secuencia: apriete, inclinación hacia la izquierda, inclinación hacia la derecha, en cualquier orden que desee.\n- Cuando termine, una indicación le pedirá que pase la pelota a su otra mano y la sostenga quieta por un momento; esto recalibra la lectura de la inclinación para la mano que está a punto de copiar.\n- Comienza una cuenta regresiva, y luego copie la secuencia que acaba de mostrar, imitando la fuerza, la dirección y el tiempo de cada paso lo más fielmente posible.\n- Después de cada ronda, verá una puntuación para **Fuerza**, **Dirección**, **Sincronización** y **Simetría** (que indica qué tan cerca estuvieron los niveles de esfuerzo de sus dos manos).\n- La secuencia se alarga a medida que avanza, lo que hace que cada ronda sea un poco más difícil.\n- Un entrenador puede ajustar la tolerancia de la coincidencia de fuerza y tiempo, y puede cambiar a una secuencia generada por la aplicación en lugar de grabar una de su mano más fuerte, en **Ajustes**. Consulte [Configuración del entrenador](help:trainer-settings).",
+          "src": "9eabbaa2f8"
+        }
+      },
+      "title": "Espejo enfrentado",
+      "titleSrc": "aee2e85479"
     }
   }
 }

@@ -208,6 +208,7 @@ const BUILD_MANIFEST_FILE = resolve(DOWNLOADS_DIR, 'manifest.json')
 const BUILD_APK_FILE = resolve(DOWNLOADS_DIR, 'playwork-debug-latest.apk')
 const BUILD_PROD_APK_FILE = resolve(DOWNLOADS_DIR, 'playwork-prod-latest.apk')
 const BUILD_MASTER_APK_FILE = resolve(DOWNLOADS_DIR, 'playwork-master-latest.apk')
+const BUILD_CHINESE_APK_FILE = resolve(DOWNLOADS_DIR, 'playwork-chinese-latest.apk')
 
 // Standalone, dependency-free page for /login — the private spec tool's own
 // access gate (see AUTH_USERNAME/AUTH_PASSWORD/sessions below). Kept as a
@@ -1201,6 +1202,7 @@ const STATIC = {
   '/product/appreview': ['public/index.html', 'text/html; charset=utf-8'],
   '/product/license-v2': ['public/index.html', 'text/html; charset=utf-8'],
   '/product/license-v2/page': ['public/license-v2.html', 'text/html; charset=utf-8'],
+  '/product/license-v2/fable': ['public/license-v2-fable.html', 'text/html; charset=utf-8'],
   '/product/feature/page': ['public/feature.html', 'text/html; charset=utf-8'],
   '/downloads': ['public/index.html', 'text/html; charset=utf-8'],
   '/downloads/spec': ['public/index.html', 'text/html; charset=utf-8'],
@@ -2253,10 +2255,41 @@ const server = createServer(async (req, res) => {
       return json(res, 200, { path: WEBAPP_BASE, manifest })
     }
 
+    // Rebuild the four Downloads builds. Gradle needs the host, so in Docker the host-runner does it; progress is a state file.
+    const REBUILD_FILE = resolve(DOWNLOADS_DIR, '..', 'rebuild-builds.json')
+    const rebuildState = async () => {
+      let st = {}
+      try { st = JSON.parse(await readFile(REBUILD_FILE, 'utf8')) } catch { /* never run */ }
+      if (st.running && Date.now() - Date.parse(st.startedAt) > 3 * 60 * 60 * 1000) st.running = false
+      return st
+    }
+    if (path === '/api/build/rebuild-status' && req.method === 'GET') return json(res, 200, await rebuildState())
+    if (path === '/api/build/rebuild' && req.method === 'POST') {
+      if (session.role !== 'admin') return json(res, 403, { error: 'admin only' })
+      if ((await rebuildState()).running) return json(res, 409, { error: 'a rebuild is already running' })
+      // ?only=<build ids> refreshes just those builds (the Refresh button on a stale card); none = all four.
+      const only = new URL(req.url, 'http://x').searchParams.get('only') || ''
+      if (only && !/^(nightly-debug|nightly-prod|latest-debug|latest-prod)(,(nightly-debug|nightly-prod|latest-debug|latest-prod))*$/.test(only)) return json(res, 400, { error: 'unknown build id' })
+      if (IN_DOCKER) {
+        let hostRes
+        try { hostRes = await fetch(`${HOST_RUNNER_URL}/builds/rebuild${only ? `?only=${only}` : ''}`, { method: 'POST', headers: { 'x-runner-token': HOST_RUNNER_TOKEN } }) } catch { return json(res, 502, { error: 'Could not reach the host-runner. Start it on your PC: npm run spec:host-runner' }) }
+        if (!hostRes.ok) return json(res, 502, { error: `host-runner answered HTTP ${hostRes.status} (restart it so it knows /builds/rebuild)` })
+      } else {
+        spawn(process.execPath, [resolve(ROOT, 'tools', 'spec', 'rebuild-builds.mjs'), ...(only ? ['--only', only] : [])], { cwd: ROOT, stdio: 'ignore', detached: true }).unref()
+      }
+      return json(res, 200, { ok: true, started: true })
+    }
+
     if (path === '/api/build' && req.method === 'GET') {
       let data = null
       try { data = JSON.parse(await readFile(BUILD_MANIFEST_FILE, 'utf8')) } catch { /* no nightly build yet */ }
-      json(res, 200, data ?? { available: false })
+      // What a build would have to match to be fresh: the current HEAD, and the newest release tag by date.
+      const gitLine = (args) => new Promise((ok) => execFile('git', ['-c', 'safe.directory=*', ...args], { cwd: ROOT, windowsHide: true }, (err, out) => ok(err ? null : String(out).trim() || null)))
+      const current = {
+        head: await gitLine(['rev-parse', 'HEAD']),
+        latestTag: await gitLine(['for-each-ref', '--sort=-creatordate', '--count=1', '--format=%(refname:short)', 'refs/tags']),
+      }
+      json(res, 200, { ...(data ?? { available: false }), current })
       return
     }
 
@@ -2268,14 +2301,15 @@ const server = createServer(async (req, res) => {
       const variant = url.searchParams.get('variant')
       const prod = variant === 'prod'
       const master = variant === 'master'
-      const file = prod ? BUILD_PROD_APK_FILE : master ? BUILD_MASTER_APK_FILE : BUILD_APK_FILE
+      const chinese = variant === 'chinese'
+      const file = prod ? BUILD_PROD_APK_FILE : master ? BUILD_MASTER_APK_FILE : chinese ? BUILD_CHINESE_APK_FILE : BUILD_APK_FILE
       let stats
       try { stats = await stat(file) } catch { return json(res, 404, { error: 'no build available yet' }) }
       const body = await readFile(file)
       res.writeHead(200, {
         'content-type': 'application/vnd.android.package-archive',
         'content-length': stats.size,
-        'content-disposition': `attachment; filename="${prod ? 'playwork-prod-latest.apk' : master ? 'playwork-master-latest.apk' : 'playwork-debug-latest.apk'}"`,
+        'content-disposition': `attachment; filename="${prod ? 'playwork-prod-latest.apk' : master ? 'playwork-master-latest.apk' : chinese ? 'playwork-chinese-latest.apk' : 'playwork-debug-latest.apk'}"`,
         'cache-control': 'no-store',
       })
       res.end(body)

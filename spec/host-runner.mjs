@@ -29,6 +29,7 @@ function tokenOk(given) {
 
 let running = false
 let imagesRunning = false
+let buildsRunning = false
 
 const server = createServer((req, res) => {
   const json = (status, body) => {
@@ -87,6 +88,20 @@ const server = createServer((req, res) => {
     const child = spawn(process.execPath, [resolve(ROOT, 'tools', 'generate', 'gen-queue-runner.mjs')], { cwd: ROOT, stdio: 'inherit' })
     child.on('error', () => { imagesRunning = false })
     child.on('exit', () => { imagesRunning = false })
+    return json(200, { ok: true, started: true })
+  }
+
+  // Rebuilds the four Downloads-tab APKs (tools/spec/rebuild-builds.mjs); progress is its state file, which spec-web reads.
+  if (req.url.split('?')[0] === '/builds/rebuild' && req.method === 'POST') {
+    if (!tokenOk(req.headers['x-runner-token'])) return json(401, { error: 'bad or missing token' })
+    if (buildsRunning) return json(200, { ok: true, started: false, already: true })
+    // ?only=nightly-prod,... refreshes just those builds (the per-card Refresh button); no value means all four.
+    const only = new URL(req.url, 'http://runner').searchParams.get('only') || ''
+    if (only && !/^[a-z,-]+$/.test(only)) return json(400, { error: 'bad only list' })
+    buildsRunning = true
+    const child = spawn(process.execPath, [resolve(ROOT, 'tools', 'spec', 'rebuild-builds.mjs'), ...(only ? ['--only', only] : [])], { cwd: ROOT, stdio: 'inherit' })
+    child.on('error', () => { buildsRunning = false })
+    child.on('exit', () => { buildsRunning = false })
     return json(200, { ok: true, started: true })
   }
 

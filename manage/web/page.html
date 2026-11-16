@@ -49,6 +49,10 @@ th,td{border-bottom:1px solid var(--line);padding:.35rem .4rem;text-align:left;v
 .tabs button.on{background:var(--accent);color:#fff}
 body.prod .tabs button.on{color:#000}
 .dim{opacity:.75}
+.sortable{cursor:pointer;user-select:none}.sortable:hover{text-decoration:underline}
+.vtag{display:inline-block;padding:.05rem .5rem;border-radius:.6rem;border:1px solid var(--line);font-size:.8rem;font-weight:700}
+.vtag.v2{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
+.vtag.v3{background:#15803d;color:#fff;border-color:#15803d}
 .mask{position:fixed;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;padding:1rem;z-index:9}
 .dlg.wide{max-width:980px}
 .dlg{background:#fff;color:#111;border-radius:12px;max-width:640px;width:100%;padding:1rem;max-height:90vh;overflow:auto}
@@ -149,18 +153,26 @@ async function refresh() {
 }
 function drawTabs() {
   $('newballs').hidden = S.tab !== 'balls'
-  $('q').placeholder = S.tab === 'balls' ? 'Search ids, licenses, devices, customers (2+ characters, any case)' : 'Search customer names and invoice numbers (2+ characters, any case)'
+  $('q').placeholder = S.tab === 'balls' ? 'Search ids, licenses, devices, customers, or v1 / v2 / v3 (2+ characters, any case)' : 'Search customer names and invoice numbers (2+ characters, any case)'
   const t = $('tabs'); t.replaceChildren()
   for (const [id, label] of [['balls', 'Balls'], ['customers', 'Customers']]) t.append(el('button', { className: S.tab === id ? 'on' : '', on: { click: () => { S.tab = id; $('q').value = ''; drawTabs(); search() } } }, label))
   drawPending()
 }
 
 const PAGE = 10
+// Sorting happens in the database (so it holds across pages); one choice per tab, kept while the tab is open.
+const SORT = { balls: null, customers: null }
+function sortHead(label, key) {
+  const cur = SORT[S.tab]
+  const on = cur && cur.key === key
+  return el('th', { className: 'sortable', title: 'Sort by ' + label, on: { click: () => { SORT[S.tab] = on && cur.dir === 'asc' ? { key, dir: 'desc' } : { key, dir: 'asc' }; search(0) } } },
+    label, on ? (cur.dir === 'asc' ? ' ▲' : ' ▼') : '')
+}
 async function search(page = 0) {
   show('')
   $('results').replaceChildren(loading())
   const q = $('q').value.trim()
-  const r = await run(S.tab === 'balls' ? 'search_sensors' : 'search_customers', { query: q, limit: PAGE, offset: page * PAGE })
+  const r = await run(S.tab === 'balls' ? 'search_sensors' : 'search_customers', { query: q, limit: PAGE, offset: page * PAGE, ...(SORT[S.tab] ? { sort: SORT[S.tab].key, dir: SORT[S.tab].dir } : {}) })
   if (!r.ok) { show(r.error || 'search failed'); $('results').replaceChildren(); $('info').replaceChildren(); return }
   const pages = Math.max(1, Math.ceil(r.total / PAGE))
   if (page > 0 && !r.rows.length) return search(pages - 1)
@@ -196,20 +208,31 @@ function drawPending() {
 }
 $('clear').addEventListener('click', () => { S.pending = []; drawPending() })
 
+// users on devices as reported for this ball; the tooltip has what is left of the limit (negative = over it)
+function capacityText(c, api) {
+  // v1/v2 limit devices, not users, so a user-count capacity does not apply to them
+  if (api === 'v1' || api === 'v2') return el('span', { className: 'dim', title: 'user-count licensing is v3 only' }, 'n/a')
+  if (!c) return el('span', { className: 'dim', title: 'usage not readable (grant or migration missing)' }, '—')
+  const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's')
+  const allowed = c.limit == null ? 'no limit' : c.remaining < 0 ? 'over the limit by ' + -c.remaining + ' (limit ' + c.limit + ')' : plural(c.remaining, 'user') + ' left (limit ' + c.limit + ')'
+  return el('span', { className: c.remaining != null && c.remaining < 0 ? 'err' : '', title: allowed }, plural(c.used, 'user') + ' on ' + plural(c.devices, 'device'))
+}
 function drawBalls(rows) {
-  const head = ['Ball (MAC)', 'License id', 'Device', 'Customer']
+  const head = [['Ball (MAC)', 'id'], ['API', 'api'], ['License id', 'license_id'], ['Capacity', null], ['Device', 'device_id'], ['Customer', 'customer_id']]
   const body = rows.map((r) => {
     const lic = el('select', {}, ...S.licenses.map((l) => el('option', { value: l.id, selected: l.id === r.license_id }, l.id)))
     lic.addEventListener('change', () => { if (lic.value !== r.license_id) queue({ type: 'set_license', sensor_id: r.id, expected: r.license_id, new: lic.value }) })
     const dev = r.device_id ? el('span', {}, r.device_id.slice(0, 18), ' ', el('button', { className: 'ghost', on: { click: () => queue({ type: 'clear_device', sensor_id: r.id, expected: r.device_id }) } }, 'Clear')) : el('span', { className: 'dim' }, '—')
     const cust = el('span', {}, r.customer_id ?? '—', ' ', el('button', { className: 'ghost', on: { click: () => pickCustomer(r) } }, 'Set…'))
-    return el('tr', {}, el('td', {}, r.id), el('td', {}, lic), el('td', {}, dev), el('td', {}, cust))
+    // sensors.version, already tagged by the server: v1 = never registered with a version, v2 = device lock, v3 = user-count licensing
+    const api = el('span', { className: 'vtag ' + (r.api || 'v1'), title: r.version == null ? 'no version recorded (v1)' : 'version ' + r.version }, r.api || 'v1')
+    return el('tr', {}, el('td', {}, r.id), el('td', {}, api), el('td', {}, lic), el('td', {}, capacityText(r.capacity, r.api || 'v1')), el('td', {}, dev), el('td', {}, cust))
   })
-  $('results').replaceChildren(el('table', {}, el('tr', {}, head.map((h) => el('th', {}, h))), body))
+  $('results').replaceChildren(el('table', {}, el('tr', {}, head.map(([h, key]) => key ? sortHead(h, key) : el('th', { title: 'users reported on how many devices; hover for what is left of the limit' }, h))), body))
 }
 function drawCustomers(cols, rows) {
   const top = el('div', { className: 'row' }, el('button', { on: { click: () => customerForm(null) } }, 'New customer'))
-  const t = el('table', {}, el('tr', {}, el('th', {}, ''), cols.map((c) => el('th', {}, label(c)))),
+  const t = el('table', {}, el('tr', {}, el('th', {}, ''), cols.map((c) => sortHead(label(c), c))),
     rows.map((r) => el('tr', {}, el('td', {}, el('button', { className: 'ghost', on: { click: () => customerForm(r) } }, 'Edit')), cols.map((c) => el('td', {}, r[c] ?? '')))))
   $('results').replaceChildren(top, t)
 }

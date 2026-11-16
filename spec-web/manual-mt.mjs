@@ -24,6 +24,7 @@ const LANGS = {
   he: ['Hebrew', 'he'], zh: ['Chinese (Simplified)', 'zh-Hans'], zt: ['Chinese (Traditional, Taiwan)', 'zh-Hant-TW'],
   ja: ['Japanese', 'ja'], es: ['Spanish', 'es'], fr: ['French', 'fr'], pl: ['Polish', 'pl'], lv: ['Latvian', 'lv'],
   uk: ['Ukrainian', 'uk'],
+  ko: ['Korean', 'ko'],
 }
 
 export async function ollamaStatus() {

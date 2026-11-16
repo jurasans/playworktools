@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Manual machine-translation CLI (Ollama + TranslateGemma). The ONLY thing that writes non-English manual text:
- * agents write docs/manual/en only, and the last step of the nightly run calls `sync --lang all --save --prune`.
+ * agents write docs/manual/en only, and the translation worker (first stage of the nightly, before any build) calls `sync --lang all --save --prune`.
  *   node tools/i18n/manual-translate.mjs status     Ollama check (exit 1 when unreachable or the model is missing)
  *   node tools/i18n/manual-translate.mjs progress   per-language done/total
  *   node tools/i18n/manual-translate.mjs sync [--lang fr|all] [--save] [--check] [--prune]

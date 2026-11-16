@@ -47,7 +47,11 @@ export function meta(id) {
   const m = readJson(metaFile(id), {})
   const src = typeof m.visuals?.src === 'string' && /^\/[^/\\]/.test(m.visuals.src) ? m.visuals.src : null
   const scenes = Array.isArray(m.visuals?.scenes) ? m.visuals.scenes.filter((s) => s && /^[a-z0-9-]+$/.test(s.id) && s.title).map((s) => ({ id: s.id, title: String(s.title), hint: s.hint ? String(s.hint) : '' })) : []
-  return { id, title: m.title || id, subtitle: m.subtitle || '', visuals: src && scenes.length ? { src, scenes } : null }
+  // Extra tabs: a local page shown whole in an iframe. Same local-path rule as visuals so a feature file cannot frame another site.
+  const pages = (Array.isArray(m.pages) ? m.pages : [])
+    .filter((p) => p && /^[a-z0-9-]+$/.test(p.id) && p.title && typeof p.src === 'string' && /^\/[^/\\]/.test(p.src))
+    .slice(0, 4).map((p) => ({ id: p.id, title: String(p.title).slice(0, 30), src: p.src }))
+  return { id, title: m.title || id, subtitle: m.subtitle || '', visuals: src && scenes.length ? { src, scenes } : null, pages }
 }
 
 export const readSpec = (id) => { need(id); try { return readFileSync(specFile(id), 'utf8') } catch { return '' } }

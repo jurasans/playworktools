@@ -1,0 +1,611 @@
+{
+  "id": "WI-3",
+  "domain": "app",
+  "status": "done",
+  "title": "User-count licensing replaces device locks",
+  "createdBy": "ilia gandelman",
+  "createdAt": "2026-11-12T13:10:29.774Z",
+  "changes": [
+    {
+      "doc": "spec/backend-and-feedback",
+      "title": "backend-and-feedback.md",
+      "by": [
+        "ilia gandelman"
+      ],
+      "hunks": [
+        {
+          "aStart": 42,
+          "bStart": 42,
+          "lines": [
+            {
+              "t": " ",
+              "s": "- **Bundle (S-14):** `register/requirements.txt` installs only `aws-lambda-powertools[tracer]` (pinned) plus pinned pydantic, boto3, botocore and pg8000; the Lambda bundle is 50 MB (was 72 MB with `[all]`, which pulled `cryptography`)."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "**User-count licensing — API v3 (full-stack work item WI-3; the app side is in `data-auth-identity.md`, *User-count licensing*).** Installed apps keep working unchanged; the new behaviour is a third contract revision served side by side on the live gateway."
+            },
+            {
+              "t": "+",
+              "s": "- **Naming.** The contract revisions are v1 (anonymous), v2 (device-bound writes, the `version: 2` the app sends today) and v3 (user-count licensing, `version: 3`). The new routes live under `/api/v3/...` on the existing `registration-v2` stack (`api.goplaywork.com`; `dev-api.goplaywork.com` for staging). There is no new stack, gateway, domain or certificate. The frozen v1 stack and its gateway are not touched, and `/api/v1/*` keeps its exact behaviour, device lock included."
+            },
+            {
+              "t": "+",
+              "s": "- **Routes.** `POST /api/v3/sensors/register` returns the licence tier and limit; it never binds or compares a device and never reads or writes `sensors.device_id`. `PUT /api/v3/sensors/{ball}/user-count` takes `{deviceUniqueId, userCount}`, records that tablet's count for the ball and sums all tablets. It answers `200` when the count was stored, and a refusal status with `{error: \"user limit reached\", total, limit}` when the total would exceed the limit. A report that lowers the tablet's count (a deleted user) is always stored. Identify `GET`/`PUT` and user `DELETE` exist under v3 with no device check."
+            },
+            {
+              "t": "+",
+              "s": "- **Storage.** A new table `sensor_devices(sensor_id, device_id, user_count, updated_at)`, added by an additive migration (`migrations/003`). Nothing in v1 or v2 reads it."
+            },
+            {
+              "t": "+",
+              "s": "- **No lost updates.** The write and the sum happen in one transaction, retried on a database conflict. When the new total would exceed the limit nothing is stored. A replayed request is answered from the existing `Idempotency-Key` store."
+            },
+            {
+              "t": "+",
+              "s": "- **The limit is computed on the server** from the licence type (1 → 1, 2 → 50, 3 and above unlimited). The app shows what the server answers and no longer decides."
+            },
+            {
+              "t": "+",
+              "s": "- **Unlimited licences are not counted.** When the ball's licence has no limit (tier 3 and above), the user-count route stores nothing in `sensor_devices` and answers `200` straight away; only limited licences (tier 1, tier 2, or a `max_users` override) are counted."
+            },
+            {
+              "t": "+",
+              "s": "- **Rate limiting.** The new routes are added to the authorizer's route map. The count report is a write, counted per ball id at the existing 2 requests per second write limit."
+            },
+            {
+              "t": "+",
+              "s": "- **Observe first.** A switch `/playwork/registration/<env>/enforce-user-limit`, off by default and built like the S-17 switch. While it is off, v3 counts and logs a `UserLimitWouldBlock` metric but always answers `200`, so the clinics that would be blocked are known before anyone is. Turning it on needs the owner's go-ahead."
+            },
+            {
+              "t": "+",
+              "s": "- **Rollout.** Deploy to staging with `scripts/v2.py`, run the extended stage tests, review the production changeset (routes only; any change to the gateway, cluster or domain is rejected), then release the app. Every AWS step needs the owner's go-ahead. Rollback is turning enforcement off, or an app build that stops using v3; the routes are harmless when unused."
+            },
+            {
+              "t": "+",
+              "s": "- **Shared `sensors` table, no copy (decided).** v3 keeps using the one `sensors` table as the ball's identity (name, size, licence, owner), so a rename made on any app version is seen by every version during the long mixed-fleet period. A duplicate table without `device_id` was considered and rejected: it would hold two sources of truth for one physical ball and every writer (v1/v2 register, the manage tool) would have to write both. Isolation is covered by tests that assert v3 never writes `sensors.device_id`. When v1 and v2 are retired, a cleanup change drops `sensors.device_id`, the `devices` table and the device-proof switch."
+            },
+            {
+              "t": "+",
+              "s": "- **Implementation shape (backend repo).** A new `controllers_v3.py` beside the existing controllers, which are not edited: `SensorControllerV3` (register, identify), `UserCountController` (the count route) and `UserControllerV3` (user delete), all on the injected `SensorRepository`, which gains only new methods (store a tablet's count, sum a ball's counts, look up the limit). Request and response models go in `dtos_v3.py` on the same `ApiModel` base. `app.py` mounts a Powertools `Router` with prefix `/api/v3`. The count route runs as one transaction: look up the licence (an unlimited one answers `200` and stores nothing), store the tablet's count, sum the ball, roll back and refuse when the sum exceeds the limit (a lower count always commits), retry on a database conflict, answer replays from the `Idempotency-Key` store, and read the observe-first switch the way `device_proof.py` reads its SSM flag."
+            },
+            {
+              "t": "+",
+              "s": "- **Infrastructure and tests.** The CDK app adds the `/api/v3` resources and methods to the existing gateway as an in-place update, adds the routes to the authorizer's map, adds migration `003` (`sensor_devices`, and `licenses.max_users` if chosen), and extends the CORS and metrics lists and the stack-assertion tests. Unit tests cover every controller path, `device_id` never being written, and two simultaneous reports that cannot both exceed the limit; `scripts/v2.py test stage` gains the v3 integration tests and the switch flip."
+            },
+            {
+              "t": "+",
+              "s": "- **Compatibility gate (nothing reaches production without it).** After migration `003` and after every v3 deploy, the old contracts must still work exactly as before, and v1, v2 and v3 must pass together:"
+            },
+            {
+              "t": "+",
+              "s": "  - **Migration safety.** `003` is additive and idempotent (a new table, and a nullable column if `max_users` is chosen) and is applied to stage first. Before it, every query that touches `licenses` or `sensors` is checked to name its columns (no `SELECT *`) and no row model rejects an extra column, so the new column cannot break v1 or v2 on the shared cluster. A unit test fails if one does."
+            },
+            {
+              "t": "+",
+              "s": "  - **v2 (`/api/v1` on `registration-v2`) unchanged.** The whole existing suite passes with no edits: the 301 unit tests, the 63 stack assertions and the roughly 140 stage integration tests, including the device-bound writes (S-11), the phase-2 switch flip (S-17), the version-2 migration, the rate-limit bursts and CORS."
+            },
+            {
+              "t": "+",
+              "s": "  - **v1 (the frozen `registration` stack and its gateway) unchanged.** Its code and gateway are not deployed or edited; the changeset review proves no resource of it is touched. After the production migration, a read-only smoke test on v1 (identify `GET` and the register paths that do not bind) runs only with the owner's go-ahead for that AWS call."
+            },
+            {
+              "t": "+",
+              "s": "  - **Cross-version scenarios** (new stage integration tests): a ball first registered by v3 and then by v2 or v1; a ball bound by v1 or v2 and then used by v3; a rename made on one version read on the others; v3 never writes `sensors.device_id`; v3 counts never change what v1 or v2 answer; unlimited and limited licences; two tablets reporting at once; the observe-first switch off and on; a lower count always accepted."
+            },
+            {
+              "t": "+",
+              "s": "  - **App.** The app's own unit and e2e suites pass against the v3 paths, and a build pointed at stage creates users through the full flow (allowed, refused, offline delete reported later) before a release."
+            },
+            {
+              "t": "+",
+              "s": "  - Only when all of this is green does the production changeset get reviewed, and enforcement stays off until the owner turns it on after the observe period."
+            },
+            {
+              "t": "+",
+              "s": "- **Order of work.** The work item's run builds the app side and registers the backend side as `[Backend]` tickets (it never writes in the backend repo or touches AWS). The backend code is then built in the backend repo, followed by the stage deploy, the stage tests, the production changeset review and turning enforcement on, each AWS step with the owner's go-ahead."
+            },
+            {
+              "t": "+",
+              "s": "- **Mixed fleet.** Tablets on older app versions keep the device lock and never report counts, so their users are missing from the totals until they update."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "**NEVER DELETE THE PROD STACK, NEVER TOUCH THE PROD GATEWAY — absolute rules, no exceptions, no override by any later instruction in a session.**"
+            },
+            {
+              "t": " ",
+              "s": "- Never delete, tear down, or `sam delete` the deployed `registration` CloudFormation stack (eu-west-1, account 754029048553), and never run any command that could (`aws cloudformation delete-stack`, `sam delete`, deleting/replacing `ServerlessRestApi`, `terraform`-style destroys, etc.)."
+            }
+          ]
+        }
+      ],
+      "added": 23,
+      "removed": 0
+    },
+    {
+      "doc": "spec/data-auth-identity",
+      "title": "data-auth-identity.md",
+      "by": [
+        "ilia gandelman"
+      ],
+      "hunks": [
+        {
+          "aStart": 98,
+          "bStart": 98,
+          "lines": [
+            {
+              "t": " ",
+              "s": "**License API host and request headers (S-277 / S-278 / S-276):** `licenseService.ts` talks to `https://api.goplaywork.com` by default (the v2 prod stack; no `/Prod` stage segment; `VITE_LICENSE_API_URL` overrides it, e.g. `https://dev-api.goplaywork.com` for a staging build). There is deliberately no fallback to the old v1 gateway URL. Every call sends `X-Sensor-Mac` (the ball's id; the backend honours it only when it is a well-formed MAC, so iOS ids simply use the default rate-limit bucket), and the writes (identify `PUT`, user `DELETE`) also send `X-Device-Id` (`getPersistentDeviceId()`) so the server can check the caller is the device the ball is bound to. Non-ASCII ids are dropped from headers because `fetch` would throw on them. A `403` on identify `PUT` throws like any failure, so `setIdentity` keeps the local name/size pending and retries on the next sync, with a warning in the log and no user-facing error. Shipping a build with these changes is a separate release step."
+            },
+            {
+              "t": " ",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "### User-count licensing (replaces device locks)"
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "**Decision.** A ball's licence is no longer tied to one device. The **device lock is removed**: any tablet may connect to and play with any ball. What the licence limits is **how many users exist for that ball in total, across all tablets**, and that is checked when a user is created."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "1. **No device locks.** The server stops binding a ball to a device. Registering a ball on a second tablet works and does not displace the first one; the writes that were limited to the bound device (renaming the ball, deleting its user record) are no longer refused because of the device. The device-proof switch (S-11 / S-17) and the version-2 migration that cleared the bound device are retired with it."
+            },
+            {
+              "t": "+",
+              "s": "2. **Creating a user needs the internet.** Every time a new user is created, the tablet first reports to the server. Without a connection the user is not created and the dialog says that an internet connection is needed. Logging in as an existing user, the Guest shortcut and everything else keep working offline: the app stays offline-first for all clinical data."
+            },
+            {
+              "t": "+",
+              "s": "3. **What is sent is a number and nothing else.** The tablet sends the **current count of users on this tablet**. It never sends a user's ID, name, results or anything that identifies a person. The count follows the same privacy rule as telemetry: no names, no IDs, no measurements."
+            },
+            {
+              "t": "+",
+              "s": "4. **The server adds the tablets up.** For each ball the server keeps the latest count every tablet reported and sums them: that sum is the ball's total users across tablets. The total is checked against the ball's licence limit (`MyPlayBall` 1, `PlayBallBasic` 50, `PlayBallPremium` unlimited; see the table in `sensor-pill.md`)."
+            },
+            {
+              "t": "+",
+              "s": "5. **Over the limit: creation is blocked.** The server's answer is the HTTP status alone: `200` means the count was stored and the user may be created; a refusal status (which one is under *Not yet decided*) means nothing was stored. On a refusal the new user is **not** created and the app shows a prompt telling the clinic to **call customer service**. Users that already exist keep working and nothing is deleted."
+            },
+            {
+              "t": "+",
+              "s": "6. **The local limit check goes away.** The check in the New User flow that compares the users on this tablet with `clientLimit()` is replaced by this server-side total, since the limit now spans tablets. The limit itself lives on the server too: the app only shows the limit the server last answered."
+            },
+            {
+              "t": "+",
+              "s": "7. **Deleting a clinical user updates the server count.** Removing a user in the trainer's Users tab reports the tablet's new, lower count, so the server total stays faithful to the real limits. Lowering a count is never refused. Deleting still works offline, because the trainer panel stays offline-first: the tablet remembers that its count changed and reports it with its next call to the server. The count is absolute, so the order and repetition of reports do not matter. The About dialog's *Delete User Data* is a different action (erasing the Google-email account tied to the ball) and does not change the count."
+            },
+            {
+              "t": "+",
+              "s": "8. **Unlimited licences are not tracked.** A ball whose licence has no user limit (`PlayBallPremium`, tier 3 and above) needs no total: the server stores no count for it and answers `200` at once, so no per-tablet counts exist for those balls and a deleted user sends nothing for them."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "**One full-stack change.** The server side (API v3 routes, the per-tablet count table, the observe-first switch, the rollout and the mixed fleet of old apps) is specified in `backend-and-feedback.md`, *User-count licensing — API v3*. The app side:"
+            },
+            {
+              "t": "+",
+              "s": "- `licenseService.ts` takes the API generation from the build (`VITE_LICENSE_API_VERSION`, default 3) and registers with `version: 3`."
+            },
+            {
+              "t": "+",
+              "s": "- There is no silent fallback to the old contract, which cannot enforce a count: when the v3 API cannot be reached, creating a user shows the internet-needed message."
+            },
+            {
+              "t": "+",
+              "s": "- The New User flow asks the server before it saves, and shows the customer-service prompt on a refusal (items 2 to 5 above)."
+            },
+            {
+              "t": "+",
+              "s": "- `licenseService.ts` gains one call that reports the tablet's user count (used when a user is created and when one is deleted, rule 7). The tablet keeps its not-yet-reported count so that an offline delete is sent with the next call. `clientLimit()` is removed, and the prompt text goes into `strings.csv` in every language."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": "+",
+              "s": "**Not yet decided** (to be turned into questions by the analysis):"
+            },
+            {
+              "t": "+",
+              "s": "- Whether the number sent counts the user being created (stored only when allowed) or only the users that already exist."
+            },
+            {
+              "t": "+",
+              "s": "- Whether the app may skip the server call and create users offline when the ball's cached licence is Premium (the risk is a stale cached tier after a downgrade), or always asks the server so that creating a user needs the internet for every licence."
+            },
+            {
+              "t": "+",
+              "s": "- Which refusal status the server answers: the owner proposed `401`, while `409` is recommended because the gateway and authorizer already produce `401`/`403` for unrelated failures (the app would also check the error text either way)."
+            },
+            {
+              "t": "+",
+              "s": "- Where the limit is stored: tier constants in the server code (1 / 50 / unlimited), or a nullable `licenses.max_users` that overrides the tier default for one licence (recommended, so customer service can grant extra users without a deploy; the manage tool's database role would need a grant on it)."
+            },
+            {
+              "t": "+",
+              "s": "- Whether the limit aggregates per ball or per licence (one licence can cover several balls)."
+            },
+            {
+              "t": "+",
+              "s": "- What register does with the ball's owner (`sensors.user_id`, the `users` and `devices` rows) now that the device is not bound."
+            },
+            {
+              "t": "+",
+              "s": "- What the total means when one tablet uses several balls (each ball gets the tablet's full count, or users are tied to a ball), and for two-ball mode."
+            },
+            {
+              "t": "+",
+              "s": "- How a clinic frees a slot when a tablet is lost or reset (its last reported count would otherwise stay in the total)."
+            },
+            {
+              "t": "+",
+              "s": "- What happens to clinics that are already over the limit, and to users that exist before this version: the first report, and whether anything is grandfathered."
+            },
+            {
+              "t": "+",
+              "s": "- Whether the Guest user counts."
+            },
+            {
+              "t": "+",
+              "s": "- The customer service contact shown in the prompt (phone number, per region or global), and the exact wording in the 10 languages."
+            },
+            {
+              "t": "+",
+              "s": "- The endpoint and the field that identifies the tablet when it reports its count, and what older app versions that still use the device lock should get."
+            },
+            {
+              "t": "+",
+              "s": ""
+            },
+            {
+              "t": " ",
+              "s": "### Sensor identity (name + size) — local-first (S1-J)"
+            },
+            {
+              "t": " ",
+              "s": ""
+            }
+          ]
+        }
+      ],
+      "added": 33,
+      "removed": 0
+    }
+  ],
+  "analysis": {
+    "summary": "The person's edit replaces the whole device-binding model with user-count licensing: a ball's licence no longer locks to one device, and the limit instead caps how many users exist for that ball across all tablets, checked server-side every time a new user is created. It is a full-stack change — a new, side-by-side API v3 (backend-and-feedback.md) plus the app's New User/delete flows, licenseService.ts and the stored license record (data-auth-identity.md) — written directly into the two correct spec files, in the right place and in the spec's own style, so no text needs to be moved. The two write-ups leave a 'Not yet decided' list of real open points (refusal status, where the limit lives, what the reported number counts, aggregation scope, Guest/mixed-tier edge cases, wording) and one internal disagreement about whether a cached Premium licence may ever create a user offline. Nothing in this edit describes already-built behaviour: clientLimit()/device-bound writes are the current (v1/v2) system this replaces, so there are no non-changes here.",
+    "impact": [
+      {
+        "file": "CLAUDE.md",
+        "sections": "Data, auth, identity bullet (under the License paragraph)",
+        "why": "the short core currently only describes the v1/v2 device-bound, tier-only picture ('no translation layer', nothing about a device lock); the move to a third, side-by-side contract that removes the device lock and needs the internet to create a user is exactly the scale of behaviour change this file's core bullets exist to carry, with the detail staying in data-auth-identity.md"
+      },
+      {
+        "file": "docs/spec/backend-and-feedback.md",
+        "sections": "User-count licensing — API v3",
+        "why": "the answers to the blocking/optional questions below (refusal status, max_users column, aggregation scope) must be written back into this section before a [Backend] stub can be planned off it"
+      },
+      {
+        "file": "docs/spec/data-auth-identity.md",
+        "sections": "User-count licensing (replaces device locks)",
+        "why": "same reason on the app side — the 'Not yet decided' list in this section is the one the analysis below resolves, and the app-side bullets (API version switch, what reportUserCount sends, the two new user-facing messages) need to read as decided, not open, before stubs are planned"
+      },
+      {
+        "file": "docs/spec/sensor-pill.md",
+        "sections": "License API wire format — confirmed final; About dialog License Tier row",
+        "why": "this file owns the tier/limit table and clientLimit()'s confirmed values; once the limit is server-told (and possibly overridden per licence by max_users) rather than a pure function of tier, this table and the About dialog's License Tier description need a line saying so, and `clientLimit()`'s doc comment chain (S-141/S-162/S-204 history) gets one more entry"
+      },
+      {
+        "file": "docs/spec/two-ball.md",
+        "sections": "Open items — Per-ball user allowance: clientLimit comes from ball 1",
+        "why": "this decision was written when clientLimit was a pure tier→number formula; now that the number is server-reported per ball (and the aggregation-scope question below is open), this line needs to either restate the same decision against the new mechanism or be updated once that question is answered"
+      },
+      {
+        "file": "docs/spec/trainer.md",
+        "sections": "Panel tabs — Users (was \"Clients\")",
+        "why": "this is where the user-delete action this edit changes actually lives (ClientsTab.tsx's confirmDelete); its one-line description should say deleting a user now also reports the tablet's lower count to the server"
+      },
+      {
+        "file": "docs/spec/telemetry-crash-encryption.md",
+        "sections": "Usage Telemetry gaps / button_tap convention",
+        "why": "always consider analytics for a new user-facing flow (project convention); the New User flow gains two new outcomes (blocked by the server limit, blocked by no internet) that are exactly the kind of interaction the existing button_tap + distinct-buttonId convention (S-241 through S-244) already covers for every other LoginScreen action, so the spec should say which two buttonIds to add rather than leaving it to be invented during development"
+      }
+    ],
+    "conflicts": [
+      "data-auth-identity.md, 'Decision' item 2 ('Every time a new user is created, the tablet first reports to the server... Without a connection the user is not created') states an unconditional rule with no exception, but the 'Not yet decided' list's second bullet asks whether a cached Premium licence may skip the server call and create offline — the same edit states the rule as settled in one place and as still open in another.",
+      "data-auth-identity.md's 'Not yet decided' bullet 5 (aggregation per ball or per licence) and bullet 12 (the endpoint and field that identifies the tablet) both appear already answered by backend-and-feedback.md's own Storage bullet (`sensor_devices(sensor_id, device_id, user_count, updated_at)`, keyed per ball) and Routes bullet (`PUT /api/v3/sensors/{ball}/user-count`, body `{deviceUniqueId, userCount}`) written in the same pass — the open-questions list was not updated to drop them once those sections were written.",
+      "data-auth-identity.md item 1 says the device-proof switch (S-11/S-17) 'is retired with it', which reads as immediate, but backend-and-feedback.md's own compatibility gate requires v1 and v2 — device lock included — to keep passing completely unchanged indefinitely, and its 'Shared sensors table' bullet says the device-proof switch is only actually dropped 'when v1 and v2 are retired' (a separate, unscheduled future cleanup). Worth tightening the wording in the respec pass so it doesn't read as contradicting the compatibility gate two paragraphs away."
+    ],
+    "codeGaps": [
+      "SensorLicense (src/types/index.ts) and sensorSlice's clientLimit field only ever hold a value computed locally by clientLimit(licenseType) — a pure tier→number formula recomputed at every call site, including the fully offline stored-license reconnect path in useSensorConnect.ts (lines ~346, ~397, ~405). Once the limit can be server-told and possibly overridden per licence (the max_users question below), it has to be cached on the stored license record for that offline path, not recomputed from the tier alone.",
+      "sensorIdentityService.ts has a pendingSync/flushPendingIdentities() pattern for retrying an offline edit on the next connection; licenseService.ts has no equivalent for a user-count report, which rule 7 requires (an offline delete's lower count must be remembered and sent on the next server call).",
+      "licenseService.ts hardcodes '/api/v1/...' on every endpoint and a literal `version: 2` in the register body, with no VITE_LICENSE_API_VERSION switch or per-version path selection, and has no reportUserCount-style call at all.",
+      "LoginScreen.tsx's handleAddClient has no server round-trip before creating the local Client row (only the already-local-only atLimit check and the async IndexedDB write) and no 'needs internet' / 'call customer service' UI states; ClientsTab.tsx's confirmDelete has no call to report anything to the server.",
+      "The backend repo has none of v3 yet: no controllers_v3.py/dtos_v3.py, no /api/v3 router, no sensor_devices table or migration 003, no enforce-user-limit SSM switch — entirely new backend work, tracked only as [Backend] tickets per this work item's rule."
+    ],
+    "moves": [],
+    "nonChanges": [],
+    "at": "2026-11-15T20:36:13.886Z"
+  },
+  "questions": [
+    {
+      "n": 1,
+      "blocking": true,
+      "text": "data-auth-identity.md's own 'Decision' item 2 says every user creation always needs the internet, with no stated exception; its 'Not yet decided' list separately asks whether a tablet with a cached Premium (unlimited) licence may skip the server call and create users offline. These two parts of the same edit disagree. Which is intended: the internet is required for every user creation regardless of tier, or an unlimited cached tier may create offline?",
+      "answer": "Yha unlimited may create users offline No need to track counts on the backend Just send counts using analytics don't block anything in a premium account",
+      "answeredBy": "Ilia gandelman",
+      "answeredAt": "2026-11-15T21:13:19.034Z"
+    },
+    {
+      "n": 2,
+      "blocking": true,
+      "text": "Which HTTP status does the v3 user-count route answer on refusal? The owner proposed 401; the text itself recommends 409 instead because the gateway/authorizer already produce 401/403 for unrelated failures on this API. This decides both the backend controller and what licenseService.ts/backendErrors.ts must check for.",
+      "answer": "Let's go with 403. With an error message inside the body to distinguish",
+      "answeredBy": "Ilia gandelman",
+      "answeredAt": "2026-11-15T21:18:19.719Z"
+    },
+    {
+      "n": 3,
+      "blocking": false,
+      "text": "Does 'the current count of users on this tablet' (rule 3) mean the count including the user about to be created, or only the users that already exist before this creation? Default if unanswered: send the candidate count (existing local users + 1); a 200 both stores it and permits creating the local row, a refusal does neither — the only reading consistent with rule 5's '200 means the count was stored and the user may be created.'",
+      "answer": null
+    },
+    {
+      "n": 4,
+      "blocking": false,
+      "text": "Where should the per-licence limit live — fixed tier constants (1/50/unlimited) in server code, or a nullable `licenses.max_users` override column? Default if unanswered: add the nullable override column (so customer service can raise a limit without a deploy, as the text itself recommends), falling back to the tier constant when it is null.",
+      "answer": null
+    },
+    {
+      "n": 5,
+      "blocking": false,
+      "text": "Does the user total aggregate per ball or per licence (one licence can cover several balls), and for a tablet in two-ball mode, does the reported count apply to both connected balls' totals or only the primary one? Default if unanswered: per ball, matching the `sensor_devices(sensor_id, ...)` schema already specified, and reported only to ball 1 — consistent with two-ball.md's existing 'clientLimit comes from ball 1' decision.",
+      "answer": null
+    },
+    {
+      "n": 6,
+      "blocking": false,
+      "text": "Does the Guest account count toward a ball's user total? Default if unanswered: no — decision item 2 already says the Guest shortcut keeps working fully offline, which is only consistent if Guest creation is exempt from the server-count flow entirely (it never reports, and is therefore never counted).",
+      "answer": null
+    },
+    {
+      "n": 7,
+      "blocking": false,
+      "text": "What exact wording should the 'an internet connection is needed' and 'call customer service' prompts use, and should the latter include a phone number? Default if unanswered: reuse the existing generic 'Contact customer support' phrasing already used by sensor_error_not_found and its siblings, with no hardcoded phone number, translated the same way into every shipped language.",
+      "answer": null
+    },
+    {
+      "n": 8,
+      "blocking": false,
+      "text": "What should happen to clinics already over the limit when this ships, and how does a clinic free a slot when a tablet is lost or reset? Default if unanswered: nothing in code — the observe-first switch means no clinic is ever blocked before the owner reviews the UserLimitWouldBlock metric and turns enforcement on manually; freeing a lost tablet's slot is a manage-tool follow-up outside this work item's scope.",
+      "answer": null
+    }
+  ],
+  "stubIds": [
+    "S-326",
+    "S-327",
+    "S-328",
+    "S-21"
+  ],
+  "commits": [
+    {
+      "sha": "810e3c040e828a087f808fdcff4ef4198748e5d4",
+      "kind": "spec",
+      "subject": "rewrite User-count licensing replaces device locks",
+      "at": "2026-11-15T21:31:24.736Z"
+    },
+    {
+      "sha": "1c672b8e2989f5954f4c78e6d524f1861d3694c3",
+      "kind": "registry",
+      "subject": "register the tickets",
+      "at": "2026-11-16T06:11:45.068Z"
+    },
+    {
+      "sha": "c5a3700c1ce45f842db2a12066aa8e7ee0930afe",
+      "kind": "feature",
+      "subject": "license service speaks API v3 (S-326)",
+      "at": "2026-11-16T06:21:27.994Z"
+    },
+    {
+      "sha": "7bc763da04bd386a49d4a27c2097d82438a7f889",
+      "kind": "feature",
+      "subject": "New User flow server check (S-327)",
+      "at": "2026-11-16T06:21:28.444Z"
+    },
+    {
+      "sha": "f26ea0a2afd937cd7350340b73305ed34c97e47f",
+      "kind": "feature",
+      "subject": "trainer delete reports count (S-328)",
+      "at": "2026-11-16T06:21:28.854Z"
+    },
+    {
+      "sha": "e52585f5f16d3e667dddd59875c2839117efbdee",
+      "kind": "docs",
+      "subject": "translate the manual",
+      "at": "2026-11-16T06:34:34.126Z"
+    }
+  ],
+  "runs": {
+    "analyze": "run-20261115T202904-8437",
+    "respec": "run-20261115T212337-7969",
+    "develop": "run-20261116T054648-d8d6"
+  },
+  "qaReport": "Tests: licenseService/sensorSlice/strings vitest and full npm run verify (684) pass; e2e login.spec.ts 15 pass. Build: web-dev ok, debug APK published. Not verified: the New User refusal/offline prompts and the offline-delete report on a device or against stage (the dev build bypasses the licence API and there is no component test infra); the whole backend side, S-21 [Backend] (API v3 routes, migration 003, switch) is a tracking ticket for the backend repo and stays deferred, so the app cannot be tried end to end against v3 yet; two-ball and BLE untouched.",
+  "log": [
+    {
+      "at": "2026-11-12T13:10:29.775Z",
+      "text": "ilia gandelman completed 1 document change"
+    },
+    {
+      "at": "2026-11-12T13:16:07.870Z",
+      "text": "ilia gandelman updated the changes (3 documents)"
+    },
+    {
+      "at": "2026-11-12T13:16:13.767Z",
+      "text": "ilia gandelman updated the changes (2 documents)"
+    },
+    {
+      "at": "2026-11-12T16:16:09.136Z",
+      "text": "ilia gandelman updated the changes (2 documents)"
+    },
+    {
+      "at": "2026-11-12T16:23:33.241Z",
+      "text": "ilia gandelman updated the changes (2 documents)"
+    },
+    {
+      "at": "2026-11-12T19:49:14.013Z",
+      "text": "ilia gandelman updated the changes (2 documents)"
+    },
+    {
+      "at": "2026-11-12T19:53:17.596Z",
+      "text": "ilia gandelman updated the changes (2 documents)"
+    },
+    {
+      "at": "2026-11-15T20:29:07.577Z",
+      "text": "Claude started analyzing the spec against these changes"
+    },
+    {
+      "at": "2026-11-15T20:36:13.889Z",
+      "text": "Claude's analysis: 7 file(s) affected, 0 documentation-only, 8 question(s) (2 blocking)"
+    },
+    {
+      "at": "2026-11-15T21:13:06.610Z",
+      "text": "Ilia gandelman answered Q1"
+    },
+    {
+      "at": "2026-11-15T21:13:10.256Z",
+      "text": "Ilia gandelman answered Q1"
+    },
+    {
+      "at": "2026-11-15T21:13:12.638Z",
+      "text": "Ilia gandelman answered Q1"
+    },
+    {
+      "at": "2026-11-15T21:13:19.034Z",
+      "text": "Ilia gandelman answered Q1"
+    },
+    {
+      "at": "2026-11-15T21:18:19.719Z",
+      "text": "Ilia gandelman answered Q2"
+    },
+    {
+      "at": "2026-11-15T21:23:37.524Z",
+      "text": "Ilia gandelman started the spec rewrite"
+    },
+    {
+      "at": "2026-11-15T21:30:55.630Z",
+      "text": "resolved Q1/Q2 (blocking) and Q3-Q8 (optional defaults) directly into data-auth-identity.md's User-count licensing section: Premium/tier3+ never calls the v3 route (offline, unenforced, observed only via the existing login_new_user analytics event); refusal status is 403 with an error body; replaced"
+    },
+    {
+      "at": "2026-11-15T21:30:55.733Z",
+      "text": "cross-referenced backend-and-feedback.md's API v3 section: 403 refusal status, nullable licenses.max_users override (Q4), and a note that the app never calls the user-count route for a Premium ball at all"
+    },
+    {
+      "at": "2026-11-15T21:30:55.841Z",
+      "text": "cross-referenced CLAUDE.md's Data, auth, identity core bullets with a one-line summary of the device-lock removal and the Premium exception"
+    },
+    {
+      "at": "2026-11-15T21:30:55.944Z",
+      "text": "cross-referenced sensor-pill.md's tier/limit table and clientLimit() doc-comment chain: the limit is now server-told (possibly raised by max_users) under v3, clientLimit() is removed; the About dialog's License Tier row is unaffected"
+    },
+    {
+      "at": "2026-11-15T21:30:56.061Z",
+      "text": "cross-referenced two-ball.md's Open items bullet and the S-274 decision row: per-ball user allowance still reports ball 1 only under v3, even though the server now tracks counts per ball"
+    },
+    {
+      "at": "2026-11-15T21:30:56.170Z",
+      "text": "cross-referenced trainer.md's Users tab bullet: deleting a user reports the tablet's lower count on a limited-tier ball"
+    },
+    {
+      "at": "2026-11-15T21:30:56.278Z",
+      "text": "cross-referenced telemetry-crash-encryption.md with the two new button_tap ids for the New User flow's server-checked outcomes (login_new_user_blocked_limit / _offline), and noted Premium's volume needs no new instrumentation"
+    },
+    {
+      "at": "2026-11-15T21:31:24.737Z",
+      "text": "commit 810e3c0 (spec): rewrite User-count licensing replaces device locks"
+    },
+    {
+      "at": "2026-11-15T21:31:26.939Z",
+      "text": "The spec rewrite is finished and waiting for review"
+    },
+    {
+      "at": "2026-11-16T05:46:40.435Z",
+      "text": "ilia confirmed the rewritten spec"
+    },
+    {
+      "at": "2026-11-16T05:46:48.798Z",
+      "text": "ilia started the work"
+    },
+    {
+      "at": "2026-11-16T06:11:42.241Z",
+      "text": "stubs: S-326, S-327, S-328, S-21"
+    },
+    {
+      "at": "2026-11-16T06:11:45.069Z",
+      "text": "commit 1c672b8 (registry): register the tickets"
+    },
+    {
+      "at": "2026-11-16T06:21:27.995Z",
+      "text": "commit c5a3700 (feature): license service speaks API v3 (S-326)"
+    },
+    {
+      "at": "2026-11-16T06:21:28.445Z",
+      "text": "commit 7bc763d (feature): New User flow server check (S-327)"
+    },
+    {
+      "at": "2026-11-16T06:21:28.855Z",
+      "text": "commit f26ea0a (feature): trainer delete reports count (S-328)"
+    },
+    {
+      "at": "2026-11-16T06:34:34.133Z",
+      "text": "commit e52585f (docs): translate the manual"
+    },
+    {
+      "at": "2026-11-16T06:43:24.261Z",
+      "text": "The work is finished, waiting for QA"
+    },
+    {
+      "at": "2026-11-18T06:17:46.578Z",
+      "text": "ilia confirmed it done"
+    }
+  ],
+  "sentBack": null,
+  "lastError": null,
+  "runSummary": "- WI-3 — app side built and handed to QA; last commit is 183d9ce on 11.11.26-sprint (nothing pushed).\n- Built — the licence service now speaks API v3 and reports the tablet's user count (S-326). The New User flow asks the server first on MyPlayBall and Basic balls (S-327). A trainer delete reports the lower count, or keeps it for the next server call when offl\n- Behaviour — a limit refusal is only a 403 with the error text \"user limit reached\". Premium balls never call the server. The Guest user is not counted.\n- Also changed — two new strings in every language, two new `button_tap` ids, and the English `signing-in` article. The translation worker updated the other ten languages.\n- Checked — `npm run verify` passes (684 tests), the login e2e spec passes (15 tests), the web-dev build is ok and the debug APK is published.\n- Flaky test — `assetManifest.test.ts` failed once when run in parallel with the e2e spec, then passed on a re-run.\n- Not verified — the refusal and offline prompts and the offline-delete report have not been tried on a device or against stage. The dev build skips the licence API and the repo has no component tests, so only the service logic is unit-tested.\n- Blocked — the backend side, S-21 (v3 routes, migration 003, enforcement switch), is a `[Backend]` tracking ticket and stays deferred. It needs the backend repo and the owner's go-ahead for any AWS step, so the app cannot be tried end to end against v3 yet.\n- Needs a person — QA on stage once S-21 is built and deployed, then confirm the work item in spec-web.",
+  "rewriteStartedAt": "2026-11-15T21:23:37.523Z",
+  "rewrittenBy": "Ilia gandelman",
+  "specReviewAt": "2026-11-15T21:31:26.938Z",
+  "specApprovedAt": "2026-11-16T05:46:40.434Z",
+  "specApprovedBy": "ilia",
+  "specFeedback": null,
+  "workStartedAt": "2026-11-16T05:46:48.798Z",
+  "workedBy": "ilia",
+  "integratedAt": "2026-11-16T06:43:24.260Z",
+  "doneBy": "ilia",
+  "doneAt": "2026-11-18T06:17:46.577Z"
+}

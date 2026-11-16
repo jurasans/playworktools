@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>License v2: Fable's proposal</title>
+<style>
+  /* Free-form page of the License v2 feature module (feature.json `pages`). Claude's own analysis; not the agreed spec. */
+  :root {
+    --bg:#0f172a; --raised:#1e293b; --sunken:#0a0f1f; --line:#243044;
+    --fg:#f1f5f9; --fg2:#cbd5e1; --fg3:#94a3b8;
+    --brand:#22c55e; --gold:#eab308; --red:#ef4444; --blue:#38bdf8; --violet:#a78bfa;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; }
+  body { background:var(--bg); color:var(--fg); font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif; display:flex; flex-direction:column; }
+  nav { display:flex; gap:6px; padding:8px 12px; overflow-x:auto; border-bottom:1px solid var(--line); flex-shrink:0; background:var(--sunken); scrollbar-width:none; }
+  nav::-webkit-scrollbar { display:none; }
+  nav button { font:inherit; color:var(--fg2); background:none; border:1px solid var(--line); border-radius:999px; padding:5px 13px; cursor:pointer; white-space:nowrap; }
+  nav button[aria-selected=true] { background:var(--violet); border-color:var(--violet); color:#1e1033; font-weight:700; }
+  main { flex:1; min-height:0; overflow:auto; -webkit-overflow-scrolling:touch; }
+  section { display:none; max-width:920px; margin:0 auto; padding:18px 16px 60px; }
+  section.on { display:block; }
+  h2 { font-size:22px; margin:0 0 4px; }
+  h3 { font-size:16px; margin:22px 0 6px; color:var(--fg); }
+  p { margin:8px 0; color:var(--fg2); }
+  .lead { font-size:17px; color:var(--fg); }
+  .tag { display:inline-block; font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; border-radius:999px; padding:2px 10px; margin-bottom:8px; background:var(--violet); color:#1e1033; }
+  .grid { display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:12px 0; }
+  .card { background:var(--raised); border:1px solid var(--line); border-radius:12px; padding:12px 14px; }
+  .card h4 { margin:0 0 4px; font-size:15px; }
+  .card p { margin:4px 0 0; font-size:14px; }
+  .card.g { border-left:4px solid var(--brand); } .card.y { border-left:4px solid var(--gold); }
+  .card.r { border-left:4px solid var(--red); } .card.b { border-left:4px solid var(--blue); } .card.v { border-left:4px solid var(--violet); }
+  .num { font-size:26px; font-weight:800; color:var(--violet); line-height:1; }
+  .tw { overflow-x:auto; margin:10px 0; }
+  table { border-collapse:collapse; width:100%; min-width:520px; font-size:14px; }
+  th,td { border:1px solid var(--line); padding:7px 10px; text-align:left; vertical-align:top; }
+  th { background:var(--sunken); color:var(--fg); }
+  td { color:var(--fg2); }
+  .ok { color:#86efac; font-weight:700; } .bad { color:#fca5a5; font-weight:700; } .mid { color:#fde68a; font-weight:700; }
+  .note { background:var(--sunken); border:1px dashed var(--line); border-radius:10px; padding:10px 12px; font-size:14px; color:var(--fg2); margin:12px 0; }
+  .note b { color:var(--fg); }
+  code { font-family:ui-monospace,Consolas,monospace; font-size:.9em; background:var(--sunken); padding:1px 5px; border-radius:4px; }
+  pre { background:var(--sunken); border:1px solid var(--line); border-radius:10px; padding:10px 12px; overflow:auto; font:13px/1.5 ui-monospace,Consolas,monospace; color:var(--fg2); }
+  ul { margin:6px 0; padding-left:20px; color:var(--fg2); } li { margin:3px 0; }
+  svg { width:100%; height:auto; display:block; margin:10px 0; }
+  svg text { font-family:system-ui,-apple-system,"Segoe UI",sans-serif; }
+  .phase { display:flex; gap:12px; margin:10px 0; }
+  .phase .n { flex:none; width:38px; height:38px; border-radius:50%; background:var(--violet); color:#1e1033; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .phase .c { flex:1; min-width:0; }
+  .phase h4 { margin:0; font-size:15px; } .phase small { color:var(--fg3); }
+  .flow { animation:dash 1.2s linear infinite; }
+  @keyframes dash { to { stroke-dashoffset:-16; } }
+  @media (prefers-reduced-motion:reduce) { .flow { animation:none; } }
+</style>
+</head>
+<body>
+<nav id="nav" role="tablist" aria-label="Fable sections"></nav>
+<main id="main">
+
+<!-- ───────────────────────────── 1. THE IDEA ───────────────────────────── -->
+<section id="s-idea" data-title="The idea">
+  <span class="tag">Fable's proposal · not the agreed spec</span>
+  <h2>Stop counting people. Start signing licenses.</h2>
+  <p class="lead">The v2 document asks the server to know every user of every ball. That one choice creates almost every hard question in this module. Remove it, and licensing becomes simpler, private, fully offline and a real sales tool.</p>
+
+  <div class="grid">
+    <div class="card r"><h4>What v2 (the document) does</h4><p>The server keeps a list of users per ball. Every new user needs internet. The server must recognise the same person on two tablets, so something about the person has to leave the device.</p></div>
+    <div class="card g"><h4>What I propose instead</h4><p>The server signs a small <b>license certificate</b> per ball. The tablet checks the signature and enforces the limits itself, offline. The server only ever sees <b>numbers</b>, never people.</p></div>
+  </div>
+
+  <h3>The four moves</h3>
+  <div class="grid">
+    <div class="card v"><div class="num">1</div><h4>Signed license certificate</h4><p>The license is a signed file, not a number in a reply. Any tablet can verify it with no internet. It can carry more than a tier: limits, features, trial dates.</p></div>
+    <div class="card v"><div class="num">2</div><h4>Count on the tablet, report only a number</h4><p>The tablet counts its own users for the ball and blocks at the limit. It tells the server "37", not who. No user identity leaves the device, ever.</p></div>
+    <div class="card v"><div class="num">3</div><h4>Limit tablets, not identities</h4><p>The server already knows each tablet (the device id sent today). So the license says "up to N tablets per ball". That is the cross-tablet control, with no personal data.</p></div>
+    <div class="card v"><div class="num">4</div><h4>Meter active users, not all-time users</h4><p>"50 active users" (seen in the last 90 days) instead of "50 users ever". Old patients age out by themselves. Clinics never have to delete anyone to free a slot.</p></div>
+  </div>
+
+  <svg viewBox="0 0 860 250" role="img" aria-label="The server signs a certificate, the tablet verifies it offline and reports only a count">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="#94a3b8"/></marker></defs>
+    <rect x="20" y="60" width="210" height="120" rx="14" fill="#1e293b" stroke="#a78bfa" stroke-width="2"/>
+    <text x="125" y="92" text-anchor="middle" fill="#f1f5f9" font-size="16" font-weight="700">License server</text>
+    <text x="125" y="116" text-anchor="middle" fill="#cbd5e1" font-size="13">ball → tier, limits</text>
+    <text x="125" y="136" text-anchor="middle" fill="#cbd5e1" font-size="13">tablets per ball</text>
+    <text x="125" y="156" text-anchor="middle" fill="#cbd5e1" font-size="13">counts (numbers only)</text>
+    <rect x="325" y="60" width="210" height="120" rx="14" fill="#1e293b" stroke="#22c55e" stroke-width="2"/>
+    <text x="430" y="92" text-anchor="middle" fill="#f1f5f9" font-size="16" font-weight="700">Tablet</text>
+    <text x="430" y="116" text-anchor="middle" fill="#cbd5e1" font-size="13">verifies the signature</text>
+    <text x="430" y="136" text-anchor="middle" fill="#cbd5e1" font-size="13">counts its own users</text>
+    <text x="430" y="156" text-anchor="middle" fill="#cbd5e1" font-size="13">enforces limits offline</text>
+    <rect x="630" y="60" width="210" height="120" rx="14" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+    <text x="735" y="92" text-anchor="middle" fill="#f1f5f9" font-size="16" font-weight="700">Ball</text>
+    <text x="735" y="116" text-anchor="middle" fill="#cbd5e1" font-size="13">identifies itself</text>
+    <text x="735" y="136" text-anchor="middle" fill="#cbd5e1" font-size="13">later: carries its own</text>
+    <text x="735" y="156" text-anchor="middle" fill="#cbd5e1" font-size="13">certificate (own firmware)</text>
+    <path class="flow" d="M230 100 H322" stroke="#a78bfa" stroke-width="2.5" stroke-dasharray="8 8" fill="none" marker-end="url(#ar)"/>
+    <text x="276" y="90" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700">signed certificate</text>
+    <path class="flow" d="M325 145 H233" stroke="#22c55e" stroke-width="2.5" stroke-dasharray="8 8" fill="none" marker-end="url(#ar)"/>
+    <text x="278" y="166" text-anchor="middle" fill="#86efac" font-size="12" font-weight="700">"37 active users"</text>
+    <path class="flow" d="M630 120 H538" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="8 8" fill="none" marker-end="url(#ar)"/>
+    <text x="583" y="110" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="700">ball id</text>
+    <text x="430" y="218" text-anchor="middle" fill="#94a3b8" font-size="13">Names and ID numbers stay inside the tablet. Nothing about a person crosses the purple line.</text>
+    <path d="M278 30 V200" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3 5"/>
+  </svg>
+
+  <div class="note"><b>Why this is the right shape for Playwork:</b> the app is offline-first and keeps all clinical data on the device. Two tablets never share patients today, so "the same user on a second tablet" is already a new local record. A server-side user list would be the first thing in the company that needs personal data in the cloud. Licensing does not need it.</div>
+</section>
+
+<!-- ───────────────────────────── 2. HOW IT WORKS ───────────────────────────── -->
+<section id="s-how" data-title="How it works">
+  <h2>How it works</h2>
+
+  <h3>1. The certificate</h3>
+  <p>When a tablet registers a ball (it already calls <code>/sensors/register</code> at connect), the server answers with a signed certificate next to the tier number it returns today. Old app versions ignore the new field, so nothing breaks.</p>
+<pre>{
+  "ball": "E4:5F:01:…",          // the sensor's id
+  "tier": 2,                       // same integer as today
+  "limits":   { "activeUsers": 50, "tablets": 3, "activeWindowDays": 90 },
+  "features": { "clinicalTests": true, "csvExport": true, "twoBall": false },
+  "trialUntil": null,              // or a date: every new ball can start with a Premium trial
+  "issuedAt": "2026-11-11", "refreshBy": "2027-02-09",
+  "sig": "…"                       // ECDSA P-256 signature made by the server
+}</pre>
+  <ul>
+    <li>The app holds only the <b>public</b> key. It can check a certificate but cannot make one.</li>
+    <li>The certificate is cached on the tablet. With it, the ball works with <b>no internet at all</b>, including creating new users.</li>
+    <li>ECDSA P-256 is checked with the browser's built-in crypto (WebCrypto), so no new library is needed in the app. On the server the private key lives in AWS KMS and never leaves it.</li>
+  </ul>
+
+  <h3>2. Counting, on the tablet</h3>
+  <ul>
+    <li>A user is <b>active</b> on a ball if they played or tested with it in the last 90 days (the window comes from the certificate).</li>
+    <li>Creating a new user is allowed while active users &lt; the limit. At the limit, only <b>new</b> users are blocked. Existing users always keep working.</li>
+    <li>Guest never counts.</li>
+    <li>Saved game and test results already carry the ball id and the date, so the count is a local query. No new data is collected. Results saved before the ball id was recorded simply do not count.</li>
+  </ul>
+
+  <h3>3. What the tablet tells the server</h3>
+  <p>When it happens to be online, the tablet sends one small message per ball:</p>
+<pre>{ "ball": "E4:5F:01:…", "device": "&lt;device id, sent today already&gt;", "activeUsers": 37, "sessions30d": 212 }</pre>
+  <p>Numbers only. The server adds them up per ball and per clinic. This is the company's first real view of how its balls are used.</p>
+
+  <h3>4. Tablets per ball</h3>
+  <p>The first time a tablet meets a ball it must be online once, exactly as today. The server gives it a tablet slot (Basic: for example 3) and the certificate. From then on that tablet needs no internet for that ball. A lost or replaced tablet is released from the Manage tool, or frees itself after not being seen for a set time.</p>
+
+  <h3>5. When the certificate gets old</h3>
+  <p>The app refreshes it silently whenever it is online. If a tablet stays offline past <code>refreshBy</code>:</p>
+  <ul>
+    <li>Therapy never stops. Existing users keep playing and testing.</li>
+    <li>The trainer sees a gentle "connect to the internet to refresh the license" note.</li>
+    <li>After a long grace period, only <b>creating new users</b> pauses until the tablet goes online once.</li>
+  </ul>
+  <p>This is also how a refund, a stolen ball or an ended subscription takes effect: the server stops renewing.</p>
+
+  <div class="note"><b>The rule above every rule:</b> licensing may stop growth (new users, new tablets, premium features). It must never lock a patient out of their rehabilitation or hide their history.</div>
+</section>
+
+<!-- ───────────────────────────── 3. COMPARE ───────────────────────────── -->
+<section id="s-compare" data-title="Compare">
+  <h2>The document's v2 against this proposal</h2>
+  <div class="tw"><table>
+    <tr><th></th><th>v2 as written (server counts users)</th><th>Proposal (signed certificate, local count)</th></tr>
+    <tr><td><b>Personal data on the server</b></td><td class="bad">Needed in some form (id, token or hash)</td><td class="ok">None</td></tr>
+    <tr><td><b>National ID risk</b></td><td class="bad">Central problem (Q7, Q8)</td><td class="ok">Gone: ids never leave the tablet</td></tr>
+    <tr><td><b>New user with no internet</b></td><td class="bad">Blocked</td><td class="ok">Works</td></tr>
+    <tr><td><b>Clinic with poor Wi-Fi</b></td><td class="bad">Trainer stuck at the door</td><td class="ok">Unaffected</td></tr>
+    <tr><td><b>Exact cap across tablets</b></td><td class="ok">Yes</td><td class="mid">Per tablet, times a tablet limit</td></tr>
+    <tr><td><b>Freeing a slot</b></td><td class="bad">Needs delete rules and sync (Q4)</td><td class="ok">Automatic after 90 days idle</td></tr>
+    <tr><td><b>Tablet replaced or app reinstalled</b></td><td class="bad">Users counted twice (Q12)</td><td class="ok">New tablet starts at zero</td></tr>
+    <tr><td><b>Backend work</b></td><td class="bad">User tables, dedupe, delete, sync, privacy review</td><td class="ok">Sign a certificate, store counts</td></tr>
+    <tr><td><b>Trials, add-ons, subscriptions</b></td><td class="bad">Not covered</td><td class="ok">Built into the certificate</td></tr>
+    <tr><td><b>What sales learns</b></td><td class="mid">User count per ball</td><td class="ok">Active users, sessions, tablets, per ball and per clinic</td></tr>
+  </table></div>
+
+  <h3>The honest weak point</h3>
+  <p>The cap is no longer exact across tablets. A Basic ball with 3 tablets could reach 3 × 50 active users. Three things make this acceptable:</p>
+  <ul>
+    <li>The tablet limit bounds it, and the server sees every tablet's count. A ball reporting 140 active users is not a leak, it is a <b>sales lead</b> for Premium.</li>
+    <li>If an exact cap matters, set the certificate to split it: 50 across 3 tablets means the server hands each tablet a share (for example 20 / 20 / 10) and rebalances when they sync. Still no identities.</li>
+    <li>A clinic that works hard to cheat a user cap can also repackage the app. No scheme inside a tablet app stops that. Signed certificates stop the casual cases, which are the real ones.</li>
+  </ul>
+
+  <h3>What happens to the 15 open questions</h3>
+  <div class="tw"><table>
+    <tr><th>Question</th><th>Under this proposal</th></tr>
+    <tr><td>Q1 Message at the cap</td><td class="mid">Still needed. Becomes simpler, and gains an upgrade link.</td></tr>
+    <tr><td>Q2 Does Guest count</td><td class="ok">Answered: never.</td></tr>
+    <tr><td>Q3 Users that already exist</td><td class="ok">Disappears. They count as active when they next play. Nobody is blocked.</td></tr>
+    <tr><td>Q4 Does deleting free a slot</td><td class="ok">Disappears. Slots free themselves after the idle window.</td></tr>
+    <tr><td>Q5 Offline users passing the cap</td><td class="ok">Disappears. The tablet enforces the cap offline.</td></tr>
+    <tr><td>Q6 Same person on two tablets</td><td class="ok">Disappears. Not tracked.</td></tr>
+    <tr><td>Q7 How users are distinguished</td><td class="ok">Disappears. The server never sees users.</td></tr>
+    <tr><td>Q8 National ID numbers</td><td class="ok">Neutralised for licensing. Ids stay on the device.</td></tr>
+    <tr><td>Q9 "First login" per tablet or per ball</td><td class="ok">Disappears. Only a tablet's first meeting with a ball is online, as today.</td></tr>
+    <tr><td>Q10 Is a bundle only a sales concept</td><td class="ok">Answered: a bundle is balls on one clinic account (see Company upgrade).</td></tr>
+    <tr><td>Q11 Once per ball or per clinic</td><td class="ok">Per ball by default; pooled only in an optional clinic plan.</td></tr>
+    <tr><td>Q12 Replaced tablet or reinstall</td><td class="ok">Disappears. A new tablet starts at zero and takes a tablet slot.</td></tr>
+    <tr><td>Q13 Replacing the MyPlayBall user</td><td class="mid">Needs one small rule, for example one replacement every 30 days.</td></tr>
+    <tr><td>Q14 What the server may store</td><td class="ok">Answered: ball, tier, tablets, counts. Nothing about a person.</td></tr>
+    <tr><td>Q15 ID in reports and the CSV</td><td class="mid">Not a licensing question. Still worth deciding.</td></tr>
+  </table></div>
+  <p>Eleven of fifteen are removed or answered by the design itself. Two blocking questions (Q8, Q9) stop being blocking.</p>
+</section>
+
+<!-- ───────────────────────────── 4. COMPANY UPGRADE ───────────────────────────── -->
+<section id="s-company" data-title="Company upgrade">
+  <h2>What this unlocks for the whole company</h2>
+  <p class="lead">Once the license is a signed list of limits and features, it stops being a gate and becomes the way Playwork sells.</p>
+
+  <div class="grid">
+    <div class="card g"><h4>Trials that sell themselves</h4><p>Every new ball starts with 30 days of Premium. On day 31 it becomes what was bought. The clinic has already felt what it is missing. Needs no app release: it is a date in the certificate.</p></div>
+    <div class="card g"><h4>Upgrade at the moment of need</h4><p>The cap screen shows "This ball has 50 of 50 active users" and a QR code to an upgrade page for that exact ball. After payment the server issues a new certificate and the tablet picks it up on its next sync.</p></div>
+    <div class="card g"><h4>Add-ons without new tiers</h4><p>Sell the clinical test catalogue, CSV export, progress reports or the two-ball games as switches. The two-ball games are already behind a flag; the certificate can be that flag.</p></div>
+    <div class="card g"><h4>Subscriptions, if wanted</h4><p>The refresh date makes a yearly plan possible next to the one-time purchase. Stop renewing and the ball falls back to its base tier, never to zero.</p></div>
+    <div class="card b"><h4>Clinic accounts</h4><p>Group balls under one clinic. A bundle becomes "a clinic with N balls". Later, an optional clinic plan can pool active users across all its balls, which answers the bundle debate with a product instead of a rule.</p></div>
+    <div class="card b"><h4>A fleet view for support and sales</h4><p>The Manage tool already lists balls. Add tablets per ball, active users and sessions per month. Support sees a dead ball before the clinic calls. Sales sees who is close to a cap and who stopped using the product.</p></div>
+    <div class="card y"><h4>Distributor and reseller keys</h4><p>The same signing can issue licenses for a distributor's stock in bulk, with their own trial lengths, without giving them access to the server.</p></div>
+    <div class="card y"><h4>Real hardware identity (own firmware)</h4><p>Today a ball is known by its Bluetooth address, which can be copied. A Playwork board can hold its own key and prove it is genuine, and can carry its certificate inside the ball, so a brand-new tablet works with it with no internet at all.</p></div>
+  </div>
+
+  <h3>A cleaner privacy story to sell</h3>
+  <p>"Playwork's servers hold no patient data. Not names, not ID numbers, not results." That sentence is true under this proposal and stays true as licensing grows. For clinics, hospitals and regulators it is worth more than an exact user cap.</p>
+
+  <div class="note"><b>Check before building these:</b> the usage counts are licence metering, separate from the consent-gated analytics, so they must be described in the terms and the privacy notice. Selling upgrades from inside the app may fall under Google's and Apple's in-app purchase rules; a QR code to a web page and business invoicing are the usual way around that, but it needs a proper check. I have not verified either point.</div>
+</section>
+
+<!-- ───────────────────────────── 5. VIABILITY ───────────────────────────── -->
+<section id="s-viability" data-title="Viability">
+  <h2>Is it viable?</h2>
+  <p class="lead">Yes, and it is less work than the document's v2, because it removes the hardest part (identifying people) instead of solving it.</p>
+
+  <h3>What already exists</h3>
+  <ul>
+    <li>The register call at connect, returning the tier integer. The certificate is one more field in that reply.</li>
+    <li>A stable device id per tablet, already sent to the backend.</li>
+    <li>Game and test results stored with the ball id and date, encrypted on the device. The active-user count is a query over them.</li>
+    <li>The backend's second generation (the CDK stacks, with staging) where new routes can be added without touching the frozen first version or its API gateway.</li>
+    <li>The Manage tool for balls, ready to grow a fleet view.</li>
+    <li>A feature flag for the two-ball games, a ready first "feature switch".</li>
+  </ul>
+
+  <h3>Plan</h3>
+  <div class="phase"><div class="n">1</div><div class="c"><h4>Signed certificate, local limits <small>· the core</small></h4><p>Server signs a certificate per ball. App verifies and caches it, counts active users locally, blocks new users at the limit, limits tablets per ball. Old apps keep working on the tier integer. This alone replaces the document's v2.</p></div></div>
+  <div class="phase"><div class="n">2</div><div class="c"><h4>Counts and the fleet view <small>· the insight</small></h4><p>Tablets report numbers when online. Manage tool shows tablets, active users and sessions per ball. Release a tablet slot from there.</p></div></div>
+  <div class="phase"><div class="n">3</div><div class="c"><h4>Trials, feature switches, upgrade link <small>· the revenue</small></h4><p>Premium trial on new balls, features as switches, cap screen with an upgrade QR code. Needs a decision on pricing and on how payment is taken.</p></div></div>
+  <div class="phase"><div class="n">4</div><div class="c"><h4>Clinic accounts and pooled plans <small>· the scale</small></h4><p>Group balls by clinic, optional pooled active-user plan, distributor keys.</p></div></div>
+  <div class="phase"><div class="n">5</div><div class="c"><h4>Ball-held identity and certificate <small>· with Playwork firmware</small></h4><p>The ball proves it is genuine and carries its license. Depends on the Playwork board having firmware, which does not exist yet.</p></div></div>
+  <p>My rough estimate, not a commitment: phases 1 and 2 are weeks of work, not months, for the app and backend together. Phases 3 and 4 are mostly product and commercial decisions with modest code. Phase 5 follows the hardware.</p>
+
+  <h3>Risks</h3>
+  <div class="tw"><table>
+    <tr><th>Risk</th><th>How serious</th><th>Answer</th></tr>
+    <tr><td>Someone edits the tablet's storage to raise a limit</td><td class="mid">Low</td><td>The signature fails; the app falls back to the lowest tier for that ball.</td></tr>
+    <tr><td>Someone repackages the app to skip the check</td><td class="mid">Low for clinics</td><td>No client-side scheme prevents this, including the document's v2. Counts on the server still reveal odd balls.</td></tr>
+    <tr><td>The tablet clock is set back to keep a trial</td><td class="mid">Low</td><td>The app remembers the latest time it has seen and never accepts an earlier one.</td></tr>
+    <tr><td>The signing key leaks</td><td class="bad">High, unlikely</td><td>Key stays inside AWS KMS. The app ships with two public keys so the key can be rotated.</td></tr>
+    <tr><td>A copied ball address</td><td class="mid">Exists today</td><td>Unchanged until Playwork firmware gives each ball its own key (phase 5).</td></tr>
+    <tr><td>Clinics dislike "active users" wording</td><td class="mid">Commercial</td><td>It is strictly more generous than "users ever". Present it as a benefit.</td></tr>
+    <tr><td>The cap is not exact across tablets</td><td class="mid">Accepted</td><td>Bounded by the tablet limit; optional split shares if exactness is required.</td></tr>
+  </table></div>
+
+  <h3>What I do not know</h3>
+  <ul>
+    <li>Prices, sales volumes and how often clinics really hit 50 users. These decide the limits and whether pooled plans are worth it.</li>
+    <li>How many tablets a typical clinic uses per ball. This sets the tablet limit per tier.</li>
+    <li>Whether customers were promised "50 users" in a contract in words that "50 active users" would not satisfy.</li>
+    <li>The legal checks named on the Company upgrade page.</li>
+  </ul>
+
+  <h3>Decisions the company has to make</h3>
+  <div class="grid">
+    <div class="card v"><h4>1. Direction</h4><p>Server-side user list (the document) or signed certificate with local counting (this page).</p></div>
+    <div class="card v"><h4>2. The meter</h4><p>Active users in a window (and how long: 60, 90 or 180 days) or users ever.</p></div>
+    <div class="card v"><h4>3. Tablets per ball</h4><p>The number for each tier, for example 1 / 3 / unlimited.</p></div>
+    <div class="card v"><h4>4. How far to go</h4><p>Stop after phase 2 (a better license) or continue to trials, add-ons and clinic accounts (a better business).</p></div>
+  </div>
+
+  <div class="note"><b>My recommendation:</b> build phases 1 and 2 as License v2. They deliver everything the document wanted (license on the ball, many tablets, a user cap) with no personal data on the server and no internet needed for daily work. Decide phase 3 once the first real usage numbers arrive, because they will show where the money is.</div>
+</section>
+
+</main>
+<script>
+(function () {
+  // Section pills; the hash keeps the place across reloads and lets a link point at one section.
+  var secs = [].slice.call(document.querySelectorAll('main > section')), nav = document.getElementById('nav')
+  function show(id) {
+    if (!secs.some(function (s) { return s.id === id })) id = secs[0].id
+    secs.forEach(function (s) { s.classList.toggle('on', s.id === id) })
+    ;[].forEach.call(nav.children, function (b) { b.setAttribute('aria-selected', b.dataset.id === id ? 'true' : 'false') })
+    document.getElementById('main').scrollTop = 0
+    try { history.replaceState(null, '', '#' + id.slice(2)) } catch (e) { /* sandboxed frames may refuse */ }
+  }
+  secs.forEach(function (s) {
+    var b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'tab'); b.dataset.id = s.id
+    b.textContent = s.dataset.title; b.onclick = function () { show(s.id) }; nav.appendChild(b)
+  })
+  show('s-' + (location.hash || '').slice(1))
+})()
+</script>
+</body>
+</html>

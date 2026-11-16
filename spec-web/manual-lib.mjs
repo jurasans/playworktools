@@ -18,7 +18,7 @@ import { readFile, writeFile, readdir, mkdir, rename, rm } from 'node:fs/promise
 import { createHash } from 'node:crypto'
 import { resolve } from 'node:path'
 
-export const MANUAL_LANGS = ['he', 'zh', 'zt', 'ja', 'es', 'fr', 'pl', 'lv', 'uk']
+export const MANUAL_LANGS = ['he', 'zh', 'zt', 'ja', 'es', 'fr', 'pl', 'lv', 'uk', 'ko']
 const SLUG_RE = /^[a-z0-9][a-z0-9-]*$/
 
 export const hash = (s) => createHash('sha1').update(s).digest('hex').slice(0, 10)

@@ -14,7 +14,8 @@ def test_dry_run_prints_the_statements_and_runs_none(capsys):
     assert f"AWS IAM GRANT playwork_manage TO '{ARN}'" in out
     assert "GRANT UPDATE (license_type) ON licenses" in out
     assert "GRANT UPDATE (license_id, device_id, customer_id) ON sensors" in out
-    assert "DELETE" not in out and "users" not in out and "devices" not in out
+    assert "DELETE" not in out and "users" not in out and "ON devices" not in out and ", devices" not in out
+    assert "GRANT SELECT ON licenses, sensors, customers, sensor_devices" in out  # read-only: usage figures
 
 
 def test_table_level_flag_skips_the_column_attempt(capsys):

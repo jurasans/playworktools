@@ -62,10 +62,19 @@
   .wip-checklist .item.done{color:#a7f3d0}
   .wip-checklist .item.pending{opacity:.65}
   .wip-checklist .item.failed{color:#fecaca}
+  .wip-checklist .item.skipped{opacity:.55; text-decoration:line-through}
+  .wip-checklist .item small{opacity:.8}
+  .wip-checklist .grp{display:inline-flex; flex-wrap:wrap; gap:.15rem .7rem; align-items:center; padding:.05rem .6rem;
+    border:1px solid rgba(255,255,255,.35); border-radius:.6rem}
   .wip-checklist .item.active{color:#fff}
   .wip-checklist .spin{display:inline-block; width:.8em; height:.8em; border-radius:50%; vertical-align:-.1em;
                         border:2px solid rgba(253,233,196,.35); border-top-color:#fbbf24; animation:wip-spin .9s linear infinite}
   @keyframes wip-spin{to{transform:rotate(360deg)}}
+  .wip-checklist .ring{display:inline-grid; place-items:center; width:2.2em; height:2.2em; border-radius:50%; vertical-align:-.7em;
+                       background:conic-gradient(#fbbf24 calc(var(--p) * 1%), rgba(253,233,196,.25) 0); position:relative}
+  .wip-checklist .ring::before{content:''; position:absolute; inset:.2em; border-radius:50%; background:#78350f}
+  .wip-checklist .ring b{position:relative; font:700 .66em/1 var(--sans, system-ui); color:#fff}
+  .wip-banner.human .wip-checklist .ring::before{background:#7f1d1d}
   @media (prefers-reduced-motion:reduce){.wip-checklist .spin{animation-duration:3s}}
   .wip-banner.test-run{background:#0c4a6e; color:#e0f2fe}
   .wip-banner.test-run .dot{background:#38bdf8}
@@ -3613,7 +3622,10 @@ $('#runNotesToggle').onclick = () => {
 }
 
 const checkStatus = (i) => i.status || (i.done ? 'done' : 'pending')
-const checkIcon = (st) => st === 'active' ? '<span class="spin" aria-label="in progress"></span>' : st === 'done' ? '✓' : st === 'failed' ? '✗' : '○'
+// A running step with a known percent draws it as a ring with the number inside; without one it is the plain spinner.
+const checkIcon = (st, pct) => st === 'active'
+  ? (Number.isFinite(pct) ? `<span class="ring" style="--p:${pct}" aria-label="${pct}%"><b>${pct}</b></span>` : '<span class="spin" aria-label="in progress"></span>')
+  : st === 'done' ? '✓' : st === 'failed' ? '✗' : st === 'skipped' ? '–' : '○'
 
 // Every date the page shows is Israel time (IDT in summer, IST in winter), whatever the viewer's browser zone is.
 function fmtIL(v, dateOnly = false) {
@@ -3623,6 +3635,41 @@ function fmtIL(v, dateOnly = false) {
   return dateOnly ? date : `${date} ${p.hour}:${p.minute}:${p.second} ${zone}`
 }
 
+// "Phase: sub-step" labels nest under their phase: the phase item (if any) heads a group, its sub-steps sit inside it.
+function checkItemHtml(item, label, st = checkStatus(item), pct = item.percent) {
+  const detail = item.reason && st !== 'pending' ? ` <small>(${esc(item.reason)})</small>` : ''
+  return `<span class="item ${st}" title="${esc(item.reason || '')}">${checkIcon(st, pct)} ${esc(label)}${detail}</span>`
+}
+// A phase's percent is the mean of its sub-steps (finished ones count 100, skipped ones are left out); a phase with sub-steps
+// that are running shows as running even if the run has not flipped it yet.
+function groupProgress(children) {
+  const live = children.filter((c) => checkStatus(c) !== 'skipped')
+  if (!live.length) return { st: null, pct: null }
+  const pct = Math.round(live.reduce((n, c) => n + (checkStatus(c) === 'done' ? 100 : (c.percent || 0)), 0) / live.length)
+  const st = live.some((c) => checkStatus(c) === 'failed') ? 'failed' : live.every((c) => checkStatus(c) === 'done') ? 'done' : live.some((c) => ['active', 'done'].includes(checkStatus(c))) ? 'active' : null
+  return { st, pct }
+}
+function renderChecklist(list) {
+  const prefixOf = (l) => (l.includes(': ') ? l.split(': ')[0] : null)
+  const out = []
+  for (let i = 0; i < list.length; i++) {
+    const it = list[i]
+    const children = []
+    const parentPrefix = it.label
+    let j = i + 1
+    while (j < list.length && prefixOf(list[j].label) === parentPrefix) children.push(list[j++])
+    if (children.length) {
+      const g = groupProgress(children)
+      const own = checkStatus(it)
+      // The head follows its children while it is still waiting; a result it already has (done, failed, skipped) stands.
+      const st = own === 'pending' || own === 'active' ? (g.st || own) : own
+      const pct = st === 'active' ? (Number.isFinite(it.percent) ? it.percent : g.pct) : null
+      out.push(`<span class="grp">${checkItemHtml(it, it.label, st, pct)}${children.map((c) => checkItemHtml(c, c.label.slice(parentPrefix.length + 2))).join('')}</span>`)
+      i = j - 1
+    } else out.push(checkItemHtml(it, it.label))
+  }
+  return out.join('')
+}
 async function loadSessionState() {
   try {
     const s = await fetch('/api/session-state').then((r) => r.json())
@@ -3638,7 +3685,7 @@ async function loadSessionState() {
       banner.style.display = 'flex'
       toggle.style.display = 'none'; $('#runNotesPanel').style.display = 'none'
       if (s.checklist?.length) {
-        checklist.innerHTML = s.checklist.map((item) => `<span class="item ${checkStatus(item)}">${checkIcon(checkStatus(item))} ${esc(item.label)}</span>`).join('')
+        checklist.innerHTML = renderChecklist(s.checklist)
         checklist.style.display = 'flex'
       } else checklist.style.display = 'none'
       if (s.workItem) { const rb = $('#humanResumeBtn'); rb.style.display = ''; rb.dataset.wi = s.workItem }
@@ -3648,8 +3695,7 @@ async function loadSessionState() {
       toggle.style.display = 'none'
       $('#runNotesPanel').style.display = 'none'
       if (s.checklist?.length) {
-        checklist.innerHTML = s.checklist.map((item) =>
-          `<span class="item ${checkStatus(item)}">${checkIcon(checkStatus(item))} ${esc(item.label)}</span>`).join('')
+        checklist.innerHTML = renderChecklist(s.checklist)
         checklist.style.display = 'flex'
       } else {
         checklist.style.display = 'none'
@@ -3906,71 +3952,127 @@ async function loadTestStatus() {
 async function loadBuildInfo() {
   const row = $('#buildRow'); row.innerHTML = ''
   try {
-    const d = await fetch('/api/build').then((r) => r.json())
-    const card = el('div', 'stat-card')
-    card.appendChild(el('h3', null, 'Nightly debug build'))
-    if (!d || d.available === false) {
-      card.appendChild(el('div', 'muted', 'No nightly build recorded yet.'))
-    } else {
-      const parts = []
-      if (d.versionName) parts.push(`v${d.versionName} (build ${d.versionCode ?? '?'})`)
-      if (d.sizeBytes) parts.push(`${(d.sizeBytes / 1024 / 1024).toFixed(1)} MB`)
-      if (d.gitCommit) parts.push(d.gitCommit + (d.gitBranch ? ` (${d.gitBranch})` : ''))
-      if (d.licenseApi) parts.push('license API: ' + (d.licenseApi === 'prod' ? 'PROD' : 'staging'))
-      card.appendChild(el('div', 'muted', parts.join(' · ')))
-      card.appendChild(el('div', 'muted', 'built ' + (fmtWhen(d.builtAt) || 'unknown time')))
+    const d = await fetch('/api/build').then((r) => r.json()) || {}
+    // Two columns: DEV (debug channel, no reporting) | RELEASE (prod channel, reports to Firebase).
+    row.style.cssText = 'margin-top:.8rem;display:grid;grid-template-columns:1fr 1fr;gap:.8rem;align-items:start'
+    const mkCol = (title) => { const c = el('div'); c.style.cssText = 'display:flex;flex-direction:column;gap:.6rem;min-width:0'; c.appendChild(el('h2', null, title)); row.appendChild(c); return c }
+    const devCol = mkCol('DEV'), relCol = mkCol('RELEASE')
+    // Rebuild all four (admin). Builds run in parallel on the host; this panel polls per-build progress until all are done,
+    // then the cards reload with the fresh manifest.
+    const bar = el('div'); bar.style.cssText = 'grid-column:1 / -1;display:flex;flex-direction:column;gap:.35rem'
+    const top = el('div'); top.style.cssText = 'display:flex;gap:.8rem;align-items:center;flex-wrap:wrap'
+    const rb = el('button', 'act small', 'Rebuild all builds'); const rs = el('span', 'muted')
+    top.appendChild(rb); top.appendChild(rs); bar.appendChild(top)
+    const prog = el('div'); prog.style.cssText = 'display:grid;grid-template-columns:auto 1fr auto;gap:.15rem .8rem'
+    bar.appendChild(prog); row.insertBefore(bar, row.firstChild)
+    const dur = (ms) => { const m = Math.max(0, Math.round(ms / 60000)); return m < 1 ? '<1 min' : m + ' min' }
+    let poll = null, wasRunning = false
+    const showStatus = async () => {
+      let st = {}
+      try { st = await fetch('/api/build/rebuild-status').then((r) => r.json()) } catch { /* offline */ }
+      rb.disabled = !!st.running
+      prog.innerHTML = ''
+      const icon = { queued: '…', running: '⏳', done: '✅', failed: '❌' }
+      for (const b of (st.builds || [])) {
+        const end = b.finishedAt ? Date.parse(b.finishedAt) : Date.now()
+        const took = b.startedAt ? dur(end - Date.parse(b.startedAt)) : ''
+        const phase = b.status === 'running' ? (b.percent || 0) + '% · ' + b.phase : b.phase
+        prog.appendChild(el('div', null, icon[b.status] + ' ' + b.title))
+        const cell = el('div', 'muted')
+        if (b.status === 'running') {
+          const bar = el('div'); bar.style.cssText = 'height:6px;border-radius:3px;background:rgba(127,127,127,.25);overflow:hidden;margin:.25rem 0'
+          const fill = el('div'); fill.style.cssText = 'height:100%;background:var(--brand);width:' + Math.min(100, b.percent || 0) + '%'
+          bar.appendChild(fill); cell.appendChild(bar)
+        }
+        cell.appendChild(el('div', null, phase))
+        prog.appendChild(cell)
+        prog.appendChild(el('div', 'muted', took))
+      }
+      if (st.running) {
+        wasRunning = true
+        rs.textContent = 'Rebuilding all builds in parallel…'
+        if (!poll) poll = setInterval(showStatus, 5000)
+        return
+      }
+      if (poll) { clearInterval(poll); poll = null }
+      rs.textContent = st.finishedAt ? 'Last rebuild finished ' + (fmtWhen(st.finishedAt) || '') + (st.ok ? ': all passed' : ': at least one failed (state/rebuild-*.log)') : ''
+      if (wasRunning) { wasRunning = false; loadBuildInfo() }
+    }
+    rb.onclick = async () => {
+      if (!confirm('Rebuild all four builds now? They run in parallel on this PC and take roughly 15-30 minutes.')) return
+      rb.disabled = true; rs.textContent = 'Starting…'
+      const r = await fetch('/api/build/rebuild', { method: 'POST' }); const j = await r.json().catch(() => ({}))
+      if (!r.ok) { rs.textContent = j.error || 'Could not start'; rb.disabled = false; return }
+      setTimeout(showStatus, 1500)
+    }
+    showStatus()
+    const BLEEDING = 'Bleeding edge', STABLE = 'Latest stable release'
+    // One card layout for all four builds: Status / API / Firebase reporting / Version / Built, then the source and download.
+    // A build is STALE when it is behind: a nightly build whose commit is not HEAD any more, a release build whose tag is not the newest tag.
+    const stampCss = 'display:inline-block;margin-left:.6rem;padding:0 .45rem;border:2px solid var(--red);border-radius:4px;color:var(--red);font-weight:800;font-size:.8rem;letter-spacing:.12em;transform:rotate(-6deg)'
+    const buildCard = (col, title, m, o) => {
+      const card = el('div', 'stat-card')
+      const h = el('h3', null, title)
+      card.appendChild(h)
+      const cur = d.current || {}
+      let why = ''
+      if (m && o.kind === 'tag' && cur.latestTag && m.tag !== cur.latestTag) why = 'Built from ' + (m.tag || 'an unknown tag') + '; the newest release tag is now ' + cur.latestTag + '.'
+      if (m && o.kind === 'head' && cur.head && m.gitCommit && !cur.head.startsWith(m.gitCommit)) why = 'Built from commit ' + m.gitCommit + '; the branch is now at ' + cur.head.slice(0, 7) + '.'
+      // Refresh just this build. Safe to press: the published APK is only replaced when the new build succeeds, so a failed
+      // build leaves the current one (and its card) exactly as it is.
+      const refresh = (label) => {
+        const b = el('button', 'act small', label); b.style.cssText = 'margin-top:.4rem'
+        b.onclick = async () => {
+          if (!confirm('Refresh "' + title + '" now? The current APK stays available until the new one is built; if the build fails nothing changes.')) return
+          b.disabled = true; rs.textContent = 'Starting…'
+          const r = await fetch('/api/build/rebuild?only=' + o.id, { method: 'POST' }); const j = await r.json().catch(() => ({}))
+          if (!r.ok) { rs.textContent = j.error || 'Could not start'; b.disabled = false; return }
+          setTimeout(showStatus, 1500)
+        }
+        return b
+      }
+      if (why) { const st = el('span', null, 'STALE'); st.style.cssText = stampCss; st.title = why; h.appendChild(st); card.appendChild(el('div', 'muted', why)); card.appendChild(refresh('Refresh this build')) }
+      if (!m) { card.appendChild(el('div', 'muted', o.empty)); card.appendChild(refresh('Build it now')); col.appendChild(card); return }
+      const grid = el('div'); grid.style.cssText = 'display:grid;grid-template-columns:auto 1fr;gap:.2rem .8rem;margin-top:.2rem'
+      const line = (k, v) => { const a = el('div', 'muted', k); const b = el('div', null, v); grid.appendChild(a); grid.appendChild(b) }
+      line('Status', o.status)
+      line('API', m.licenseApi === 'prod' ? 'Prod' : 'Staging')
+      line('Firebase reporting', o.firebase ? 'Yes' : 'No')
+      line('Version', m.versionName ? `${m.versionName} (build ${m.versionCode ?? '?'})` : 'unknown')
+      line('Built', fmtWhen(m.builtAt) || 'unknown time')
+      if (m.builtBy && m.builtBy !== 'nightly') line('Built by', m.builtBy + ' (Start working run)')
+      card.appendChild(grid)
+      if (o.source) card.appendChild(el('div', 'muted', o.source))
+      if (m.sizeBytes) card.appendChild(el('div', 'muted', `${(m.sizeBytes / 1024 / 1024).toFixed(1)} MB`))
       const dl = el('a', 'act small ghost', 'Download (internal)')
-      dl.href = '/api/build/download'
-      dl.style.marginTop = '.4rem'
-      dl.style.display = 'inline-block'
+      dl.href = o.href; dl.style.cssText = 'margin-top:.4rem;display:inline-block'
       card.appendChild(dl)
-      const pub = el('div', 'muted', 'Client-facing link: /download (password protected)')
-      pub.style.marginTop = '.3rem'
-      card.appendChild(pub)
+      if (o.note) card.appendChild(el('div', 'muted', o.note))
+      col.appendChild(card)
     }
-    row.appendChild(card)
-    // Production APK (nightly, tools/spec/nightly-run.mjs): reports to the production Firebase and uses the prod license API.
-    const pcard = el('div', 'stat-card')
-    pcard.appendChild(el('h3', null, 'Nightly production build'))
-    const p = d && d.prod
-    if (!p) {
-      pcard.appendChild(el('div', 'muted', 'No production build recorded yet (needs android/keystore.properties on the build PC).'))
-    } else {
-      const pp = []
-      if (p.versionName) pp.push(`v${p.versionName} (build ${p.versionCode ?? '?'})`)
-      if (p.sizeBytes) pp.push(`${(p.sizeBytes / 1024 / 1024).toFixed(1)} MB`)
-      if (p.gitCommit) pp.push(p.gitCommit + (p.gitBranch ? ` (${p.gitBranch})` : ''))
-      pp.push('reports to Firebase', 'license API: PROD')
-      pcard.appendChild(el('div', 'muted', pp.join(' · ')))
-      pcard.appendChild(el('div', 'muted', 'built ' + (fmtWhen(p.builtAt) || 'unknown time')))
-      const pdl = el('a', 'act small ghost', 'Download (internal)')
-      pdl.href = '/api/build/download?variant=prod'
-      pdl.style.cssText = 'margin-top:.4rem;display:inline-block'
-      pcard.appendChild(pdl)
-      pcard.appendChild(el('div', 'muted', 'Installed copies send real analytics and crash reports. Not on the client download page.'))
-    }
-    row.appendChild(pcard)
-    // Clean build of the master branch (nightly, in its own git worktree): what is on master, not this working tree.
-    const mcard = el('div', 'stat-card')
-    mcard.appendChild(el('h3', null, 'Master build (clean, from the master branch)'))
-    const mm = d && d.master
-    if (!mm) {
-      mcard.appendChild(el('div', 'muted', 'No master build recorded yet. The nightly run builds it; it is skipped while an APK from the current master commit exists.'))
-    } else {
-      const mp = []
-      mp.push('commit ' + (mm.shortCommit || String(mm.commit).slice(0, 7)) + ' on master')
-      if (mm.versionName) mp.push(`v${mm.versionName} (build ${mm.versionCode ?? '?'})`)
-      if (mm.sizeBytes) mp.push(`${(mm.sizeBytes / 1024 / 1024).toFixed(1)} MB`)
-      mp.push('debug channel (no reporting)', 'license API: staging')
-      mcard.appendChild(el('div', 'muted', mp.join(' · ')))
-      if (mm.subject) mcard.appendChild(el('div', 'muted', 'last commit: ' + mm.subject))
-      mcard.appendChild(el('div', 'muted', 'built ' + (fmtWhen(mm.builtAt) || 'unknown time')))
-      const mdl = el('a', 'act small ghost', 'Download master build (internal)')
-      mdl.href = '/api/build/download?variant=master'
-      mdl.style.cssText = 'margin-top:.4rem;display:inline-block'
-      mcard.appendChild(mdl)
-    }
-    row.appendChild(mcard)
+    const avail = d.available === false ? null : d
+    const sha = (x) => (x.shortCommit || String(x.commit || '').slice(0, 7))
+    buildCard(devCol, 'Nightly debug build', avail, {
+      id: 'nightly-debug', empty: 'No nightly build recorded yet.', kind: 'head', status: BLEEDING, firebase: false, href: '/api/build/download',
+      source: avail && avail.gitCommit ? 'Source: ' + avail.gitCommit + (avail.gitBranch ? ` (${avail.gitBranch})` : '') : '',
+      note: 'Client-facing link: /download (password protected)',
+    })
+    buildCard(devCol, 'LATEST RELEASE (DEBUG)', d.master, {
+      id: 'latest-debug', empty: 'No release build recorded yet. The nightly run builds the newest tag by date; it is skipped while an APK from that commit exists.',
+      kind: 'tag', status: STABLE, firebase: false, href: '/api/build/download?variant=master',
+      source: d.master ? `Source: tag ${d.master.tag || '?'} (${sha(d.master)})` : '',
+    })
+    buildCard(relCol, 'Nightly production build', d.prod, {
+      id: 'nightly-prod', empty: 'No production build recorded yet (needs android/keystore.properties on the build PC).',
+      kind: 'head', status: BLEEDING, firebase: true, href: '/api/build/download?variant=prod',
+      source: d.prod && d.prod.gitCommit ? 'Source: ' + d.prod.gitCommit + (d.prod.gitBranch ? ` (${d.prod.gitBranch})` : '') : '',
+      note: 'Installed copies send real analytics and crash reports. Not on the client download page.',
+    })
+    // Fixed one-off production build of an old tag (tools/spec/tagged-build.mjs), shown once it exists.
+    if (d.chinese) buildCard(relCol, 'LATEST RELEASE (PROD | CHINESE BUILD)', d.chinese, {
+      id: 'latest-prod', kind: 'tag', status: STABLE, firebase: true, href: '/api/build/download?variant=chinese',
+      source: `Source: tag ${d.chinese.tag} (${sha(d.chinese)})`,
+    })
   } catch (e) {
     row.textContent = 'Failed to load build info: ' + e
   }

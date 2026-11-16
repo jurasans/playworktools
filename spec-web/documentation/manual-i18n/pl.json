@@ -61,8 +61,8 @@
           "src": "7a8b2c5791"
         },
         "3": {
-          "text": "## Dodawanie użytkownika\n\n1. Dotknij **Nowy użytkownik**.\n2. Wprowadź identyfikator numeryczny i imię.\n3. Dotknij **Utwórz i zaloguj**.\n\nPojawi się komunikat **Ten identyfikator jest już zajęty**, jeśli taki identyfikator już istnieje. Liczba użytkowników zależy od licencji urządzenia: 1 użytkownik, 50 użytkowników lub liczba nieograniczona. Jeśli osiągnięto limit, aplikacja o tym poinformuje.\n\nMożna zamknąć okno za pomocą przycisku \"zamknij\" lub dotykając w dowolnym innym miejscu ekranu. Zobacz również [język i jednostki](help:language-and-units).",
-          "src": "2321392aab"
+          "text": "## Dodawanie użytkownika\n\n1. Dotknij **Nowy użytkownik**.\n2. Wprowadź identyfikator numeryczny i imię.\n3. Dotknij **Utwórz i zaloguj**.\n\nPojawi się **Ten identyfikator jest już zajęty**, jeśli taki identyfikator już istnieje. Liczba użytkowników zależy od licencji urządzenia: 1 użytkownik, 50 użytkowników lub nieograniczona liczba. Limit dotyczy każdego użytkownika na każdym tablecie korzystającym z urządzenia.\n\nW przypadku urządzenia z licencją na 1 lub 50 użytkowników, dodanie nowego użytkownika wymaga połączenia z Internetem, ponieważ aplikacja sprawdza limit z serwerem licencji. Bez połączenia użytkownik nie zostanie dodany, a aplikacja o tym poinformuje; należy połączyć się z Internetem i spróbować ponownie. Jeśli limit zostanie osiągnięty, użytkownik nie zostanie dodany, a aplikacja poprosi o kontakt z działem obsługi klienta; istniejący użytkownicy będą nadal działać. W przypadku urządzenia z nieograniczoną liczbą użytkowników, dodawanie nowego użytkownika nie wymaga połączenia z Internetem. Logowanie się jako istniejący użytkownik oraz przycisk \"Gość\" zawsze działają w trybie offline.\n\nMożna zamknąć okno za pomocą przycisku \"Zamknij\" lub dotykając w dowolnym innym miejscu ekranu. Zobacz również [język i jednostki](help:language-and-units).",
+          "src": "35b74f1c06"
         }
       },
       "title": "Logowanie i użytkownicy"
@@ -87,8 +87,8 @@
     "home-screen": {
       "sections": {
         "0": {
-          "text": "# Ekran główny\n\nPo zalogowaniu widzisz dwie duże karty.\n\n- **Gry terapeutyczne** - graj w gry, które kontrolujesz, ściskając i przechylając piłkę. Zobacz [wybieranie gry](help:choosing-a-game).\n- **Testy** - zmierz swoją siłę. Zobacz [testy siły kliniczne](help:clinical-strength-tests).\n\n**Wyloguj** pozwala powrócić do ekranu logowania, aby ktoś inny mógł się zalogować.\n\n![Ekran główny z kartami \"Gry terapeutyczne\" i \"Testy\".](img:home.jpg)\n*Wybierz gry lub testy siły.*",
-          "src": "cf1536c9ed"
+          "text": "# Ekran główny\n\nPo zalogowaniu widzisz dwie duże karty.\n\n- **Gry terapeutyczne** - graj w gry, które kontrolujesz, ściskając i przechylając piłkę. Zobacz [wybieranie gry](help:choosing-a-game).\n- **Testy** - zmierz swoją siłę. Zobacz [testy siły kliniczne](help:clinical-strength-tests).\n\n**Wyloguj** pozwala powrócić do ekranu logowania, aby ktoś inny mógł się zalogować.\n\nJeśli dostępna jest nowsza wersja aplikacji, przycisk **Zaktualizuj aplikację** pojawia się nad obiema kartami. Dotknij go, aby od razu zaktualizować aplikację – nie musisz jej samodzielnie szukać w sklepie.\n\n![Ekran główny z kartami \"Gry terapeutyczne\" i \"Testy\".](img:home.jpg)\n*Wybierz gry lub testy siły.*",
+          "src": "9890a474dc"
         }
       },
       "title": "Ekran główny"
@@ -478,6 +478,16 @@
       },
       "title": "Pościg w kosmosie",
       "titleSrc": "c7994f0625"
+    },
+    "mirror-match": {
+      "sections": {
+        "0": {
+          "text": "# Gra \"Lustrzane odbicie\"\n\nGra z jedną piłką, przeznaczona do rehabilitacji ruchowej. Jedna ręka wykonuje krótką sekwencję ruchów, a druga ręka próbuje ją naśladować.\n\n- Runda rozpoczyna się, gdy silniejsza ręka trzyma piłkę. Rozpoczyna się odliczanie, a następnie prezentowana jest sekwencja: ściskanie, przechylenie w lewo, przechylenie w prawo, w dowolnej kolejności.\n- Po zakończeniu, wyświetlane jest polecenie, aby przekazać piłkę drugiej ręce i utrzymać ją nieruchomo przez chwilę – to pozwala na dokładniejsze odczytanie kąta nachylenia dla ręki, która ma naśladować.\n- Rozpoczyna się odliczanie, a następnie należy jak najdokładniej naśladować sekwencję ruchów, dopasowując siłę, kierunek i czas każdego ruchu.\n- Po każdej rundzie wyświetlany jest wynik dla **Siła**, **Kierunek**, **Synchronizacja czasowa** i **Symetria** (który pokazuje, jak bardzo zbieżne były poziomy wysiłku obu rąk).\n- Sekwencja ruchów staje się coraz dłuższa w kolejnych rundach, co sprawia, że każda runda jest nieco trudniejsza.\n- Trener może dostosować poziom tolerancji dla dopasowania siły i czasu, oraz przełączyć się na sekwencję generowaną przez aplikację zamiast nagrywać ją z silniejszej ręki, w **Ustawienia**. Zobacz [Ustawienia trenera](help:trainer-settings).",
+          "src": "9eabbaa2f8"
+        }
+      },
+      "title": "Lustrzane odbicie",
+      "titleSrc": "aee2e85479"
     }
   }
 }

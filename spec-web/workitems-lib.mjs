@@ -452,9 +452,10 @@ export function runFinished(id, kind, status, summary) {
     else { wi.status = 'failed'; wi.failedPhase = 'rewrite'; wi.lastError = failureReason('The spec rewrite run', status, summary); log(wi, wi.lastError) }
   }
   // A run that ended on purpose to wait for a person (banner state "human" naming this work item) is paused, not finished.
-  if (kind === 'develop' && wi.status === 'working' && status === 'done' && humanBanner(id)) {
+  // A failed run raises the same banner (agent-run.mjs): it is paused too, so Resume continues from the phase that failed.
+  if (kind === 'develop' && wi.status === 'working' && (status === 'done' || status === 'failed') && humanBanner(id)) {
     wi.waitingHuman = { note: humanBanner(id).note || '', at: now() }
-    log(wi, 'The run stopped to wait for a person: ' + (wi.waitingHuman.note || 'see the banner').split('\n')[0].slice(0, 160))
+    log(wi, (status === 'failed' ? 'The run failed and is paused: ' : 'The run stopped to wait for a person: ') + (wi.waitingHuman.note || 'see the banner').split('\n')[0].slice(0, 160))
   } else if (kind === 'develop' && wi.status === 'working') {
     if (status === 'done') { wi.status = 'in-qa'; wi.integratedAt = now(); log(wi, 'The development run finished (no explicit hand-over, moved to QA)') }
     else { wi.status = 'failed'; wi.failedPhase = 'work'; wi.lastError = failureReason('The development run', status, summary); log(wi, wi.lastError) }
@@ -487,6 +488,29 @@ export function sendBack(id, reason, by) {
   wi.sentBack = { by: cleanName(by) || 'someone', reason: r.slice(0, 1000), at: now() }
   wi.qaReport = null
   log(wi, `${wi.sentBack.by} sent it back: ${wi.sentBack.reason}`)
+  return put(wi)
+}
+
+/** Before the analysis ran, bring the work item up to date with the spec files' current difference from HEAD (edits made after it was created). */
+export function refreshFromGit(id, { docs, by }) {
+  const wi = get(id)
+  if (!wi || wi.status !== 'collected') throw new Error('Only a work item that has not been analyzed yet can be refreshed.')
+  const who = cleanName(by)
+  if (!who) throw new Error('Say who you are first.')
+  const changes = []
+  for (const d of docs) {
+    const rel = relative(ROOT, d.path).split(sep).join('/')
+    let head
+    try { head = execFileSync('git', ['show', `HEAD:${rel}`], { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] }) } catch { continue }
+    const now_ = readFileSync(d.path, 'utf8')
+    if (norm(head) === norm(now_)) continue
+    const hunks = diffHunks(norm(head), norm(now_))
+    const prev = wi.changes.find((c) => c.doc === d.key)
+    changes.push({ doc: d.key, title: d.title, by: [...new Set([...(prev?.by || []), who])], hunks, ...diffStats(hunks) })
+  }
+  if (!changes.length) throw new Error('There are no uncommitted spec changes to take.')
+  wi.changes = changes
+  log(wi, `${who} updated the changes (${changes.length} document${changes.length === 1 ? '' : 's'})`)
   return put(wi)
 }
 

@@ -14,7 +14,7 @@ from .config import ROLE, env_for
 
 # (what it is for, column-level form, table-level fallback or None)
 GRANTS = (
-    ("see the tables", None, f"GRANT SELECT ON licenses, sensors, customers TO {ROLE}"),
+    ("see the tables", None, f"GRANT SELECT ON licenses, sensors, customers, sensor_devices TO {ROLE}"),
     ("set a license tier", f"GRANT UPDATE (license_type) ON licenses TO {ROLE}", f"GRANT UPDATE ON licenses TO {ROLE}"),
     ("move a ball, clear its device, assign its customer",
      f"GRANT UPDATE (license_id, device_id, customer_id) ON sensors TO {ROLE}", f"GRANT UPDATE ON sensors TO {ROLE}"),

@@ -61,8 +61,8 @@
           "src": "7a8b2c5791"
         },
         "3": {
-          "text": "## Ajouter un utilisateur\n\n1. Appuyez sur **Nouvel utilisateur**.\n2. Entrez un identifiant numérique et un nom.\n3. Appuyez sur **Créer et se connecter**.\n\nVous verrez **ID déjà utilisé** si cet identifiant existe déjà. Le nombre d'utilisateurs dépend de la licence du dispositif : 1 utilisateur, 50 utilisateurs, ou un nombre illimité. Si la limite est atteinte, l'application vous le signalera.\n\nVous pouvez fermer la fenêtre en cliquant sur le bouton de fermeture ou en cliquant en dehors de celle-ci. Consultez également [langue et unités](help:language-and-units).",
-          "src": "2321392aab"
+          "text": "## Ajouter un utilisateur\n\n1. Appuyez sur **Nouvel utilisateur**.\n2. Entrez un identifiant numérique et un nom.\n3. Appuyez sur **Créer et se connecter**.\n\nVous verrez **ID déjà utilisé** si cet identifiant existe déjà. Le nombre d'utilisateurs dépend de la licence du dispositif : 1 utilisateur, 50 utilisateurs ou un nombre illimité. Cette limite s'applique à chaque utilisateur sur chaque tablette utilisant le dispositif.\n\nPour un dispositif avec 1 ou 50 utilisateurs, l'ajout d'un utilisateur nécessite une connexion Internet, car l'application vérifie la limite auprès du serveur de licence. Sans connexion, l'utilisateur ne sera pas ajouté, et l'application vous en informera ; connectez-vous et réessayez. Si la limite est atteinte, l'utilisateur ne sera pas ajouté, et l'application vous demandera de contacter le service client ; les utilisateurs existants continueront de fonctionner. Pour un dispositif avec un nombre illimité d'utilisateurs, l'ajout d'un utilisateur ne nécessite pas de connexion Internet. La connexion en tant qu'utilisateur existant et le bouton \"Invité\" fonctionnent toujours hors ligne.\n\nVous pouvez fermer la feuille en utilisant le bouton de fermeture ou en appuyant en dehors de celle-ci. Consultez également [langue et unités](help:language-and-units).",
+          "src": "35b74f1c06"
         }
       },
       "title": "Connexion et utilisateurs"
@@ -87,8 +87,8 @@
     "home-screen": {
       "sections": {
         "0": {
-          "text": "# L'écran d'accueil\n\nAprès vous être connecté, vous voyez deux grandes cartes.\n\n- **Jeux thérapeutiques** - Jouez à des jeux que vous contrôlez en serrant et en inclinant la balle. Consultez [le choix d'un jeu](help:choosing-a-game).\n- **Tests** - Mesurez votre force. Consultez [les tests cliniques de force](help:clinical-strength-tests).\n\n**Se déconnecter** vous ramène à l'écran de connexion afin qu'une autre personne puisse se connecter.\n\n![L'écran d'accueil avec les cartes \"Jeux de thérapie\" et \"Tests\".](img:home.jpg)\n*Choisissez des jeux ou des tests de force.*",
-          "src": "cf1536c9ed"
+          "text": "# L'écran d'accueil\n\nAprès vous être connecté, vous voyez deux grandes cartes.\n\n- **Jeux thérapeutiques** - Jouez à des jeux que vous contrôlez en serrant et en inclinant la balle. Consultez [le choix d'un jeu](help:choosing-a-game).\n- **Tests** - Mesurez votre force. Consultez [les tests cliniques de force](help:clinical-strength-tests).\n\n**Se déconnecter** vous ramène à l'écran de connexion afin qu'une autre personne puisse se connecter.\n\nSi une version plus récente de l'application est disponible, un bouton **Mettre à jour l'app** apparaît au-dessus des deux cartes. Appuyez dessus pour mettre à jour immédiatement, sans avoir à chercher l'application vous-même dans le magasin.\n\n![L'écran d'accueil avec les cartes \"Jeux de thérapie\" et \"Tests\".](img:home.jpg)\n*Choisissez des jeux ou des tests de force.*",
+          "src": "9890a474dc"
         }
       },
       "title": "L'écran d'accueil"
@@ -478,6 +478,16 @@
       },
       "title": "Course poursuite dans l'espace",
       "titleSrc": "c7994f0625"
+    },
+    "mirror-match": {
+      "sections": {
+        "0": {
+          "text": "# Jeu de miroir\n\nUn jeu à une balle pour la rééducation motrice. Votre main la plus habile effectue une courte séquence de pressions et d'inclinaisons, puis votre autre main la copie.\n\n- Le tour commence avec votre main la plus habile tenant la balle. Un compte à rebours commence, puis vous montrez la séquence : pression, inclinaison vers la gauche, inclinaison vers la droite, dans n'importe quel ordre que vous souhaitez.\n- Une fois terminé, une invite vous demande de passer la balle à votre autre main et de la maintenir immobile pendant un moment. Cela permet de recentrer la mesure de l'inclinaison pour la main qui va copier.\n- Un compte à rebours commence, puis vous devez copier la séquence que vous venez de montrer, en essayant de reproduire au mieux la force, la direction et le timing de chaque étape.\n- Après chaque tour, vous voyez un score pour **Force**, **Direction**, **Minutage** et **Symétrie** (qui indique à quel point les niveaux d'effort de vos deux mains se rapprochent).\n- La séquence devient plus longue au fur et à mesure que vous progressez, ce qui rend chaque tour un peu plus difficile.\n- Un entraîneur peut ajuster la tolérance concernant la correspondance de la force et du timing, et peut choisir d'utiliser une séquence générée par l'application au lieu d'enregistrer une séquence à partir de votre main la plus habile, dans **Paramètres**. Consultez les [paramètres de l'entraîneur](help:trainer-settings).",
+          "src": "9eabbaa2f8"
+        }
+      },
+      "title": "Match miroir",
+      "titleSrc": "aee2e85479"
     }
   }
 }

@@ -6,6 +6,7 @@
  *   node tools/spec/work.mjs show <WI-n>
  *   node tools/spec/work.mjs create --by <name> [--title <t>] [--domain app|backend]   collected edits -> a new work item
  *   node tools/spec/work.mjs collect-git --by <name> [--domain app]                     take uncommitted spec changes as edits
+ *   node tools/spec/work.mjs refresh <WI-n> --by <name>      re-take the uncommitted spec changes into a work item not yet analyzed
  *   node tools/spec/work.mjs analysis <WI-n> <file.json>     store the analysis (summary, impact, conflicts, codeGaps, questions)
  *   node tools/spec/work.mjs question <WI-n> [--blocking] <text...>
  *   node tools/spec/work.mjs answer <WI-n> <n> --by <name> <text...>
@@ -72,6 +73,12 @@ try {
     const docs = readdirSync(dir).filter((f) => f.endsWith('.md')).map((f) => ({ key: 'spec/' + f.slice(0, -3), title: f, path: resolve(dir, f) }))
     const added = W.collectFromGit({ domain, docs, by })
     console.log(added.length ? `collected edits in: ${added.join(', ')}` : 'no uncommitted spec changes found')
+  } else if (cmd === 'refresh') {
+    const { readdirSync } = await import('node:fs')
+    const dir = resolve(W.ROOT, 'docs', 'spec')
+    const docs = readdirSync(dir).filter((f) => f.endsWith('.md')).map((f) => ({ key: 'spec/' + f.slice(0, -3), title: f, path: resolve(dir, f) }))
+    const wi = W.refreshFromGit(id, { docs, by })
+    console.log(`${wi.id} updated: ${wi.changes.map((c) => c.doc + ' (+' + c.added + ' -' + c.removed + ')').join(', ')}`)
   } else if (cmd === 'analysis') {
     const wi = W.setAnalysis(id, JSON.parse(readFileSync(resolve(rest[0]), 'utf8')))
     console.log(`analysis stored; ${wi.id} is now ${wi.status}`)
@@ -83,5 +90,28 @@ try {
   else if (cmd === 'commit') { W.addCommit(id, rest[0], rest[1], rest.slice(2).join(' ')); console.log('commit recorded') }
   else if (cmd === 'spec-ready') { W.markSpecReview(id); console.log(`${id} is now waiting for spec review`) }
   else if (cmd === 'in-qa') { W.markInQa(id); console.log(`${id} is now in-qa`) }
+  else if (cmd === 'phases') {
+    const { planPhases, PHASES, CONCURRENT } = await import('./phases.mjs')
+    const { spawnSync } = await import('node:child_process')
+    const spec = (...a) => spawnSync(process.execPath, [resolve(W.ROOT, 'tools', 'spec', 'spec.mjs'), 'state', ...a], { cwd: W.ROOT, encoding: 'utf8' })
+    const [final, init, apply] = [has('--final'), has('--init'), has('--apply')]   // has() consumes the flag: read each once
+    const plan = planPhases(need(W.get(id)), { final })
+    if (init) spec('checklist-init', PHASES.join('|'))
+    // Only items still waiting change: a finished or failed phase keeps its result; a phase skipped earlier that is needed now comes back.
+    const current = JSON.parse(spec('get', '--json').stdout || '{}').checklist || []
+    const stateOf = (p) => { const i = current.find((c) => c.label === p); return i ? (i.status ?? (i.done ? 'done' : 'pending')) : null }
+    for (const { phase, skip } of plan) {
+      console.log(`${skip ? '–' : '•'} ${phase}${skip ? `  SKIP: ${skip}` : ''}`)
+      if (!apply) continue
+      const st = stateOf(phase)
+      if (skip && (st === 'pending' || st === 'active' || st === null)) spec('checklist-set', phase, 'skipped', `--reason=${skip}`)
+      else if (!skip && st === 'skipped') spec('checklist-set', phase, 'pending')
+    }
+    // Only name a group when more than one of its phases is really needed.
+    for (const g of CONCURRENT) {
+      const live = g.filter((p) => !plan.find((x) => x.phase === p)?.skip)
+      if (live.length > 1) console.log(`Can run at the same time: ${live.join(' + ')}`)
+    }
+  }
   else fail('usage: work.mjs list|show|create|collect-git|analysis|question|answer|stubs|progress|qa-report|in-qa (see the header of this file)')
 } catch (e) { fail(e.message) }

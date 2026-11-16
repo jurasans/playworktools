@@ -22,6 +22,19 @@ SENSOR_SEARCH = {
     "customer_id": "UPPER(s.customer_id)",
 }
 
+# Sortable columns of the balls table: a key maps to a fixed SQL expression, never to caller text.
+SENSOR_SORT = {
+    "id": "UPPER(s.id)",
+    "api": "COALESCE(s.version, 1)",
+    "license_id": "UPPER(s.license_id)",
+    "device_id": "UPPER(s.device_id)",
+    "customer_id": "UPPER(s.customer_id)",
+}
+
+# Users per ball a licence allows, as the backend computes it (register/user_limit.py): a licenses.max_users override
+# wins, else tier 1 -> 1 and tier 2 -> 50, and tier 3 and above have no limit.
+TIER_USER_LIMITS = {1: 1, 2: 50}
+
 MAX_ROWS = 200
 MIN_QUERY = 2
 LOG_RETENTION_DAYS = 365

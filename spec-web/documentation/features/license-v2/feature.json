@@ -1,6 +1,7 @@
 {
   "title": "License Management v2",
   "subtitle": "One license per ball · many tablets · users counted on the server",
+  "pages": [{ "id": "fable", "title": "Fable", "src": "/product/license-v2/fable" }],
   "visuals": {
     "src": "/product/license-v2/page",
     "scenes": [
@@ -10,7 +11,8 @@
       { "id": "nonet", "title": "New user, no internet", "hint": "Blocked until online" },
       { "id": "second", "title": "Second tablet", "hint": "Known user, no extra slot" },
       { "id": "cap", "title": "User cap", "hint": "MyPlayBall, Basic, Premium" },
-      { "id": "bundle", "title": "Bundle", "hint": "Balls are not pooled" }
+      { "id": "bundle", "title": "Bundle", "hint": "Balls are not pooled" },
+      { "id": "flow", "title": "Flow simulation", "hint": "Flowcharts, a1 to a60 run, graph" }
     ]
   }
 }

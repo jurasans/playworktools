@@ -206,11 +206,31 @@
       el.onclick = function () { select(t[0]) }
     })
   }
+  // Extra tabs from feature.json `pages`: each is a whole local page in an iframe, loaded the first time it is opened.
+  var PAGES = {}, savedTab = null, pagesRestored = false
+  function ensurePages() {
+    (D.pages || []).forEach(function (p) {
+      if (PAGES[p.id] || document.getElementById('p-' + p.id)) return
+      PAGES[p.id] = p; TABS.push([p.id, p.title])
+      var s = h('section', 'pane', document.getElementById('main')); s.id = 'p-' + p.id
+      var f = h('iframe', '', s); f.title = p.title; f.style.cssText = 'flex:1;border:0;width:100%;min-width:0;background:var(--bg)'
+    })
+    if (PAGES[savedTab] && !pagesRestored) tab = savedTab
+    pagesRestored = true
+    TABS.forEach(function (x) { document.getElementById('p-' + x[0]).classList.toggle('on', x[0] === tab) })
+    showPage()
+  }
+  function showPage() {
+    var p = PAGES[tab]; if (!p) return
+    var f = document.querySelector('#p-' + p.id + ' iframe')
+    if (!f.getAttribute('src')) f.src = p.src + (p.src.indexOf('?') < 0 ? '?' : '&') + 'embed=1'
+  }
   function select(t) {
     tab = t; store('feat_' + FID + '_tab', t)
     TABS.forEach(function (x) { document.getElementById('p-' + x[0]).classList.toggle('on', x[0] === t) })
     if (D) renderHeader()
     if (t === 'visuals') showScene()
+    showPage()
   }
 
   // ── spec ────────────────────────────────────────────────────────────────────────────────────────
@@ -386,6 +406,7 @@
   function load(poll) {
     return api('GET', '').then(function (d) {
       D = d
+      ensurePages()
       // Never replace what the person is typing: while the editor is open (or a background refresh finds a field focused) only the header refreshes.
       if (editing || (poll === true && typing())) renderHeader(); else renderAll()
       clearTimeout(timer)
@@ -397,6 +418,7 @@
   }
   document.getElementById('wiBtn').onclick = wiDialog
   var saved = store('feat_' + FID + '_tab')
+  savedTab = saved
   if (TABS.some(function (t) { return t[0] === saved })) tab = saved
   TABS.forEach(function (t) { document.getElementById('p-' + t[0]).classList.toggle('on', t[0] === tab) })
   load()

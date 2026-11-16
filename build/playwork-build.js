@@ -14,6 +14,7 @@ import { spawn }                  from 'child_process'
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 import { resolve, dirname, join } from 'path'
 import { fileURLToPath }          from 'url'
+import { progress }                from './progress.mjs'
 
 // ── Paths ──────────────────────────────────────────────────────────────────────
 const __dirname    = dirname(fileURLToPath(import.meta.url))
@@ -268,6 +269,7 @@ async function main() {
   }
   rl.close()
 
+  progress(3, 'starting')
   // ── 4. Write updated version ───────────────────────────────────
   // Skipped entirely for a pure debug build — not just left at the same
   // value, genuinely untouched, so version.json/build.gradle keep whatever
@@ -284,12 +286,14 @@ async function main() {
   // (any VITE_-prefixed env var Vite sees is exposed automatically — no vite.config.ts
   // change needed) — see src/utils/buildChannel.ts for how this gates Firebase reporting.
   console.log(cy('\n  ── Web build ─────────────────────────────────────'))
+  progress(8, 'web build')
   // licenseEnv (chosen in the summary above) follows the channel unless --stage / --prod forces it. iOS/TestFlight is
   // separate (see fastlane/Fastfile).
   console.log(d(`  (VITE_BUILD_CHANNEL=${channel}, VITE_LICENSE_ENV=${licenseEnv})`))
   await run(FLAG.verified ? 'npm run build:verified' : 'npm run build', ROOT, { VITE_BUILD_CHANNEL: channel, VITE_LICENSE_ENV: licenseEnv })
 
   // ── 6. Capacitor sync ──────────────────────────────────────────
+  progress(40, 'capacitor sync')
   console.log(cy('\n  ── Capacitor sync ────────────────────────────────'))
   await run('npx cap sync android')
 
@@ -298,13 +302,16 @@ async function main() {
     ? ['debug', 'release']
     : [buildType]
 
-  for (const t of targets) {
+  for (const [i, t] of targets.entries()) {
+    const from = 44 + (i * 54) / targets.length, to = 44 + ((i + 1) * 54) / targets.length
+    progress(from, `gradle ${t} starting`)
     const gradleTask = t === 'release'
       ? (FLAG.nightly ? 'assembleRelease' : 'assembleRelease bundleRelease')
       : 'assembleDebug   bundleDebug'
 
     console.log(cy(`\n  ── Gradle ${t} ──────────────────────────────────`))
-    await run(`.\\gradlew.bat ${gradleTask}`, ANDROID_DIR)
+    // Through the task counter: it prints [progress] lines and, as a pipe hides gradle's exit code on cmd, fails unless BUILD SUCCESSFUL.
+    await run(`.\\gradlew.bat ${gradleTask} 2>&1 | node "${join(__dirname, 'gradle-progress.mjs')}" ${t} ${Math.round(from)} ${Math.round(to)}`, ANDROID_DIR)
 
     const paths = outputPaths(t)
     console.log(g(`\n  ✓ ${t.toUpperCase()} build complete`))
@@ -322,6 +329,7 @@ async function main() {
     console.log(g('\n  ✓ Installed and launched on device'))
   }
 
+  progress(100, 'done')
   console.log(`\n${c.green}${c.bold}  ✓ All done — Playwork ${newVersion} (${newVersionCode})${c.reset}\n`)
 }
 

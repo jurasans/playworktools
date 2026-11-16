@@ -59,6 +59,54 @@
   .rule { background:var(--raised); border:1px solid var(--line); border-radius:999px; padding:5px 12px; font-size:13px; }
   .rule em { color:var(--brand); font-style:normal; font-weight:700; }
   @media (prefers-reduced-motion:reduce) { svg .flow { animation:none; } }
+  /* Flow simulation scene */
+  .pane.wide { max-width:1000px; width:100%; }
+  .fsec { display:flex; flex-direction:column; gap:14px; }
+  .fsec[hidden] { display:none; }
+  svg .fn .shape { fill:var(--raised); stroke:var(--fg3); stroke-width:1.5; }
+  svg .fn.ok .shape { stroke:var(--brand); } svg .fn.bad .shape { stroke:var(--red); } svg .fn.warn .shape { stroke:var(--accent); stroke-width:2.2; }
+  svg .ft { font:600 12.5px system-ui,sans-serif; }
+  svg .tg { fill:var(--accent); } svg .tgt { fill:#2a1f00; font:700 10.5px var(--mono); }
+  svg .arr { stroke:var(--fg3); stroke-width:1.6; fill:none; marker-end:url(#arrow); }
+  svg .el { fill:var(--fg3); font:400 11px var(--mono); }
+  svg .gx { stroke:var(--line); stroke-width:1; } svg .ga { stroke:var(--fg3); stroke-width:1.2; }
+  svg .gl { fill:var(--fg3); font:400 11px var(--mono); }
+  .fcap { color:var(--fg3); font-size:13px; margin:0; }
+  svg .tgb { cursor:pointer; outline:none; } svg .tgb:hover .tg, svg .tgb:focus-visible .tg { fill:#fff; }
+  .detail { position:sticky; top:0; z-index:5; background:var(--raised); border:1px solid var(--accent); border-radius:8px; padding:10px 12px; max-height:40vh; overflow:auto; }
+  .detail .dt { display:flex; gap:10px; align-items:baseline; flex-wrap:wrap; }
+  .detail .muted { color:var(--fg3); font-size:13px; }
+  .detail .dtx { margin:6px 0 0; font-size:14px; }
+  .detail .dk { margin:8px 0 2px; font:600 11px var(--mono); letter-spacing:.05em; text-transform:uppercase; color:var(--fg3); }
+  .detail ul { margin:2px 0 0; padding-left:18px; font-size:13px; color:var(--fg2); }
+  .tagbar { display:flex; flex-wrap:wrap; gap:6px; }
+  .tagbtn { font:700 12px var(--mono); border-radius:999px; padding:3px 11px; cursor:pointer; background:var(--sunken); color:var(--fg); border:1px solid var(--accent); }
+  .tagbtn.to { border-color:var(--line); color:var(--fg2); }
+  .tagbtn:hover { background:var(--accent); color:#2a1f00; }
+  .fsec h3 { margin:6px 0 0; font-size:15px; }
+  .simgrid { display:grid; grid-template-columns:minmax(0,300px) minmax(0,1fr); gap:14px; align-items:start; }
+  @media (max-width:760px) { .simgrid { grid-template-columns:minmax(0,1fr); } }
+  .box { background:var(--raised); border:1px solid var(--line); border-radius:8px; padding:12px; display:flex; flex-direction:column; gap:10px; min-width:0; }
+  .box label { font-size:12.5px; color:var(--fg3); display:flex; flex-direction:column; gap:4px; }
+  .box label.chk { flex-direction:row; align-items:flex-start; gap:8px; color:var(--fg2); }
+  .box select { font:inherit; font-size:13px; color:var(--fg); background:var(--sunken); border:1px solid var(--line); border-radius:6px; padding:6px 8px; }
+  .btn:disabled { opacity:.45; cursor:default; }
+  .btn.go { background:var(--brand); border-color:var(--brand); color:#04210f; font-weight:600; }
+  .counters { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .counters .n { font:600 26px var(--mono); font-variant-numeric:tabular-nums; }
+  .counters .n.full { color:var(--red); }
+  .counters .k { font:500 11px var(--mono); letter-spacing:.06em; text-transform:uppercase; color:var(--fg3); }
+  .sumline { font-size:13px; color:var(--fg2); min-height:1.3em; margin:0; }
+  .log { max-height:260px; overflow:auto; border:1px solid var(--line); border-radius:8px; }
+  .log table, .qt table { width:100%; border-collapse:collapse; font-size:13px; }
+  .log th, .log td, .qt th, .qt td { text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .log th, .qt th { position:sticky; top:0; background:var(--raised); font:500 11px var(--mono); letter-spacing:.05em; text-transform:uppercase; color:var(--fg3); }
+  .num { font-family:var(--mono); font-variant-numeric:tabular-nums; }
+  .pl { display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px; font-weight:600; }
+  .pl.ok { background:#12301f; color:#5fcf8e; } .pl.bad { background:#3d1815; color:#ff8a80; } .pl.info { background:#123845; color:#5cc0e2; }
+  .qt { overflow-x:auto; border:1px solid var(--line); border-radius:8px; }
+  .qt table { min-width:700px; } .qt td:first-child { white-space:nowrap; font-family:var(--mono); font-weight:600; }
+  .sev-b { color:var(--red); font:600 11px var(--mono); } .sev-o { color:var(--fg3); font:600 11px var(--mono); }
   /* ?embed=1: the feature page supplies the title and the scene list, so this page shows only the animation. */
   html.embed header, html.embed [role=tablist] { display:none; }
 </style>
@@ -342,6 +390,344 @@
     return pane
   }
 
+  // ── Scene: Flow simulation (flowcharts, a1-a60 run with a graph, open inconsistencies) ──
+  var FLOW_A = {
+    label: 'Flow A: a user logs in on a tablet and is counted on the ball',
+    nodes: [
+      { id: 'a0', col: 0, row: 0, t: 'rect', text: 'User enters an id\non the tablet' },
+      { id: 'a1', col: 0, row: 1, t: 'dia', text: 'Known on this\ntablet?', tag: 'Q9' },
+      { id: 'a1y', col: 1, row: 1, t: 'rect', k: 'ok', text: 'Log in. Works offline,\nno server call' },
+      { id: 'a2', col: 0, row: 2, t: 'dia', text: 'Internet\navailable?' },
+      { id: 'a2n', col: 1, row: 2, t: 'rect', k: 'bad', text: 'Blocked: go online first', tag: 'Q5' },
+      { id: 'a3', col: 0, row: 3, t: 'rect', text: 'Connect to the ball, ask the server:\nadd this user to this ball', tag: 'Q7' },
+      { id: 'a4', col: 0, row: 4, t: 'dia', text: 'Already counted\non this ball?' },
+      { id: 'a4y', col: 1, row: 4, t: 'rect', k: 'ok', text: 'Log in, no new slot' },
+      { id: 'a5', col: 0, row: 5, t: 'dia', text: 'Counted users\nbelow the tier cap?', tag: 'F6' },
+      { id: 'a5n', col: 1, row: 5, t: 'rect', k: 'bad', text: 'Blocked:\nuser limit reached', tag: 'Q1' },
+      { id: 'a6', col: 0, row: 6, t: 'rect', k: 'ok', text: 'Count the user: n+1 of the limit.\nLog in, remember on the tablet', tag: 'F7' }
+    ],
+    edges: [['a0', 'a1'], ['a1', 'a1y', 'yes', 'r'], ['a1', 'a2', 'no'], ['a2', 'a2n', 'no', 'r'], ['a2', 'a3', 'yes'], ['a3', 'a4'],
+      ['a4', 'a4y', 'yes', 'r'], ['a4', 'a5', 'no'], ['a5', 'a5n', 'no', 'r'], ['a5', 'a6', 'yes']]
+  }
+  var FLOW_B = {
+    label: 'Flow B: user a exports the profile to tablet 2 and connects to ball y',
+    nodes: [
+      { id: 'b0', col: 0, row: 0, t: 'rect', text: 'User a is on tablet 1, ball x = 1/50' },
+      { id: 'b1', col: 0, row: 1, t: 'rect', text: 'Export a: the profile\nmoves to tablet 2', tag: 'Q7' },
+      { id: 'b2', col: 0, row: 2, t: 'rect', text: 'Tablet 2 imports it:\na is now known on tablet 2', tag: 'F3' },
+      { id: 'b3', col: 0, row: 3, t: 'rect', text: 'Tablet 2 connects to ball y' },
+      { id: 'b4', col: 0, row: 4, t: 'dia', text: 'a known on\ntablet 2?', tag: 'Q9' },
+      { id: 'b4y', col: 1, row: 4, t: 'rect', k: 'warn', text: 'Log in, no server call.\ny stays 0/50, x stays 1/50', tag: 'F4' },
+      { id: 'b5y', col: 1, row: 5, t: 'rect', k: 'warn', text: 'Inconsistent: a plays on y,\nbut only x counts a', tag: 'F1' },
+      { id: 'b5', col: 0, row: 5, t: 'rect', k: 'ok', text: 'Ask the server: count a on y.\ny = 1/50, x = 1/50' }
+    ],
+    edges: [['b0', 'b1'], ['b1', 'b2'], ['b2', 'b3'], ['b3', 'b4'], ['b4', 'b4y', 'yes', 'r'], ['b4', 'b5', 'no, if Q9 is per ball'], ['b4y', 'b5y']]
+  }
+  var FLOW_C = {
+    label: 'Flow C: the export lets a 51st user into a full ball',
+    nodes: [
+      { id: 'c0', col: 0, row: 0, t: 'rect', k: 'bad', text: 'Ball x is full: 50/50' },
+      { id: 'c1', col: 0, row: 1, t: 'rect', text: 'New user c1 on tablet 2 with ball y.\ny has room: y = 1/50' },
+      { id: 'c2', col: 0, row: 2, t: 'rect', text: 'Export c1 to tablet 1', tag: 'Q7' },
+      { id: 'c3', col: 0, row: 3, t: 'rect', text: 'Tablet 1 connects to ball x.\nc1 is known on tablet 1' },
+      { id: 'c4', col: 0, row: 4, t: 'rect', k: 'warn', text: 'Logs in with no server call.\nx stays 50/50 while 51 users play it', tag: 'F2' }
+    ],
+    edges: [['c0', 'c1'], ['c1', 'c2'], ['c2', 'c3'], ['c3', 'c4']]
+  }
+  var FLOW_QS = [
+    ['F1', 'B', 'Flow B, y = 0/50', 'User a plays on ball y while y shows 0/50 and x shows 1/50. Cause: a known user logs in with no server call, and the import makes a known on tablet 2, so y never sees a. The counter stops measuring who uses a ball.', 'Known means known on this tablet for this ball (Q9). y counts a on the first login there.'],
+    ['F2', 'B', 'Flow C, cap bypass', 'Ball x is full at 50. A user created on ball y (which has room) and exported to the tablet used with x logs in with no server call, so a 51st user plays x. The cap only holds if the server sees every first use of a ball.', 'Same fix as F1. The server checks every first login per ball, even for an imported user.'],
+    ['F3', 'B', 'Flow B, import', 'What does the export carry: only the identity token (Q7), or also results, name and settings? Does importing need internet? What if tablet 2 already has the same person?', 'Carry token and profile. Merge by token. Import needs no internet, the first login on each ball does.'],
+    ['F4', 'O', 'Flow B, x = 1/50', 'After the export x keeps the slot. If a never returns to x the slot stays used until it is freed (Q4). Your flow treats the export as a copy.', 'Copy. A slot is freed only by deleting the user (Q4).'],
+    ['F5', 'B', 'Backend today', 'Register today binds one device to a ball and answers 400 "Device mismatch" for any other tablet, and it stores one user per ball. Many tablets per ball (this spec) removes both, so register and the schema change, and old app versions must keep working.', 'New table ball_users (ball, token). Stop the device check behind the request version.'],
+    ['F6', 'B', 'Flow A, the 50th user', 'Two tablets add the 50th user at the same moment. Database conflicts (OC000) surface as a 5xx with no retry, and many tablets per ball makes this more likely than today.', 'One conditional insert (insert if the count is below the cap) with a bounded retry on 40001.'],
+    ['F7', 'O', 'Flow A, display', 'Register returns only the license and the user id. The tablet needs used and limit to show "n/50", and it is not said where it is shown.', 'Add used and limit to the response. Show them in the sensor pill and on the login screen.'],
+    ['F8', 'O', 'Flow A, retries', 'Register replays the first successful answer for the same Idempotency-Key. A replayed 200 can hide a later block or a freed slot.', 'Replay only the bind step. Always run the slot check again.'],
+    ['F9', 'O', 'Bundle', 'A Basic Bundle 3 shows 1/50 on each ball, not 1/150. Confirm the counter is per ball everywhere, including the export (see Q10, Q11).', 'Per ball, as in the spec.']
+  ]
+
+  // Fallback copy of the Questions tab, used when the live list cannot be fetched (the page opened as a plain file).
+  var QSTATIC = {
+    1: ['B', 'What does the trainer see when the cap is hit (user 51 on Basic, user 2 on MyPlayBall)? Exact message and whether it offers a next step.'],
+    2: ['B', 'Does Guest count as the one user on a MyPlayBall?'],
+    3: ['B', 'What happens to users that already exist on a tablet when it first meets v2: is there a one-time sync to the server, and what if the ball is already over its cap?'],
+    4: ['O', 'Does deleting a user free a slot on the server, and what do other tablets that already know that user keep?'],
+    5: ['B', 'Users created offline can pass the cap before the server counts them. Do we block creating new users offline entirely, or allow it and reconcile later?'],
+    6: ['O', 'Who is a "user" for counting: the same numeric id on two tablets must count once. Is the id enough, or must the tablet also send something that proves it is the same person?'],
+    7: ['B', 'How do we distinguish users'],
+    8: ['B', 'Are the user ids national identification numbers (or can they be)? If yes they must not be stored on the server in any readable form.'],
+    9: ['B', 'What does "first login to a ball" mean for the offline rule: a user this tablet has seen (any ball), or a user this tablet has seen on this particular ball?'],
+    10: ['O', 'Is a bundle only a sales concept (every ball registers alone with its own tier and its own user count), or does the server link the balls of a bundle?'],
+    11: ['O', 'Does the same person count once per ball, or once for the whole clinic?'],
+    12: ['O', 'A tablet is replaced, or the app is reinstalled, and its local users are gone. Does a returning user take a new slot?'],
+    13: ['O', 'MyPlayBall allows one user. Can the owner replace that user (a new family member) or move them to a new tablet?'],
+    14: ['O', 'What may the server store about a user? Is a display name or label ever sent?'],
+    15: ['O', 'The trainer report and the CSV export show the user id today. If ids can be national ids, what should they show?']
+  }
+  var QLIVE = null
+  try {
+    fetch('/api/features/license-v2', { credentials: 'same-origin' }).then(function (r) { return r.ok ? r.json() : null })
+      .then(function (j) { if (j && j.questions) QLIVE = j.questions }).catch(function () { /* fallback copy stays */ })
+  } catch (e) { /* no fetch: fallback copy stays */ }
+
+  function qinfo(id) {
+    var f = FLOW_QS.filter(function (r) { return r[0] === id })[0]
+    if (f) return { id: id, sev: f[1], where: f[2], text: f[3], def: f[4], kind: 'F' }
+    var n = +id.slice(1), live = QLIVE && QLIVE.filter(function (q) { return q.n === n })[0], st = QSTATIC[n]
+    if (live) return { id: id, sev: live.blocking ? 'B' : 'O', text: live.text, options: live.options || [], answer: live.answer, kind: 'Q' }
+    return { id: id, sev: st ? st[0] : 'O', text: st ? st[1] : '(question not found)', options: [], kind: 'Q' }
+  }
+
+  // One panel that shows the full text of a tag the viewer clicked; sticky so it stays in view while scrolling the charts.
+  function detailPanel(parent) {
+    var p = h('div', 'detail', parent), ttl = h('div', 'dt', p)
+    function hint() { ttl.textContent = ''; while (p.children.length > 1) p.removeChild(p.lastChild); h('span', 'muted', ttl, 'Click a tag (Q or F) on the diagram or the graph to read the question here.') }
+    function show(id) {
+      var i = qinfo(id)
+      ttl.textContent = ''
+      while (p.children.length > 1) p.removeChild(p.lastChild)
+      h('b', '', ttl, i.id + (i.kind === 'Q' ? ' · question in the Questions tab' : ' · inconsistency from this flow') + (i.where ? ' · ' + i.where : ''))
+      h('span', i.sev === 'B' ? 'sev-b' : 'sev-o', ttl, i.sev === 'B' ? 'BLOCKS THE DESIGN' : 'CAN WAIT')
+      h('p', 'dtx', p, i.text)
+      if (i.def) { var d = h('p', 'dtx', p); h('b', '', d, 'Suggested default: '); d.appendChild(document.createTextNode(i.def)) }
+      if (i.options && i.options.length) { h('div', 'dk', p, 'Options on the table'); var ul = h('ul', '', p); i.options.forEach(function (o) { h('li', '', ul, o) }) }
+      if (i.kind === 'Q') h('p', 'dk', p, i.answer ? 'Answered: ' + i.answer : 'Not answered yet.')
+    }
+    hint()
+    return { show: show }
+  }
+
+  function tagBar(parent, ids, onTag) {
+    var bar = h('div', 'tagbar', parent)
+    ids.forEach(function (id) {
+      var b = h('button', 'tagbtn ' + (qinfo(id).sev === 'B' ? 'tb' : 'to'), bar, id); b.type = 'button'
+      b.title = qinfo(id).text; b.onclick = function () { onTag(id) }
+    })
+  }
+
+  function drawFlow(parent, spec, onTag) {
+    var CX = [250, 610], DY = 88, TOP = 44, W = 250, H = 54, DH = 72
+    var rows = 0
+    spec.nodes.forEach(function (n) { rows = Math.max(rows, n.row + 1) })
+    var VH = TOP + (rows - 1) * DY + 60
+    var stage = h('div', 'stage', parent)
+    var svg = el('svg', { viewBox: '0 0 740 ' + VH, role: 'img', 'aria-label': spec.label }, stage)
+    var defs = el('defs', {}, svg)
+    var mk = el('marker', { id: 'arrow', viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' }, defs)
+    el('path', { d: 'M0 0 L10 5 L0 10 z', fill: 'var(--fg3)' }, mk)
+    var by = {}
+    spec.nodes.forEach(function (n) { n.cx = CX[n.col]; n.cy = TOP + n.row * DY; n.h = n.t === 'dia' ? DH : H; by[n.id] = n })
+    spec.edges.forEach(function (e) {
+      var a = by[e[0]], b = by[e[1]], right = e[3] === 'r'
+      if (right) {
+        var x1 = a.cx + W / 2, x2 = b.cx - W / 2
+        el('path', { d: 'M' + x1 + ' ' + a.cy + ' H' + x2, class: 'arr' }, svg)
+        if (e[2]) el('text', { x: (x1 + x2) / 2, y: a.cy - 6, 'text-anchor': 'middle', class: 'el' }, svg, e[2])
+      } else {
+        var y1 = a.cy + a.h / 2, y2 = b.cy - b.h / 2
+        el('path', { d: 'M' + a.cx + ' ' + y1 + ' V' + y2, class: 'arr' }, svg)
+        if (e[2]) el('text', { x: a.cx + 8, y: (y1 + y2) / 2 + 4, class: 'el' }, svg, e[2])
+      }
+    })
+    spec.nodes.forEach(function (n) {
+      var g = el('g', { class: 'fn' + (n.k ? ' ' + n.k : '') }, svg)
+      if (n.t === 'dia') {
+        el('polygon', { class: 'shape', points: (n.cx - W / 2) + ',' + n.cy + ' ' + n.cx + ',' + (n.cy - n.h / 2) + ' ' + (n.cx + W / 2) + ',' + n.cy + ' ' + n.cx + ',' + (n.cy + n.h / 2) }, g)
+      } else el('rect', { class: 'shape', x: n.cx - W / 2, y: n.cy - n.h / 2, width: W, height: n.h, rx: 9 }, g)
+      var lines = n.text.split('\n')
+      lines.forEach(function (ln, i) { el('text', { x: n.cx, y: n.cy - (lines.length - 1) * 8 + 4 + i * 16, 'text-anchor': 'middle', class: 'ft' }, g, ln) })
+      if (n.tag) {
+        var tg = el('g', { class: 'tgb', role: 'button', tabindex: 0, 'aria-label': 'Show ' + n.tag }, g)
+        el('rect', { class: 'tg', x: n.cx + W / 2 - 34, y: n.cy - n.h / 2 - 8, width: 34, height: 16, rx: 8 }, tg)
+        el('text', { x: n.cx + W / 2 - 17, y: n.cy - n.h / 2 + 4, 'text-anchor': 'middle', class: 'tgt' }, tg, n.tag)
+        tg.addEventListener('click', function () { onTag(n.tag) })
+        tg.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); onTag(n.tag) } })
+      }
+    })
+  }
+
+  function drawGraph(parent, hist, limit, total, onTag) {
+    parent.textContent = ''
+    var L = 44, R = 16, T = 16, B = 34, W = 720, HT = 280
+    var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + HT, role: 'img', 'aria-label': 'Counted users on ball x and ball y after each action' }, parent)
+    var maxN = Math.max(hist.length, 10), maxC = 5
+    hist.forEach(function (p) { maxC = Math.max(maxC, p.x, p.y) })
+    if (limit !== Infinity) maxC = Math.max(maxC, limit)
+    var step = maxC <= 10 ? 1 : maxC <= 20 ? 5 : 10
+    var top = Math.ceil(maxC / step) * step
+    function sx(i) { return L + (i - 1) / Math.max(maxN - 1, 1) * (W - L - R) }
+    function sy(v) { return T + (1 - v / top) * (HT - T - B) }
+    for (var v = 0; v <= top; v += step) {
+      el('path', { d: 'M' + L + ' ' + sy(v) + ' H' + (W - R), class: 'gx' }, svg)
+      el('text', { x: L - 6, y: sy(v) + 4, 'text-anchor': 'end', class: 'gl' }, svg, String(v))
+    }
+    var tick = maxN <= 20 ? 5 : 10
+    for (var i = tick; i <= maxN; i += tick) el('text', { x: sx(i), y: HT - B + 16, 'text-anchor': 'middle', class: 'gl' }, svg, String(i))
+    el('path', { d: 'M' + L + ' ' + sy(0) + ' H' + (W - R), class: 'ga' }, svg)
+    el('text', { x: (L + W - R) / 2, y: HT - 6, 'text-anchor': 'middle', class: 'gl' }, svg, 'Action number')
+    if (limit !== Infinity) {
+      el('path', { d: 'M' + L + ' ' + sy(limit) + ' H' + (W - R), stroke: 'var(--red)', 'stroke-width': 1.5, 'stroke-dasharray': '6 5', fill: 'none' }, svg)
+      el('text', { x: W - R - 4, y: sy(limit) - 6, 'text-anchor': 'end', class: 'gl', fill: 'var(--red)', style: 'fill:var(--red)' }, svg, 'cap ' + limit)
+    }
+    ;[['x', 'var(--blue)'], ['y', 'var(--brand)']].forEach(function (s) {
+      if (!hist.length) return
+      var d = 'M' + sx(1) + ' ' + sy(hist[0][s[0]])
+      for (var k = 1; k < hist.length; k++) d += ' H' + sx(k + 1) + ' V' + sy(hist[k][s[0]])
+      el('path', { d: d, stroke: s[1], 'stroke-width': 2.4, fill: 'none', 'stroke-linejoin': 'round' }, svg)
+    })
+    hist.forEach(function (p, k) { if (p.blocked) el('path', { d: 'M' + (sx(k + 1) - 4) + ' ' + (sy(p.x) - 4) + ' l8 8 M' + (sx(k + 1) + 4) + ' ' + (sy(p.x) - 4) + ' l-8 8', stroke: 'var(--red)', 'stroke-width': 2, 'stroke-linecap': 'round' }, svg) })
+    // Tags sit on the action where the question shows up; a dotted line ties each one to its point on the curve.
+    hist.forEach(function (p, k) {
+      ;(p.tags || []).forEach(function (id, j) {
+        var px = sx(k + 1), py = T + 26 + j * 19, tx = Math.min(px, W - R - 20)
+        el('path', { d: 'M' + px + ' ' + (py + 8) + ' V' + sy(Math.max(p.x, p.y)), stroke: 'var(--accent)', 'stroke-width': 1, 'stroke-dasharray': '2 3', fill: 'none' }, svg)
+        var tg = el('g', { class: 'tgb', role: 'button', tabindex: 0, 'aria-label': 'Show ' + id }, svg)
+        el('rect', { class: 'tg', x: tx - 17, y: py - 8, width: 34, height: 16, rx: 8 }, tg)
+        el('text', { x: tx, y: py + 4, 'text-anchor': 'middle', class: 'tgt' }, tg, id)
+        tg.addEventListener('click', function () { onTag(id) })
+        tg.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); onTag(id) } })
+      })
+    })
+    el('text', { x: L + 6, y: T + 12, class: 'gl', style: 'fill:var(--blue)' }, svg, '━ ball x')
+    el('text', { x: L + 70, y: T + 12, class: 'gl', style: 'fill:var(--brand)' }, svg, '━ ball y')
+    el('text', { x: L + 134, y: T + 12, class: 'gl', style: 'fill:var(--red)' }, svg, '✕ blocked')
+  }
+
+  function flowSim(root, onTag) {
+    var LIM = { 1: 1, 2: 50, 3: Infinity }, TOTAL = 60, S
+    var box = h('div', 'box', h('div', 'simgrid', root))
+    var tier = h('select', '', h('label', '', box, 'License tier of ball x and ball y'))
+    ;[['2', '2 Basic, 50 users'], ['1', '1 MyPlayBall, 1 user'], ['3', '3 Premium, unlimited']].forEach(function (o) { var op = h('option', '', tier, o[1]); op.value = o[0] })
+    var policy = h('select', '', h('label', '', box, 'Q9: what does "known" mean?'))
+    ;[['tablet', 'Known on this tablet (spec today)'], ['ball', 'Known on this tablet for this ball']].forEach(function (o) { var op = h('option', '', policy, o[1]); op.value = o[0] })
+    var onl = h('label', 'chk', box); var online = h('input', '', onl); online.type = 'checkbox'; online.checked = true; onl.appendChild(document.createTextNode('Tablets have internet'))
+    var r1 = h('div', 'seg', box)
+    var bStep = h('button', 'btn go', r1, 'Connect next user'); var bRun = h('button', 'btn', r1, 'Run to a60'); var bReset = h('button', 'btn', r1, 'Reset')
+    var who = h('select', '', h('label', '', box, 'Export a user to tablet 2, connect to ball y'))
+    var bExp = h('button', 'btn', box, 'Export and connect to y')
+    var bBy = h('button', 'btn', box, 'Cap bypass demo (flow C)')
+    ;[bStep, bRun, bReset, bExp, bBy].forEach(function (b) { b.type = 'button' })
+    var side = h('div', '', root.lastChild); side.style.cssText = 'display:flex;flex-direction:column;gap:12px;min-width:0'
+    var cnt = h('div', 'counters', h('div', 'box', side))
+    var cx = h('div', '', cnt), cy = h('div', '', cnt)
+    h('div', 'k', cx, 'Ball x, tablet 1'); var nx = h('div', 'n', cx, '0/50')
+    h('div', 'k', cy, 'Ball y, tablet 2'); var ny = h('div', 'n', cy, '0/50')
+    var sum = h('p', 'sumline', side); sum.setAttribute('aria-live', 'polite')
+    var gstage = h('div', 'stage', side)
+    var lg = h('div', 'log', root); var tb = h('table', '', lg)
+    var hr = h('tr', '', h('thead', '', tb)); ;['#', 'User', 'Action', 'Result', 'x', 'y'].forEach(function (c) { h('th', c.length < 3 ? 'num' : '', hr, c) })
+    var tbody = h('tbody', '', tb)
+
+    function lim() { return LIM[tier.value] }
+    function ls(n) { return n === Infinity ? '∞' : String(n) }
+    function fresh() { return { next: 1, x: [], y: [], known: { t1: [], t2: [] }, hist: [], rows: [], c: 0, seen: {} } }
+    function isKnown(t, u, b) {
+      var a = S.known[t]
+      return policy.value === 'tablet' ? a.some(function (e) { return e.split('|')[0] === u }) : a.indexOf(u + '|' + b) >= 0
+    }
+    function login(t, ball, u) {
+      if (isKnown(t, u, ball)) return { k: 'info', text: 'logged in, no server call' }
+      if (!online.checked) return { k: 'bad', text: 'blocked, go online first', blocked: true }
+      var list = S[ball]
+      if (list.indexOf(u) >= 0) { S.known[t].push(u + '|' + ball); return { k: 'info', text: 'already counted, no new slot' } }
+      if (list.length < lim()) { list.push(u); S.known[t].push(u + '|' + ball); return { k: 'ok', text: 'counted ' + list.length + '/' + ls(lim()) } }
+      return { k: 'bad', text: 'blocked, user limit reached', blocked: true }
+    }
+    // Tags go on the action where a question first shows up, so the graph stays readable.
+    function tagsFor(action, res) {
+      var t = [], once = function (id) { if (!S.seen[id]) { S.seen[id] = 1; t.push(id) } }
+      if (res.blocked && /limit/.test(res.text)) once('Q1')
+      if (res.blocked && /internet/.test(res.text)) once('Q5')
+      if (res.k === 'ok' && S.x.length === lim() && /ball x$/.test(action)) once('F6')
+      if (/^export to tablet 2/.test(action)) { if (/no server call/.test(res.text)) { t.push('Q9'); t.push('F1') } else if (res.k === 'ok') t.push('Q11') }
+      if (/^export to tablet 1/.test(action) && /no server call/.test(res.text)) t.push('F2')
+      return t
+    }
+    function rec(u, action, res) {
+      S.rows.push([u, action, res]); S.hist.push({ x: S.x.length, y: S.y.length, blocked: !!res.blocked, tags: tagsFor(action, res) })
+    }
+    function step() { if (S.next > TOTAL) return; var u = 'a' + S.next++; rec(u, 'tablet 1 connects to ball x', login('t1', 'x', u)) }
+    function exportUser() {
+      var u = who.value; if (!u) return
+      S.known.t2.push(u + '|*')
+      rec(u, 'export to tablet 2, connect to ball y', login('t2', 'y', u))
+    }
+    function bypass() {
+      var u = 'c' + (++S.c), r = login('t2', 'y', u)
+      rec(u, 'new user on tablet 2, ball y', r)
+      if (r.blocked) return
+      S.known.t1.push(u + '|*')
+      rec(u, 'export to tablet 1, connect to ball x', login('t1', 'x', u))
+    }
+    function paint() {
+      var l = lim()
+      ;[[nx, S.x], [ny, S.y]].forEach(function (p) { p[0].textContent = p[1].length + '/' + ls(l); p[0].className = 'n' + (l !== Infinity && p[1].length >= l ? ' full' : '') })
+      tbody.textContent = ''
+      S.rows.slice().reverse().forEach(function (r, i) {
+        var tr = h('tr', '', tbody), idx = S.rows.length - i, p = S.hist[idx - 1]
+        h('td', 'num', tr, String(idx)); h('td', 'num', tr, r[0]); h('td', '', tr, r[1])
+        h('span', 'pl ' + r[2].k, h('td', '', tr), r[2].text)
+        h('td', 'num', tr, p.x + '/' + ls(l)); h('td', 'num', tr, p.y + '/' + ls(l))
+      })
+      var blocked = S.hist.filter(function (p) { return p.blocked }).length
+      sum.textContent = S.next > TOTAL
+        ? 'a1 to a60 have all tried. ' + S.x.length + ' counted on ball x, ' + blocked + ' blocked in total.'
+        : 'Next user: a' + S.next + '. ' + (S.next - 1) + ' of ' + TOTAL + ' have tried.'
+      var cur = who.value; who.textContent = ''
+      S.x.forEach(function (u) { var op = h('option', '', who, u); op.value = u })
+      if (S.x.indexOf(cur) >= 0) who.value = cur
+      bExp.disabled = !S.x.length
+      bStep.disabled = bRun.disabled = S.next > TOTAL
+      bBy.disabled = lim() === Infinity || S.x.length < lim()
+      bBy.title = bBy.disabled ? 'Fill ball x to its cap first (Run to a60)' : ''
+      drawGraph(gstage, S.hist, l, TOTAL, onTag)
+    }
+    function reset() { S = fresh(); paint() }
+    bStep.onclick = function () { step(); paint() }
+    bRun.onclick = function () { while (S.next <= TOTAL) step(); paint() }
+    bReset.onclick = reset
+    tier.onchange = reset; policy.onchange = reset; online.onchange = reset
+    bExp.onclick = function () { exportUser(); paint() }
+    bBy.onclick = function () { bypass(); paint() }
+    reset()
+  }
+
+  function flowPane() {
+    var pane = h('div', 'pane wide')
+    var nav = h('div', 'seg', pane), secs = {}, btn = {}
+    var SEC = [['chart', 'Flowcharts'], ['sim', 'Run a1 to a60 and graph'], ['qs', 'Inconsistencies']]
+    function show(id) {
+      SEC.forEach(function (s) { secs[s[0]].hidden = s[0] !== id; btn[s[0]].setAttribute('aria-pressed', s[0] === id ? 'true' : 'false') })
+    }
+    SEC.forEach(function (s) {
+      btn[s[0]] = h('button', 'btn', nav, s[1]); btn[s[0]].type = 'button'
+      secs[s[0]] = h('div', 'fsec', pane)
+      btn[s[0]].onclick = function () { show(s[0]) }
+    })
+    var c = secs.chart
+    h('p', 'fcap', c, 'Orange tags are open questions: Q is a question already in the Questions tab, F is new from this flow. Press any tag, on a diagram or below, to read it.')
+    var cPanel = detailPanel(c)
+    tagBar(c, ['Q1', 'Q5', 'Q7', 'Q9', 'F1', 'F2', 'F3', 'F4', 'F6', 'F7'], cPanel.show)
+    h('h3', '', c, 'Flow A: a user logs in and is counted on a ball'); drawFlow(c, FLOW_A, cPanel.show)
+    h('h3', '', c, 'Flow B: your scenario, user a exported to tablet 2 and ball y'); drawFlow(c, FLOW_B, cPanel.show)
+    h('h3', '', c, 'Flow C: the same export used to get past a full ball'); drawFlow(c, FLOW_C, cPanel.show)
+    var s = secs.sim
+    h('p', 'fcap', s, 'Each user a1 to a60 tries once on tablet 1 and ball x. Change the tier, then export a user to tablet 2 and connect to ball y. The Q9 switch decides whether y ever counts the exported user. Tags on the graph mark the action where a question first shows up.')
+    var sPanel = detailPanel(s)
+    flowSim(s, sPanel.show)
+    var q = secs.qs
+    h('p', 'fcap', q, 'B blocks the design, O can wait. The last column is what I would build unless you decide otherwise.')
+    var qt = h('div', 'qt', q), t = h('table', '', qt)
+    var th = h('tr', '', h('thead', '', t)); ;['ID', 'Where', 'Problem', 'Suggested default'].forEach(function (x) { h('th', '', th, x) })
+    var tbd = h('tbody', '', t)
+    FLOW_QS.forEach(function (r) {
+      var tr = h('tr', '', tbd), id = h('td', '', tr, r[0] + ' '); h('span', r[1] === 'B' ? 'sev-b' : 'sev-o', id, r[1])
+      h('td', '', tr, r[2]); h('td', '', tr, r[3]); h('td', '', tr, r[4])
+    })
+    show('chart')
+    return pane
+  }
+
   var TABS = [
     { id: 'overview', name: 'Overview', pane: overviewPane },
     { id: 'first', name: 'First login', pane: function () { return scenePane({
@@ -379,7 +765,8 @@
           { say: 'Logged in', result: [true, 'Logged in'], hold: 1200 }
         ] }) } },
     { id: 'cap', name: 'User cap', pane: capPane },
-    { id: 'bundle', name: 'Bundle', pane: bundlePane }
+    { id: 'bundle', name: 'Bundle', pane: bundlePane },
+    { id: 'flow', name: 'Flow simulation', pane: flowPane }
   ]
 
   var tabs = document.getElementById('tabs'), main = document.getElementById('main')

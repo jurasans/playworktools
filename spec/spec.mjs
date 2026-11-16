@@ -38,7 +38,7 @@
  * full command list.
  */
 
-import { readFileSync, writeFileSync, renameSync, mkdirSync, existsSync } from 'node:fs'
+import { readFileSync, writeFileSync, renameSync, mkdirSync, existsSync, statSync, rmSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -901,8 +901,8 @@ function cmdStateGet(flags) {
   if (s.note) console.log(`  ${padVisible(bold('note'), 12)}${s.note}`)
   if (s.checklist?.length) {
     console.log(`  ${bold('checklist')}`)
-    const mark = { done: green('✓'), active: yellow('◐'), failed: red('✗'), pending: dim('○') }
-    for (const item of s.checklist) console.log(`    ${mark[itemStatus(item)]} ${item.label}`)
+    const mark = { done: green('✓'), active: yellow('◐'), failed: red('✗'), pending: dim('○'), skipped: dim('–') }
+    for (const item of s.checklist) console.log(`    ${mark[itemStatus(item)]} ${item.label}${item.reason ? dim(`  (${item.reason})`) : ''}`)
   }
   console.log(`  ${padVisible(bold('updated'), 12)}${s.updatedAt ?? dim('never')}`)
   console.log('')
@@ -923,10 +923,35 @@ function cmdStateSet(args, flags) {
   console.log(green(`✓ session state → ${next}`) + (note ? `  (${note})` : ''))
 }
 
-// Items carry a status (pending|active|done|failed); older state files only had done:boolean.
-const CHECK_STATUSES = ['pending', 'active', 'done', 'failed']
+// Items carry a status (pending|active|done|failed|skipped); older state files only had done:boolean.
+// skipped = deliberately not needed (--reason= says why); it counts as finished for the "next step" hand-off, never as done work.
+const CHECK_STATUSES = ['pending', 'active', 'done', 'failed', 'skipped']
 const itemStatus = (i) => i.status ?? (i.done ? 'done' : 'pending')
-const withStatus = (i, status) => ({ ...i, status, done: status === 'done' })
+// percent (0-100) is the live progress of a running step; the site draws it inside the status circle. A step that finishes is 100,
+// one that goes back to pending or is skipped has none.
+const withStatus = (i, status, reason, percent) => {
+  const { reason: _old, percent: oldPct, ...rest } = i
+  const pct = status === 'done' ? 100 : status === 'pending' || status === 'skipped' ? null : Number.isFinite(percent) ? Math.max(0, Math.min(100, Math.round(percent))) : (oldPct ?? null)
+  // reason doubles as the live detail of a running step ("gradle release 293/535 tasks"), so any status may carry one.
+  return { ...rest, status, done: status === 'done', ...(reason ? { reason: String(reason).slice(0, 200) } : {}), ...(pct != null ? { percent: pct } : {}) }
+}
+
+// Phases can run at the same time (phase-parallel.mjs, the nightly lanes), and every update reads then rewrites the one state file:
+// a directory lock keeps two of them from overwriting each other. A lock older than 10 s is a crashed holder's and is taken over.
+function lockState() {
+  const lock = STATE_FILE + '.lock'
+  mkdirSync(dirname(STATE_FILE), { recursive: true })
+  const until = Date.now() + 8000
+  for (;;) {
+    try { mkdirSync(lock); break } catch (e) {
+      if (e.code !== 'EEXIST') return
+      try { if (Date.now() - statSync(lock).mtimeMs > 10_000) { rmSync(lock, { recursive: true, force: true }); continue } } catch { /* released meanwhile */ }
+      if (Date.now() > until) return   // give up waiting: a late update beats a stuck one
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 40)
+    }
+  }
+  process.on('exit', () => { try { rmSync(lock, { recursive: true, force: true }) } catch { /* already gone */ } })
+}
 function writeChecklist(prev, checklist, flags) {
   const entry = { ...prev, checklist, updatedAt: new Date().toISOString() }
   if (flags.dryRun) { console.log(dim(`--dry-run: would write ${STATE_FILE}`)); console.log(entry); return false }
@@ -966,16 +991,21 @@ function cmdChecklistSet(args, flags) {
   const list = prev.checklist ?? []
   const at = list.findIndex((i) => i.label === label)
   let checklist
-  if (at >= 0) checklist = list.map((item, i) => (i === at ? withStatus(item, status) : item))
+  if (at >= 0) checklist = list.map((item, i) => (i === at ? withStatus(item, status, flags.reason, flags.percent) : item))
   else {
     // A new sub-step goes right after the last one of its "Prefix:" group, else after the running step, else at the end.
     const prefix = label.includes(':') ? label.split(':')[0] + ':' : null
     let after = prefix ? list.map((i) => i.label.startsWith(prefix)).lastIndexOf(true) : -1
     if (after < 0) after = list.map((i) => itemStatus(i) === 'active').lastIndexOf(true)
     checklist = [...list]
-    checklist.splice(after < 0 ? list.length : after + 1, 0, withStatus({ label }, status))
+    checklist.splice(after < 0 ? list.length : after + 1, 0, withStatus({ label }, status, flags.reason, flags.percent))
   }
-  if (writeChecklist(prev, checklist, flags)) console.log(green(`✓ ${label}: ${status}`))
+  // A step that ends (done, skipped, failed) must not leave the spinner with nobody: the next pending step takes it.
+  if (['done', 'skipped'].includes(status) && !checklist.some((i) => itemStatus(i) === 'active')) {
+    const next = checklist.findIndex((i) => itemStatus(i) === 'pending')
+    if (next >= 0) checklist = checklist.map((item, i) => (i === next ? withStatus(item, 'active') : item))
+  }
+  if (writeChecklist(prev, checklist, flags)) console.log(green(`✓ ${label}: ${status}`) + (flags.reason && status === 'skipped' ? `  (${flags.reason})` : ''))
 }
 
 function cmdChecklistCheck(args, flags) {
@@ -2094,7 +2124,7 @@ ${bold('spec')} — SPEC_STUBS.md stub registry CLI
   ${cyan('state')} ${cyan('checklist-init')} "Step one|Step two|..."   live checklist shown under the WIP banner
   ${cyan('state')} ${cyan('checklist-check')} <n>       mark checklist item n (1-indexed) done; the next step becomes the active one
   ${cyan('state')} ${cyan('checklist-start')} <n>       mark item n as the step in progress (spinner in the banner)
-  ${cyan('state')} ${cyan('checklist-set')} "label" <pending|active|done|failed>   add or update a sub-step by label
+  ${cyan('state')} ${cyan('checklist-set')} "label" <pending|active|done|failed|skipped> [--reason="why"] [--percent=N]   add or update a sub-step by label (skipped = not needed; percent shows in its circle)
 
   ${bold('create / update')}
   ${cyan('new')} <title> <text>       register a raw-text stub, no file needed — hand off to Analyze mode
@@ -2149,6 +2179,8 @@ const flags = {
   analytics: (argv.find((a) => a.startsWith('--analytics=')) ?? '').slice('--analytics='.length) || null,
   spec: (argv.find((a) => a.startsWith('--spec=')) ?? '').slice('--spec='.length) || null,
   workItem: (argv.find((a) => a.startsWith('--work-item=')) ?? '').slice('--work-item='.length) || null,
+  reason: (argv.find((a) => a.startsWith('--reason=')) ?? '').slice('--reason='.length) || null,
+  percent: (() => { const v = (argv.find((a) => a.startsWith('--percent=')) ?? '').slice('--percent='.length); return v === '' ? undefined : Number(v) })(),
 }
 const args = argv.filter((a) => !a.startsWith('--'))
 const cmd = args.shift()
@@ -2175,6 +2207,7 @@ if (explicitHelp || cmd === undefined) {
 // never touches the stub registry file at all (same treatment as `help`).
 if (cmd === 'state') {
   const sub = args[0]
+  if (sub !== 'get') lockState()   // every writer takes the lock; readers need none (the file is replaced whole)
   if (sub === 'get') cmdStateGet(flags)
   else if (sub === 'set') cmdStateSet(args.slice(1), flags)
   else if (sub === 'checklist-init') cmdChecklistInit(args.slice(1), flags)

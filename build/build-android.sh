@@ -31,7 +31,25 @@ ok()   { printf "${GREEN}✓${NC} %s\n" "$*"; }
 info() { printf "${CYAN}→${NC} %s\n" "$*"; }
 warn() { printf "${YELLOW}⚠${NC}  %s\n" "$*"; }
 fail() { printf "${RED}✗${NC} %s\n" "$*" >&2; exit 1; }
-step() { printf "\n${CYAN}── %s ${NC}\n" "$*"; }
+# "[progress] N% label" lines (tools/build/progress.mjs): N is mapped into PROGRESS_LO..PROGRESS_HI when a parent script gave us a slice.
+PR_LO="${PROGRESS_LO:-0}"; PR_HI="${PROGRESS_HI:-100}"
+progress() { printf "[progress] %d%% %s\n" $(( PR_LO + $1 * (PR_HI - PR_LO) / 100 )) "$2"; }
+step() {
+  printf "\n${CYAN}── %s ${NC}\n" "$*"
+  case "$1" in
+    "Java") progress 2 "checking Java" ;;
+    "Android SDK") progress 4 "checking Android SDK" ;;
+    "Node") progress 5 "checking Node" ;;
+    "SensorPlugin (early sync)") progress 6 "syncing SensorPlugin" ;;
+    "npm install") progress 8 "npm install" ;;
+    "Adding Android platform") progress 14 "adding Android platform" ;;
+    "Web build") progress 20 "web build" ;;
+    "cap sync") progress 45 "capacitor sync" ;;
+    "Launcher icons") progress 48 "launcher icons" ;;
+    "Gradle") progress 52 "gradle starting" ;;
+    "Install") progress 99 "installing on device" ;;
+  esac
+}
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -620,12 +638,12 @@ step "Gradle"
 cd "$ROOT/android"
 
 if [ "$BUILD_TYPE" = "release" ]; then
-  ./gradlew assembleRelease
+  ./gradlew assembleRelease 2>&1 | node "$ROOT/tools/build/gradle-progress.mjs" release 52 98
   # signingConfigs.playwork (android/app/build.gradle) is applied to the release
   # build type too, so Gradle names the output "app-release.apk", not "-unsigned".
   APK_PATH="$ROOT/android/app/build/outputs/apk/release/app-release.apk"
 else
-  ./gradlew assembleDebug
+  ./gradlew assembleDebug 2>&1 | node "$ROOT/tools/build/gradle-progress.mjs" debug 52 98
   APK_PATH="$ROOT/android/app/build/outputs/apk/debug/app-debug.apk"
 fi
 
@@ -665,4 +683,5 @@ fi
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo -e "  ${GREEN}✓ Done${NC}  [${BUILD_TYPE}]"
+progress 100 "done"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

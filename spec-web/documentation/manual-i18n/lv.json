@@ -61,8 +61,8 @@
           "src": "7a8b2c5791"
         },
         "3": {
-          "text": "## Lietotāja pievienošana\n\n1. Nospiediet **Jauns lietotājs**.\n2. Ievadiet numurisko ID un vārdu.\n3. Nospiediet **Izveidot un pieteikties**.\n\nJa šāds ID jau pastāv, jūs redzēsiet **ID jau ir aizņemts**. Lietotāju skaits ir atkarīgs no bumbiņas licences: 1 lietotājs, 50 lietotāju vai neierobežots skaits. Ja tiek sasniegts limits, lietotne par to informēs.\n\nJūs varat aizvērt logu, nospiežot \"Aizvērt\" pogu vai pieskaroties ārpus loga. Skatiet arī [valodu un mērvienības](help:language-and-units).",
-          "src": "2321392aab"
+          "text": "## Lietotāja pievienošana\n\n1. Nospiediet **Jauns lietotājs**.\n2. Ievadiet numurisko ID un vārdu.\n3. Nospiediet **Izveidot un pieteikties**.\n\nJa šāds ID jau pastāv, jūs redzēsiet **ID jau ir aizņemts**. Lietotāju skaits ir atkarīgs no bumbiņas licences: 1 lietotājs, 50 lietotāju vai neierobežots skaits. Šis limits attiecas uz katru lietotāju katrā planšetdatorā, kas izmanto bumbiņu.\n\nJa bumbiņai ir 1 vai 50 lietotāju licence, lietotāja pievienošanai nepieciešams interneta savienojums, jo lietotne pārbauda limitu, sazinoties ar licences serveri. Bez savienojuma lietotājs netiks pievienots, un lietotne par to informēs; pievienojiet savienojumu un mēģiniet vēlreiz. Ja limits ir sasniegts, lietotājs netiks pievienots, un lietotne lūgs jūs sazināties ar klientu atbalsta dienestu; esošie lietotāji turpinās darboties. Ja bumbiņai ir neierobežota licence, lietotāja pievienošanai internets nav nepieciešams. Ieiešanās kā esošam lietotājam un pogas \"Viesi\" funkcija vienmēr darbojas bezsaistē.\n\nJūs varat aizvērt logu, nospiežot \"Aizvērt\" pogu vai pieskaroties jebkuram citam loga ārpusē esošajam elementam. Skatiet arī [valodu un mērvienības](help:language-and-units).",
+          "src": "35b74f1c06"
         }
       },
       "title": "Piekļuves reģistrēšanās un lietotāji"
@@ -87,8 +87,8 @@
     "home-screen": {
       "sections": {
         "0": {
-          "text": "# Sākuma ekrāns\n\nPēc iekļūšanas sistēmā jūs redzat divas lielas kartes.\n\n- **Terapeitiskās spēles** - spēlējiet spēles, kuras jūs kontrolējat, saspiežot un pagriežot bumbu. Skatiet [spēles izvēli](help:choosing-a-game).\n- **Testi** - novērtējiet savu spēku. Skatiet [klīniskos spēka testus](help:clinical-strength-tests).\n\n**Izrakstīties** ļauj atgriezties pie iekļūšanas ekrāna, lai kāds cits varētu iekļūt.\n\n![Sākuma ekrāns ar kartēm \"Terapijas spēles\" un \"Testi\".](img:home.jpg)\n*Izvēlieties spēles vai spēka testus.*",
-          "src": "cf1536c9ed"
+          "text": "# Sākuma ekrāns\n\nPēc iekārtošanās jūs redzēsiet divas lielas kartes.\n\n- **Terapeitiskās spēles** - spēlējiet spēles, kuras jūs kontrolējat, nospiežot un pagriežot bumbu. Skatiet [spēles izvēli](help:choosing-a-game).\n- **Testi** - novērtējiet savu spēku. Skatiet [klīniskos spēka testus](help:clinical-strength-tests).\n\n**Izrakstīties** ļauj atgriezties pie iekārtošanās ekrāna, lai kāds cits varētu iekārtoties.\n\nJa ir pieejama jaunāka lietotnes versija, virs abām kartēm parādās **Atjaunināt lietotni** poga. Nospiediet to, lai uzreiz to atjauninātu — nav nepieciešams pašiem meklēt lietotni veikalā.\n\n![Sākuma ekrāns ar kartēm \"Terapijas spēles\" un \"Testi\".](img:home.jpg)\n*Izvēlieties spēles vai spēka testus.*",
+          "src": "9890a474dc"
         }
       },
       "title": "Sākuma ekrāns"
@@ -478,6 +478,16 @@
       },
       "title": "Kosmosa došavums",
       "titleSrc": "c7994f0625"
+    },
+    "mirror-match": {
+      "sections": {
+        "0": {
+          "text": "# Spoguļveida vingrinājums\n\nVingrinājums ar vienu bumbu, kas paredzēts kustību atgūšanai. Viena roka veic īsu kustību secību (saspiešana un pagriezieni), un otra roka to atkārto.\n\n- Kārtis sākas ar to, ka viena roka (spēcīgākā) tur bumbu. Sākas atskaite, pēc kā veic kustību secību: saspiešana, pagriezums pa kreisi, pagriezums pa labi, jebkurā secībā, kā vēlaties.\n- Kad esat pabeidzis, parādās aicinājums, kurā lūdzams pasniegt bumbu otrai rokai un turēt to statiski uz mirkli — tas palīdz precīzāk noteikt pagrieziena leņķi rokai, kas gatavojas atkārtot kustības.\n- Sākas atskaite, pēc kā ir jāatkārto tieši tāda pati kustību secība, cik precīzi iespējams atdarinot katra soļa spēku, virzienu un laiku.\n- Pēc katras kārtas redzat rezultātu par **Spēks**, **Virziens**, **Laiks** un **Simetrija** (cik tuvu bija abu jūsu roku ieguldīto pūliņu līmeņi).\n- Kustību secība kļūst garāka, padarot katru kārtu nedaudz grūtāku.\n- Treneris var regulēt, cik lielu pielaidi pieļauj spēka un laika sinhronizācijā, un var pārslēgties uz lietotnes ģenerētu kustību secību, nevis ierakstīt to no jūsu spēcīgākās rokas, sadaļā **Iestatījumi**. Skatiet [Trenera iestatījumus](help:trainer-settings).",
+          "src": "9eabbaa2f8"
+        }
+      },
+      "title": "Spoguļspēle",
+      "titleSrc": "aee2e85479"
     }
   }
 }

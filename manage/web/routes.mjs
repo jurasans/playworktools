@@ -13,7 +13,7 @@ const LOCKOUT_MS = 15 * 60 * 1000
 const MAX_BODY = 128 * 1024
 const ENVS = ['stage', 'prod']
 const READ_OPS = new Set(['search_sensors', 'list_licenses', 'search_customers', 'customer_schema'])
-const FIELDS = ['query', 'field', 'limit', 'offset']
+const FIELDS = ['query', 'field', 'limit', 'offset', 'sort', 'dir']
 
 const same = (a, b) => {
   const x = Buffer.from(String(a))

@@ -61,7 +61,30 @@ function keepAwake() {
   } catch (e) { log(`[agent-run] could not hold the PC awake: ${e.message}`) }
 }
 
+// Safety limits, so a hung run ends with a reason instead of holding a CLI seat for ever. "Idle" = the CLI printed nothing
+// (long commands are bounded by their own phase-run budget, so a healthy run keeps talking). Minutes; env overrides for tests.
+const LIMITS = run.kind === 'develop'
+  ? { idle: Number(process.env.AGENT_RUN_IDLE_MIN) || 90, total: Number(process.env.AGENT_RUN_TOTAL_MIN) || 8 * 60 }
+  : { idle: Number(process.env.AGENT_RUN_IDLE_MIN) || 30, total: Number(process.env.AGENT_RUN_TOTAL_MIN) || 3 * 60 }
+let lastEventAt = Date.now()
+const startedMs = Date.now()
+const watchdogTrip = () => {
+  if (Date.now() - startedMs > LIMITS.total * 60_000) return `ran longer than ${LIMITS.total} min`
+  if (Date.now() - lastEventAt > LIMITS.idle * 60_000) return `no output from claude for ${LIMITS.idle} min`
+  return null
+}
+// The checklist step that was running when the run died is marked failed, with the reason, so the site shows where it stopped.
+function failActiveStep(reason) {
+  try {
+    const s = JSON.parse(spawnSync(process.execPath, [SPEC_CLI, 'state', 'get', '--json'], { cwd: ROOT, encoding: 'utf8' }).stdout)
+    for (const item of (s.checklist || []).filter((i) => (i.status ?? (i.done ? 'done' : 'pending')) === 'active')) {
+      spawnSync(process.execPath, [SPEC_CLI, 'state', 'checklist-set', item.label, 'failed', `--reason=${reason}`], { cwd: ROOT, stdio: 'ignore' })
+    }
+  } catch { /* the banner is best effort */ }
+}
+
 function handleLine(line) {
+  lastEventAt = Date.now()
   rawLog(line)
   let ev
   try { ev = JSON.parse(line) } catch { step('output', line); return }
@@ -166,6 +189,8 @@ async function main() {
     run.heartbeatAt = new Date().toISOString()
     save(true)
     if (run.stopRequested) stop()
+    const trip = !run.stopSent && watchdogTrip()
+    if (trip) { run.watchdog = trip; step('system', `watchdog: ${trip}, stopping the run`); failActiveStep(trip); stop() }
   }, HEARTBEAT_MS)
   // Stop must not wait a full heartbeat; poll the flag more often than we write.
   const stopPoll = setInterval(() => {
@@ -192,13 +217,22 @@ async function main() {
   run.exitCode = exitCode
   run.pid = null
   run.finishedAt = new Date().toISOString()
-  if (run.stopRequested) run.status = 'cancelled'
+  if (run.watchdog) { run.status = 'failed'; run.error = `stopped by the watchdog: ${run.watchdog}` }
+  else if (run.stopRequested) run.status = 'cancelled'
   else if (exitCode === 0 && !run.resultError) run.status = 'done'
   else { run.status = 'failed'; run.error = run.error || run.resultText || `claude exited with code ${exitCode}` }
   step('system', `run ${run.status}`)
   run.summary = run.status === 'done' ? summaryBullets() : `- ${run.label} \u2014 ${run.status} \u2014 ${String(run.error || 'stopped').replace(/\s+/g, ' ').slice(0, 200)}`
   save(true)
   log(`[agent-run] ${run.status} (exit ${exitCode})`)
+  // A develop run that failed (crash, watchdog, CLI error) is resumable: the phase it died in is marked failed and the banner asks
+  // a person to press Resume. This comes BEFORE runFinished, which reads that banner to pause the work item instead of failing it.
+  await bannerQueue
+  const failedDevelop = run.kind === 'develop' && run.status === 'failed' && run.params?.workItemId && !humanBannerUp()
+  if (failedDevelop) {
+    failActiveStep(String(run.error || 'the run failed').slice(0, 150))
+    spawnSync(process.execPath, [SPEC_CLI, 'state', 'set', 'human', `${run.params.workItemId}: the run stopped (${String(run.error || 'failed').replace(/\s+/g, ' ').slice(0, 220)}). Press Resume to continue from the phase that failed.`, `--work-item=${run.params.workItemId}`], { cwd: ROOT })
+  }
   // A run that ends without storing its result must not leave the work item stuck in analyzing, rewriting or working.
   if (['analyze', 'respec', 'develop'].includes(run.kind) && run.params?.workItemId) {
     try { runFinished(run.params.workItemId, run.kind, run.status, run.summary) } catch (e) { log(`[agent-run] could not update the work item: ${e.message}`) }
@@ -210,7 +244,7 @@ async function main() {
   await bannerQueue
   // Always flips the banner off amber, with the summary as its run notes. finish-ready-stubs writes its own closing
   // note, so for that kind the summary is only used when the banner is still amber after the run.
-  if (ownsBanner) {
+  if (failedDevelop) { /* the human banner stays up for a person */ } else if (ownsBanner) {
     if (SELF_BANNER.has(run.kind)) clearStuckBanner(run.summary)
     else if (!humanBannerUp()) spawnSync(process.execPath, [SPEC_CLI, 'state', 'set', 'ready', run.summary.slice(0, 1800)], { cwd: ROOT })
   }
